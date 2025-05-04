@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, LayoutGrid, List } from "lucide-react";
+import { Search, WalletCards, Plus, MapPin, X } from "lucide-react";
 
 type HomeHeaderProps = {
   searchQuery: string;
@@ -22,50 +22,44 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({
   setActiveFilter
 }) => {
   const filters = ['All', 'Recent', 'Hiring', 'Investing', 'Building'];
+  
+  const handleClearSearch = () => {
+    setSearchQuery('');
+  };
 
   return (
-    <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
+    <header className="p-4 sticky top-0 bg-background/90 backdrop-blur-xl z-10">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold">Your Network</h1>
-        <div className="flex gap-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setViewMode('stack')}
-            className={viewMode === 'stack' ? 'text-primary' : 'text-muted-foreground'}
-          >
-            <LayoutGrid className="w-5 h-5" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setViewMode('grid')}
-            className={viewMode === 'grid' ? 'text-primary' : 'text-muted-foreground'}
-          >
-            <LayoutGrid className="w-5 h-5" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setViewMode('list')}
-            className={viewMode === 'list' ? 'text-primary' : 'text-muted-foreground'}
-          >
-            <List className="w-5 h-5" />
-          </Button>
+        <div className="flex items-center">
+          <WalletCards className="w-5 h-5 mr-2 text-primary" />
+          <h1 className="text-xl font-semibold">Cards</h1>
         </div>
+        <Button variant="ghost" size="icon" className="rounded-full bg-secondary">
+          <Plus className="w-4 h-4" />
+        </Button>
       </div>
       
-      <div className="relative">
-        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+      <div className="relative mb-3">
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
+          <Search className="h-4 w-4" />
+        </div>
         <Input
-          placeholder="Search connections..."
-          className="pl-9 bg-secondary border-none"
+          placeholder="Search cards..."
+          className="pl-9 pr-9 bg-secondary rounded-full h-9 border-none"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        {searchQuery && (
+          <button 
+            className="absolute right-3 top-1/2 transform -translate-y-1/2" 
+            onClick={handleClearSearch}
+          >
+            <X className="h-4 w-4 text-muted-foreground" />
+          </button>
+        )}
       </div>
       
-      <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar">
+      <div className="flex gap-2 overflow-x-auto py-2 no-scrollbar">
         {filters.map((filter) => (
           <button
             key={filter}

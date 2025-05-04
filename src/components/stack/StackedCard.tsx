@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BusinessCard as BusinessCardType } from '../../context/AppContext';
 import BusinessCard from '../BusinessCard';
 import { ChevronUp, ChevronDown } from 'lucide-react';
@@ -29,55 +29,84 @@ const StackedCard: React.FC<StackedCardProps> = ({
   onCollapse,
   showExpandHint
 }) => {
-  // Calculate position based on state
-  let translateY = displayIndex * 12; // Default stacked position
+  const cardRef = useRef<HTMLDivElement>(null);
+  const prevExpandedState = useRef<boolean>(isExpanded);
   
-  if (expandedCardIndex !== null) {
-    if (isExpanded) {
-      translateY = 0; // Focused card at the top
-    } else if (cardOrder.indexOf(expandedCardIndex) > displayIndex) {
-      translateY = -100; // Cards above the focused card
-    } else {
-      translateY = 100 + (displayIndex - cardOrder.indexOf(expandedCardIndex) - 1) * 30; // Cards below the focused card
+  // Calculate position based on state
+  const getTransform = () => {
+    // Default stacked position - Apple Wallet style staggering
+    let translateY = displayIndex * 16; 
+    let scale = 1 - (displayIndex * 0.02);
+    
+    if (expandedCardIndex !== null) {
+      if (isExpanded) {
+        translateY = 0; // Focused card at the top
+        scale = 1;
+      } else if (cardOrder.indexOf(expandedCardIndex) > displayIndex) {
+        // Cards above the focused card - move up and out of view
+        translateY = -100 - (displayIndex * 10);
+        scale = 0.95;
+      } else {
+        // Cards below the focused card - stack at bottom
+        translateY = 300 + ((displayIndex - cardOrder.indexOf(expandedCardIndex) - 1) * 15);
+        scale = 0.9 - ((displayIndex - cardOrder.indexOf(expandedCardIndex) - 1) * 0.01);
+      }
     }
-  }
+
+    return `translateY(${translateY}px) scale(${scale})`;
+  };
+  
+  // Apply Apple Wallet-like expand/collapse animations
+  useEffect(() => {
+    const cardElement = cardRef.current;
+    if (!cardElement) return;
+    
+    // Only add animation if expanded state changed
+    if (prevExpandedState.current !== isExpanded) {
+      // Remove any existing animation classes
+      cardElement.classList.remove('card-expanding', 'card-collapsing');
+      
+      // Add appropriate animation class
+      if (isExpanded) {
+        cardElement.style.setProperty('--offset', `${displayIndex * 16}px`);
+        cardElement.classList.add('card-expanding');
+      } else if (prevExpandedState.current) {
+        cardElement.style.setProperty('--offset', `${displayIndex * 16}px`);
+        cardElement.classList.add('card-collapsing');
+      }
+      
+      prevExpandedState.current = isExpanded;
+    }
+  }, [isExpanded, displayIndex]);
 
   return (
     <div
-      className={`absolute w-full transition-all duration-300 ease-in-out cursor-pointer
-        ${isExpanded ? 'scale-100' : 'scale-95'}
-        ${!isActive ? 'pointer-events-none' : ''}
+      ref={cardRef}
+      className={`absolute w-full transition-all duration-300 ease-out 
+        ${isExpanded ? 'scale-100' : ''}
+        ${!isActive ? 'pointer-events-none' : 'cursor-pointer'}
       `}
       style={{
-        transform: `translateY(${translateY}px) ${isExpanded ? 'scale(1)' : ''}`,
+        transform: getTransform(),
         zIndex: zIndex,
         boxShadow: isExpanded 
           ? '0 10px 25px -5px rgba(0, 0, 0, 0.3)' 
           : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
       }}
-      onClick={onCardClick}
+      onClick={(e) => {
+        e.preventDefault();
+        onCardClick();
+      }}
     >
       <div className={`relative ${isExpanded ? 'ring-2 ring-primary ring-opacity-50' : ''}`}>
         <div className="overflow-hidden rounded-xl">
           <BusinessCard card={card} isPreview={false} />
         </div>
         
-        {isExpanded && (
-          <button
-            className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 p-1 rounded-full transition-colors"
-            onClick={(e) => {
-              e.stopPropagation();
-              onCollapse();
-            }}
-          >
-            <ChevronDown className="w-4 h-4 text-white" />
-          </button>
-        )}
-        
         {showExpandHint && (
-          <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-[-20px]">
-            <div className="bg-primary/30 backdrop-blur-sm p-1 rounded-full">
-              <ChevronUp className="w-4 h-4 text-primary" />
+          <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-[-12px]">
+            <div className="bg-black/40 backdrop-blur-sm p-1 rounded-full">
+              <ChevronUp className="w-4 h-4 text-white" />
             </div>
           </div>
         )}

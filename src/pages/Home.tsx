@@ -7,6 +7,7 @@ import HomeHeader from '../components/home/HomeHeader';
 import ConnectionList from '../components/home/ConnectionList';
 import EmptyState from '../components/home/EmptyState';
 import { useConnections } from '../hooks/useConnections';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background flex flex-col">
       <HomeHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -35,30 +36,32 @@ const Home = () => {
         setActiveFilter={setActiveFilter}
       />
       
-      <main className="p-4">
-        {filteredConnections.length > 0 ? (
-          <>
-            {viewMode === 'stack' && (
-              <CardStack 
-                cards={filteredConnections}
-                onCardClick={handleCardClick}
-              />
-            )}
-            {(viewMode === 'grid' || viewMode === 'list') && (
-              <ConnectionList 
-                connections={filteredConnections}
-                viewMode={viewMode}
-                onCardClick={handleCardClick}
-              />
-            )}
-          </>
-        ) : (
-          <EmptyState 
-            searchQuery={searchQuery} 
-            onClearSearch={handleClearSearch} 
-          />
-        )}
-      </main>
+      <ScrollArea className="flex-grow pb-24 overflow-hidden">
+        <main className="p-4 pt-0">
+          {filteredConnections.length > 0 ? (
+            <>
+              {viewMode === 'stack' && (
+                <CardStack 
+                  cards={filteredConnections}
+                  onCardClick={handleCardClick}
+                />
+              )}
+              {(viewMode === 'grid' || viewMode === 'list') && (
+                <ConnectionList 
+                  connections={filteredConnections}
+                  viewMode={viewMode}
+                  onCardClick={handleCardClick}
+                />
+              )}
+            </>
+          ) : (
+            <EmptyState 
+              searchQuery={searchQuery} 
+              onClearSearch={handleClearSearch} 
+            />
+          )}
+        </main>
+      </ScrollArea>
       
       <BottomNav />
     </div>

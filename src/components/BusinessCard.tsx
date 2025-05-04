@@ -1,7 +1,6 @@
 
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
-import { Link } from 'react-router-dom';
-import { ExternalLink, Github, Twitter, Link as LinkIcon } from 'lucide-react';
+import { ExternalLink, Github, Twitter, Link as LinkIcon, MapPinCheck } from 'lucide-react';
 
 type BusinessCardProps = {
   card: BusinessCardType;
@@ -29,11 +28,12 @@ const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) =
 
   return (
     <div
-      className={`business-card ${card.design.backgroundStyle} ${isPreview ? 'w-full h-56' : 'w-full sm:w-60 h-36'}`}
+      className={`business-card ${card.design.backgroundStyle} ${isPreview ? 'w-full h-56' : 'w-full h-40'}`}
       style={{ color: card.design.textColor }}
       onClick={handleClick}
     >
       <div className="relative h-full p-4 flex flex-col justify-between overflow-hidden">
+        {/* Top section with name and avatar */}
         <div className="flex items-start gap-3">
           <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20">
             {card.avatar && (
@@ -51,12 +51,17 @@ const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) =
           </div>
         </div>
         
+        {/* Status badge - Apple Wallet style */}
         {card.status && (
-          <div className="px-2 py-1 bg-black/10 rounded text-xs mt-2 backdrop-blur-sm w-fit">
-            {card.status}
+          <div className="px-2 py-1 bg-black/10 rounded-md text-xs mt-2 backdrop-blur-sm w-fit">
+            <div className="flex items-center gap-1.5">
+              <MapPinCheck className="w-3 h-3 opacity-70" />
+              <span>{card.status}</span>
+            </div>
           </div>
         )}
         
+        {/* Bottom section with expertise and links */}
         <div className="mt-2">
           {card.expertiseAreas && card.expertiseAreas.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-2">
