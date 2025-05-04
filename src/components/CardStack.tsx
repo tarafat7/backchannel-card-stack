@@ -11,12 +11,24 @@ type CardStackProps = {
 
 const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
+  const [cardOrder, setCardOrder] = useState<number[]>(Array.from({ length: cards.length }, (_, i) => i));
   
   const handleCardClick = (index: number, id: string) => {
     if (expandedCardIndex === index) {
       onCardClick(id);
     } else {
       setExpandedCardIndex(index);
+      
+      // When clicking a card, bring it to the front by updating the order
+      const newOrder = [...cardOrder];
+      const clickedCardPosition = newOrder.indexOf(index);
+      
+      // Remove the clicked card from its position
+      newOrder.splice(clickedCardPosition, 1);
+      // Add it to the beginning (top of the stack)
+      newOrder.unshift(index);
+      
+      setCardOrder(newOrder);
     }
   };
 
@@ -27,27 +39,26 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   return (
     <div className="relative w-full max-w-md mx-auto mt-4 pt-12 pb-12">
       {/* Main card stack */}
-      {cards.map((card, index) => {
-        const isExpanded = expandedCardIndex === index;
-        const zIndex = cards.length - index;
+      {cardOrder.map((originalIndex, displayIndex) => {
+        const card = cards[originalIndex];
+        const isExpanded = expandedCardIndex === originalIndex;
+        const zIndex = cards.length - displayIndex;
         const isActive = expandedCardIndex === null || isExpanded;
-        const isPrevious = expandedCardIndex !== null && index < expandedCardIndex;
-        const isNext = expandedCardIndex !== null && index > expandedCardIndex;
         
         // Calculate position based on state
-        let translateY = index * 12; // Default stacked position
+        let translateY = displayIndex * 12; // Default stacked position
         
         if (expandedCardIndex !== null) {
           if (isExpanded) {
             translateY = 0; // Focused card at the top
-          } else if (isPrevious) {
+          } else if (cardOrder.indexOf(expandedCardIndex) > displayIndex) {
             translateY = -100; // Cards above the focused card
-          } else if (isNext) {
-            translateY = 100 + (index - expandedCardIndex - 1) * 30; // Cards below the focused card
+          } else {
+            translateY = 100 + (displayIndex - cardOrder.indexOf(expandedCardIndex) - 1) * 30; // Cards below the focused card
           }
         }
         
-        const uniqueKey = `card-${card.id}-${index}`;
+        const uniqueKey = `card-${card.id}-${originalIndex}`;
         
         return (
           <div
@@ -59,11 +70,11 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
             style={{
               transform: `translateY(${translateY}px) ${isExpanded ? 'scale(1)' : ''}`,
               zIndex: zIndex,
-              boxShadow: isExpanded ? '0 10px 25px -5px rgba(0, 0, 0, 0.3)' : 'none',
+              boxShadow: isExpanded ? '0 10px 25px -5px rgba(0, 0, 0, 0.3)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
             }}
-            onClick={() => handleCardClick(index, card.id)}
+            onClick={() => handleCardClick(originalIndex, card.id)}
           >
-            <div className={`relative bg-white ${isExpanded ? 'ring-2 ring-primary ring-opacity-50' : ''}`}>
+            <div className={`relative ${isExpanded ? 'ring-2 ring-primary ring-opacity-50' : ''}`}>
               <BusinessCard card={card} isPreview={false} />
               {isExpanded && (
                 <button
@@ -76,7 +87,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                   <ChevronDown className="w-4 h-4 text-white" />
                 </button>
               )}
-              {!isExpanded && expandedCardIndex === null && index === 0 && (
+              {!isExpanded && expandedCardIndex === null && displayIndex === 0 && (
                 <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-[-20px]">
                   <div className="bg-primary/30 backdrop-blur-sm p-1 rounded-full">
                     <ChevronUp className="w-4 h-4 text-primary" />
@@ -105,3 +116,4 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
 };
 
 export default CardStack;
+
