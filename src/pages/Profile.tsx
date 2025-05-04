@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Settings, ChevronRight, Edit2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import BusinessCard from '../components/BusinessCard';
 import { useAppContext } from '../context/AppContext';
@@ -12,10 +13,20 @@ const Profile = () => {
   const { profile } = useAppContext();
   const [isEditing, setIsEditing] = useState(false);
   const [statusText, setStatusText] = useState(profile.card?.status || "");
+  const navigate = useNavigate();
 
   const handleStatusUpdate = () => {
     // In a real app, you'd update the status in your context or API
     setIsEditing(false);
+  };
+
+  const handleEditCardDesign = () => {
+    if (profile.card) {
+      navigate(`/card/${profile.card.id}`);
+    } else {
+      // If no card exists, redirect to onboarding
+      navigate('/');
+    }
   };
 
   return (
@@ -43,7 +54,7 @@ const Profile = () => {
           <Button 
             variant="outline" 
             className="w-full mt-3"
-            onClick={() => {}}
+            onClick={handleEditCardDesign}
           >
             Edit Card Design
             <Edit2 className="w-4 h-4 ml-2" />
@@ -144,3 +155,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
