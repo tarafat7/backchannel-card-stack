@@ -1,11 +1,13 @@
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MessageCircle, ExternalLink, Link as LinkIcon, Twitter, Github } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { toast } from '@/components/ui/use-toast';
+import FullBusinessCard from '@/components/cards/FullBusinessCard';
+import SharedConnections from '@/components/shared/SharedConnections';
+import CardActions from '@/components/cards/CardActions';
+import IntroRequestDialog from '@/components/dialogs/IntroRequestDialog';
 
 const ViewCard = () => {
   const { id } = useParams();
@@ -68,39 +70,7 @@ const ViewCard = () => {
   }
   
   const isDirectConnection = card.connectionDate !== undefined;
-  const sharedConnectionsCount = card.sharedConnections ? card.sharedConnections.length : 0;
   
-  const handleSendMessage = () => {
-    toast({
-      title: "Message Sent",
-      description: `Your message has been sent to ${card.name}`,
-    });
-  };
-  
-  const handleRequestIntro = () => {
-    setIntroDialogOpen(true);
-  };
-  
-  const handleSendIntroRequest = () => {
-    toast({
-      title: "Introduction Requested",
-      description: "Your introduction request has been sent!",
-    });
-    
-    setIntroDialogOpen(false);
-  };
-  
-  const getSocialIcon = (type: string) => {
-    switch (type.toLowerCase()) {
-      case 'twitter':
-        return <Twitter className="w-4 h-4" />;
-      case 'github':
-        return <Github className="w-4 h-4" />;
-      default:
-        return <LinkIcon className="w-4 h-4" />;
-    }
-  };
-
   return (
     <>
       <div className="min-h-screen bg-background flex flex-col">
@@ -115,166 +85,27 @@ const ViewCard = () => {
           </Button>
         </header>
 
-        {/* Full Card */}
-        <div className={`m-4 p-6 rounded-xl ${card.design.backgroundStyle}`}>
-          <div className={`h-full ${card.design.textColor}`}>
-            <div className="flex items-start gap-4 mb-4">
-              <div className="w-20 h-20 rounded-full bg-black/20 overflow-hidden border border-white/20">
-                {card.avatar && (
-                  <img 
-                    src={card.avatar} 
-                    alt={card.name} 
-                    className="w-full h-full object-cover" 
-                  />
-                )}
-              </div>
-              <div>
-                <h1 className="text-xl font-semibold">{card.name}</h1>
-                <p className="text-lg opacity-90">{card.title}</p>
-                <p className="text-sm opacity-80">{card.company}</p>
-              </div>
-            </div>
-            
-            {card.status && (
-              <div className="px-3 py-1.5 bg-black/10 rounded-lg text-sm mt-4 backdrop-blur-sm w-fit">
-                {card.status}
-              </div>
-            )}
-            
-            {card.expertiseAreas && card.expertiseAreas.length > 0 && (
-              <div className="mt-6">
-                <h3 className="text-sm opacity-80 mb-2">Areas of Expertise</h3>
-                <div className="flex flex-wrap gap-2">
-                  {card.expertiseAreas.map((area, index) => (
-                    <span key={index} className="chip">
-                      {area}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {card.links && card.links.length > 0 && (
-              <div className="mt-6">
-                <h3 className="text-sm opacity-80 mb-2">Links</h3>
-                <div className="flex gap-2">
-                  {card.links.map((link, index) => (
-                    <a 
-                      key={index}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="social-icon-button"
-                    >
-                      {getSocialIcon(link.type)}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {isDirectConnection && card.connectionEvent && (
-              <div className="mt-6 py-2 border-t border-white/10">
-                <p className="text-sm opacity-70">
-                  Connected at {card.connectionEvent} • {new Date(card.connectionDate!).toLocaleDateString()}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+        <FullBusinessCard card={card} />
         
         {/* Connection Info */}
         <div className="px-4 py-2 mb-4">
-          {card.sharedConnections && sharedConnectionsCount > 0 && (
-            <div className="mb-4">
-              <h3 className="text-sm text-muted-foreground mb-2">Shared Connections</h3>
-              <div className="flex items-center">
-                <div className="flex -space-x-2">
-                  {Array(Math.min(sharedConnectionsCount, 3)).fill(0).map((_, i) => (
-                    <div 
-                      key={i} 
-                      className="w-8 h-8 rounded-full bg-secondary border-2 border-background overflow-hidden"
-                    >
-                      <div className="w-full h-full bg-primary/30" />
-                    </div>
-                  ))}
-                </div>
-                <span className="ml-3 text-sm text-muted-foreground">
-                  {sharedConnectionsCount} shared connection{sharedConnectionsCount !== 1 ? 's' : ''}
-                </span>
-              </div>
-            </div>
+          {card.sharedConnections && card.sharedConnections.length > 0 && (
+            <SharedConnections connections={card.sharedConnections} />
           )}
         </div>
           
-        {/* Actions */}
-        <div className="px-4 mt-auto mb-8">
-          {isDirectConnection ? (
-            <Button 
-              className="w-full mb-3"
-              onClick={handleSendMessage}
-            >
-              Message
-              <MessageCircle className="w-4 h-4 ml-2" />
-            </Button>
-          ) : (
-            <Button 
-              className="w-full mb-3"
-              onClick={handleRequestIntro}
-            >
-              Request Intro
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </Button>
-          )}
-          
-          <Button variant="outline" className="w-full">
-            Share Card
-          </Button>
-        </div>
+        <CardActions 
+          isDirectConnection={isDirectConnection}
+          onRequestIntro={() => setIntroDialogOpen(true)}
+          personName={card.name}
+        />
       </div>
       
-      {/* Introduction Request Dialog */}
-      <Dialog open={introDialogOpen} onOpenChange={setIntroDialogOpen}>
-        <DialogContent className="bg-background border border-white/10 text-foreground">
-          <DialogHeader>
-            <DialogTitle>Request Introduction</DialogTitle>
-          </DialogHeader>
-          
-          <div className="py-4">
-            <p className="text-sm text-muted-foreground mb-4">
-              This will send a request to a mutual connection to introduce you to {card.name}.
-            </p>
-            
-            <div className="p-3 rounded-lg bg-secondary mb-4">
-              <p className="text-sm font-medium">Via Jordan Lee</p>
-              <p className="text-xs text-muted-foreground">You and {card.name} both know Jordan</p>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium block mb-1">Reason for intro</label>
-                <div className="p-3 rounded-lg bg-secondary">
-                  <p className="text-sm">I'd love to connect about potential collaborations in the product design space. I'm currently working on similar challenges.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button 
-              variant="outline" 
-              onClick={() => setIntroDialogOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleSendIntroRequest}
-            >
-              Send Request
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <IntroRequestDialog 
+        open={introDialogOpen} 
+        onOpenChange={setIntroDialogOpen}
+        personName={card.name}
+      />
     </>
   );
 };
