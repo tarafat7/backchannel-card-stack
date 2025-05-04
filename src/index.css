@@ -77,6 +77,29 @@
   .nav-button {
     @apply flex items-center justify-center w-10 h-10 rounded-full bg-secondary hover:bg-secondary/80 transition-colors;
   }
+  
+  .card-stack-wrapper {
+    @apply relative w-full h-full;
+    perspective: 1000px;
+  }
+  
+  .card-stack-item {
+    @apply absolute w-full transition-all duration-300;
+    transform-origin: top center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* No scrollbar for webkit browsers */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Card Animations */
@@ -99,4 +122,31 @@
   opacity: 0;
   transform: translateY(-20px);
   transition: opacity 300ms, transform 300ms;
+}
+
+/* Apple Wallet style accordion animations */
+@keyframes card-expand {
+  from {
+    transform: translateY(var(--offset)) scale(0.95);
+  }
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes card-collapse {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(var(--offset)) scale(0.95);
+  }
+}
+
+.card-expanding {
+  animation: card-expand 0.3s forwards ease-out;
+}
+
+.card-collapsing {
+  animation: card-collapse 0.3s forwards ease-in;
 }

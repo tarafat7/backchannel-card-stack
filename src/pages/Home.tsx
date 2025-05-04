@@ -1,11 +1,12 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { Search, Plus, LayoutGrid, List } from "lucide-react";
 import BottomNav from '../components/BottomNav';
 import BusinessCard from '../components/BusinessCard';
+import CardStack from '../components/CardStack';
 import { useAppContext } from '../context/AppContext';
 
 // Sample connection data
@@ -88,17 +89,17 @@ const Home = () => {
   const navigate = useNavigate();
   const { connections, addConnection } = useAppContext();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isGridView, setIsGridView] = useState(true);
+  const [viewMode, setViewMode] = useState<'stack' | 'grid' | 'list'>('stack');
   const [activeFilter, setActiveFilter] = useState('All');
   
   // Initialize with sample connections if none exist
-  useState(() => {
+  useEffect(() => {
     if (connections.length === 0) {
       sampleConnections.forEach(connection => {
         addConnection(connection);
       });
     }
-  });
+  }, [connections.length, addConnection]);
 
   const allConnections = [...connections, ...sampleConnections];
   
@@ -164,16 +165,24 @@ const Home = () => {
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={() => setIsGridView(true)}
-              className={isGridView ? 'text-primary' : 'text-muted-foreground'}
+              onClick={() => setViewMode('stack')}
+              className={viewMode === 'stack' ? 'text-primary' : 'text-muted-foreground'}
             >
               <LayoutGrid className="w-5 h-5" />
             </Button>
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={() => setIsGridView(false)}
-              className={!isGridView ? 'text-primary' : 'text-muted-foreground'}
+              onClick={() => setViewMode('grid')}
+              className={viewMode === 'grid' ? 'text-primary' : 'text-muted-foreground'}
+            >
+              <LayoutGrid className="w-5 h-5" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setViewMode('list')}
+              className={viewMode === 'list' ? 'text-primary' : 'text-muted-foreground'}
             >
               <List className="w-5 h-5" />
             </Button>
@@ -210,16 +219,26 @@ const Home = () => {
       {/* Content */}
       <main className="p-4">
         {filteredConnections.length > 0 ? (
-          <div className={`grid ${isGridView ? 'grid-cols-2 gap-3' : 'grid-cols-1 gap-4'}`}>
-            {filteredConnections.map((connection) => (
-              <div key={connection.id} className="animate-fade-in">
-                <BusinessCard
-                  card={connection}
-                  onClick={() => handleCardClick(connection.id)}
-                />
+          <>
+            {viewMode === 'stack' && (
+              <CardStack 
+                cards={filteredConnections}
+                onCardClick={handleCardClick}
+              />
+            )}
+            {(viewMode === 'grid' || viewMode === 'list') && (
+              <div className={`grid ${viewMode === 'grid' ? 'grid-cols-2 gap-3' : 'grid-cols-1 gap-4'}`}>
+                {filteredConnections.map((connection) => (
+                  <div key={connection.id} className="animate-fade-in">
+                    <BusinessCard
+                      card={connection}
+                      onClick={() => handleCardClick(connection.id)}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )}
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center h-40 text-center">
             <p className="text-muted-foreground mb-2">No connections found</p>

@@ -21,6 +21,7 @@ export type BusinessCard = {
   design: CardDesign;
   connectionDate?: string;
   connectionEvent?: string;
+  sharedConnections?: string[]; // Added sharedConnections property
 }
 
 export type UserProfile = {
@@ -65,7 +66,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addConnection = (connection: BusinessCard) => {
-    setConnections(prev => [...prev, connection]);
+    // Ensure the connection has the sharedConnections property
+    const connectionWithShared = {
+      ...connection,
+      sharedConnections: connection.sharedConnections || []
+    };
+    setConnections(prev => [...prev, connectionWithShared]);
   };
 
   return (
