@@ -47,33 +47,40 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           }
         }
         
+        // Make sure each card has a unique key to fix the console warnings
+        const uniqueKey = `card-${card.id}-${index}`;
+        
         return (
           <div
-            key={card.id}
+            key={uniqueKey}
             className={`absolute w-full transition-all duration-300 ease-in-out cursor-pointer
-              ${isExpanded ? 'scale-100' : 'scale-95'}
-              ${isActive ? 'opacity-100' : 'opacity-70'}
+              ${isExpanded ? 'scale-100 shadow-xl' : 'scale-95'}
+              ${isActive ? 'opacity-100' : 'opacity-60'}
               ${isPrevious ? 'pointer-events-none' : ''}
             `}
             style={{
               transform: `translateY(${translateY}px) ${isExpanded ? 'scale(1)' : ''}`,
               zIndex: zIndex,
+              filter: isExpanded ? 'none' : isPrevious || isNext ? 'blur(0px)' : 'blur(0px)',
             }}
             onClick={() => handleCardClick(index, card.id)}
           >
-            <div className="relative">
+            <div className={`relative ${isExpanded ? 'ring-2 ring-primary ring-opacity-50' : ''}`}>
               <BusinessCard card={card} isPreview={false} />
               {isExpanded && (
                 <button
-                  className="absolute top-2 right-2 bg-black/30 p-1 rounded-full"
-                  onClick={handleCollapseStack}
+                  className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 p-1 rounded-full transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCollapseStack();
+                  }}
                 >
                   <ChevronDown className="w-4 h-4 text-white" />
                 </button>
               )}
               {!isExpanded && expandedCardIndex === null && index === 0 && (
                 <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-[-20px]">
-                  <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
+                  <div className="bg-primary/30 backdrop-blur-sm p-1 rounded-full">
                     <ChevronUp className="w-4 h-4 text-primary" />
                   </div>
                 </div>
