@@ -33,7 +33,7 @@ const ViewCard = () => {
       },
       connectionDate: '2023-10-15',
       connectionEvent: 'React Conference',
-      sharedConnections: 3
+      sharedConnections: ['Jordan Lee', 'Alex Kim', 'Taylor Swift']
     },
     {
       id: '3',
@@ -52,7 +52,7 @@ const ViewCard = () => {
       },
       connectionDate: '2023-11-02',
       connectionEvent: 'Startup Mixer',
-      sharedConnections: 5
+      sharedConnections: ['Jordan Lee', 'Pat Johnson', 'Sam Chen', 'Aisha Patel', 'Miguel Rodriguez']
     }
   ];
   
@@ -68,6 +68,7 @@ const ViewCard = () => {
   }
   
   const isDirectConnection = card.connectionDate !== undefined;
+  const sharedConnectionsCount = card.sharedConnections ? card.sharedConnections.length : 0;
   
   const handleSendMessage = () => {
     toast({
@@ -184,12 +185,12 @@ const ViewCard = () => {
         
         {/* Connection Info */}
         <div className="px-4 py-2 mb-4">
-          {card.sharedConnections && card.sharedConnections > 0 && (
+          {card.sharedConnections && sharedConnectionsCount > 0 && (
             <div className="mb-4">
               <h3 className="text-sm text-muted-foreground mb-2">Shared Connections</h3>
               <div className="flex items-center">
                 <div className="flex -space-x-2">
-                  {Array(Math.min(card.sharedConnections, 3)).fill(0).map((_, i) => (
+                  {Array(Math.min(sharedConnectionsCount, 3)).fill(0).map((_, i) => (
                     <div 
                       key={i} 
                       className="w-8 h-8 rounded-full bg-secondary border-2 border-background overflow-hidden"
@@ -199,7 +200,7 @@ const ViewCard = () => {
                   ))}
                 </div>
                 <span className="ml-3 text-sm text-muted-foreground">
-                  {card.sharedConnections} shared connection{card.sharedConnections !== 1 ? 's' : ''}
+                  {sharedConnectionsCount} shared connection{sharedConnectionsCount !== 1 ? 's' : ''}
                 </span>
               </div>
             </div>

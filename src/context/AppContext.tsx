@@ -21,7 +21,7 @@ export type BusinessCard = {
   design: CardDesign;
   connectionDate?: string;
   connectionEvent?: string;
-  sharedConnections?: string[]; // Added sharedConnections property
+  sharedConnections?: string[]; // This is a string array, not a number
 }
 
 export type UserProfile = {
@@ -66,7 +66,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addConnection = (connection: BusinessCard) => {
-    // Ensure the connection has the sharedConnections property
+    // Ensure the connection has the sharedConnections property as a string array
     const connectionWithShared = {
       ...connection,
       sharedConnections: connection.sharedConnections || []
