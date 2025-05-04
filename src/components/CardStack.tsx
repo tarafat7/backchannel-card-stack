@@ -47,25 +47,23 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           }
         }
         
-        // Make sure each card has a unique key to fix the console warnings
         const uniqueKey = `card-${card.id}-${index}`;
         
         return (
           <div
             key={uniqueKey}
             className={`absolute w-full transition-all duration-300 ease-in-out cursor-pointer
-              ${isExpanded ? 'scale-100 shadow-xl' : 'scale-95'}
-              ${isActive ? 'opacity-100' : 'opacity-60'}
-              ${isPrevious ? 'pointer-events-none' : ''}
+              ${isExpanded ? 'scale-100' : 'scale-95'}
+              ${!isActive ? 'pointer-events-none' : ''}
             `}
             style={{
               transform: `translateY(${translateY}px) ${isExpanded ? 'scale(1)' : ''}`,
               zIndex: zIndex,
-              filter: isExpanded ? 'none' : isPrevious || isNext ? 'blur(0px)' : 'blur(0px)',
+              boxShadow: isExpanded ? '0 10px 25px -5px rgba(0, 0, 0, 0.3)' : 'none',
             }}
             onClick={() => handleCardClick(index, card.id)}
           >
-            <div className={`relative ${isExpanded ? 'ring-2 ring-primary ring-opacity-50' : ''}`}>
+            <div className={`relative bg-white ${isExpanded ? 'ring-2 ring-primary ring-opacity-50' : ''}`}>
               <BusinessCard card={card} isPreview={false} />
               {isExpanded && (
                 <button
