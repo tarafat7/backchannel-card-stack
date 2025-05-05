@@ -38,11 +38,11 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     });
   };
 
-  const handleRequestIntro = (e: React.MouseEvent, name: string) => {
+  const handleRequestIntro = (e: React.MouseEvent, name: string, mutualConnection?: string) => {
     e.stopPropagation(); // Prevent card collapse
     toast({
       title: "Introduction Requested",
-      description: `Your introduction request to ${name} has been sent!`,
+      description: `Your introduction request to ${mutualConnection || "a mutual connection"} has been sent!`,
     });
   };
 
@@ -88,6 +88,11 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           // Determine if this is a second-degree connection
           const isSecondDegree = card.connectionDegree === 2;
           
+          // Get the first mutual connection name if available
+          const mutualConnectionName = card.mutualConnections && card.mutualConnections.length > 0 
+            ? card.mutualConnections[0] 
+            : null;
+          
           return (
             <div
               key={uniqueKey}
@@ -115,7 +120,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                     <button
                       className="absolute bottom-3 right-3 bg-primary/90 hover:bg-primary p-2 rounded-full shadow-lg z-20"
                       onClick={(e) => isSecondDegree 
-                        ? handleRequestIntro(e, card.name) 
+                        ? handleRequestIntro(e, card.name, mutualConnectionName) 
                         : handleSendMessage(e, card.name)
                       }
                     >
@@ -124,6 +129,13 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                         : <MessageCircle className="w-4 h-4 text-white" />
                       }
                     </button>
+                  )}
+                  
+                  {/* Display intro button tooltip for 2nd degree connections */}
+                  {isExpanded && isSecondDegree && mutualConnectionName && (
+                    <div className="absolute bottom-14 right-3 bg-black/80 text-white text-xs px-3 py-1.5 rounded-md whitespace-nowrap">
+                      Ask {mutualConnectionName} for an intro
+                    </div>
                   )}
                 </div>
                 
