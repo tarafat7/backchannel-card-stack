@@ -45,7 +45,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background flex flex-col">
       <HomeHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -61,7 +61,7 @@ const Home = () => {
       {/* Connection count display - now showing filtered connections count */}
       <ConnectionCounter totalConnections={filteredConnections.length} />
       
-      <main className="p-4">
+      <main className="flex-1 p-4 overflow-hidden">
         <HomeContent 
           viewMode={activeFilter === 'Updates' ? 'list' : viewMode}
           filteredConnections={filteredConnections}

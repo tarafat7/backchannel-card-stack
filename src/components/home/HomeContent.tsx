@@ -32,10 +32,12 @@ const HomeContent = ({
 
   if (viewMode === 'stack') {
     return (
-      <CardStack 
-        cards={filteredConnections}
-        onCardClick={onCardClick}
-      />
+      <div className="h-full flex-grow overflow-hidden">
+        <CardStack 
+          cards={filteredConnections}
+          onCardClick={onCardClick}
+        />
+      </div>
     );
   }
 
