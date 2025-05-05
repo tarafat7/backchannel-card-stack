@@ -36,7 +36,7 @@ const HomeHeader = ({
   };
 
   return (
-    <header className="sticky top-0 z-10 bg-background pt-4 px-4 pb-2 border-b">
+    <header className="sticky top-0 z-10 bg-background pt-4 px-4 pb-2">
       <div className="flex items-center gap-2">
         <div className="flex-grow">
           <SearchBar 
