@@ -1,22 +1,20 @@
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import SearchBar from "./SearchBar";
-import FilterBar from "./FilterBar";
-import ViewModeToggle from "./ViewModeToggle";
-import { useAppContext } from "@/context/AppContext";
-
-type ViewMode = 'stack' | 'list';
+import { useState } from 'react';
+import SearchBar from './SearchBar';
+import FilterBar from './FilterBar';
+import ViewModeToggle from './ViewModeToggle';
+import { Badge } from "@/components/ui/badge";
 
 type HomeHeaderProps = {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  viewMode: ViewMode;
-  setViewMode: (mode: ViewMode) => void;
+  viewMode: 'stack' | 'list';
+  setViewMode: (mode: 'stack' | 'list') => void;
   filters: string[];
   activeFilter: string;
   setActiveFilter: (filter: string) => void;
-  updatesCount?: number;
-  resetUpdatesCount?: () => void;
+  updatesCount: number;
+  resetUpdatesCount: () => void;
 };
 
 const HomeHeader = ({
@@ -27,31 +25,50 @@ const HomeHeader = ({
   filters,
   activeFilter,
   setActiveFilter,
-  updatesCount = 0,
+  updatesCount,
   resetUpdatesCount
 }: HomeHeaderProps) => {
-  const { profile } = useAppContext();
-  
+  const handleFilterChange = (filter: string) => {
+    setActiveFilter(filter);
+    if (filter === 'Updates') {
+      resetUpdatesCount(); // Reset the updates count when switching to Updates filter
+    }
+  };
+
   return (
-    <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
-      <div className="flex items-center gap-3 mb-4">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src={profile.card?.avatar} alt={profile.card?.name || "Profile"} />
-          <AvatarFallback>{profile.card?.name?.[0] || "U"}</AvatarFallback>
-        </Avatar>
-        <div className="flex-1">
-          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        </div>
-        <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
-      </div>
-      
-      <FilterBar 
-        filters={filters} 
-        activeFilter={activeFilter} 
-        setActiveFilter={setActiveFilter}
-        updatesCount={updatesCount}
-        resetUpdatesCount={resetUpdatesCount}
+    <header className="sticky top-0 z-10 bg-background pt-4 px-4 pb-2 border-b">
+      <SearchBar 
+        value={searchQuery}
+        onChange={setSearchQuery}
       />
+      
+      <div className="flex items-center justify-between mt-4">
+        <div className="overflow-x-auto flex-grow">
+          <FilterBar 
+            filters={filters} 
+            activeFilter={activeFilter} 
+            onChange={handleFilterChange}
+            updatesFilter="Updates"
+            updatesCount={updatesCount}
+            renderBadge={(filter, count) => (
+              filter === 'Updates' && count !== undefined && (
+                <Badge 
+                  className={`ml-1 ${count > 0 ? 'bg-red-500' : 'bg-gray-300 text-gray-600'} text-xs rounded-full px-1.5 min-w-5 h-5 inline-flex items-center justify-center`}
+                >
+                  {count}
+                </Badge>
+              )
+            )}
+          />
+        </div>
+        
+        <div className="ml-3">
+          <ViewModeToggle 
+            viewMode={viewMode}
+            onChange={setViewMode}
+          />
+        </div>
+      </div>
     </header>
   );
 };
