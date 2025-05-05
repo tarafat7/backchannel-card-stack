@@ -98,6 +98,12 @@
   .wallet-card-shadow {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
+
+  /* Speech bubble style */
+  .speech-bubble {
+    position: relative;
+    transition: all 0.2s ease-in-out;
+  }
 }
 
 /* No scrollbar for webkit browsers */
