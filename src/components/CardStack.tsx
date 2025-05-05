@@ -36,13 +36,18 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
             ? cards.length - index  // In collapsed state, first card has highest z-index
             : (index === expandedCardIndex ? 10 : (index < expandedCardIndex ? 1 : 5 - (index - expandedCardIndex)));
           
+          // Invert the order for display so first card is on top
+          const displayIndex = expandedCardIndex === null ? 
+            (cards.length - 1) - index : index;
+          
           // Calculate position based on state
           let translateY = 0;
           let opacity = 1;
           
           if (expandedCardIndex === null) {
             // When no card is expanded, create a stacked effect showing the top of each card
-            translateY = index * 65; // Stack cards with top portions visible
+            // Invert the calculation so first card is on top, later cards peek from underneath
+            translateY = displayIndex * 45; // Stack cards with visible top portions
           } else {
             if (index === expandedCardIndex) {
               // This is the expanded card, show it at the top
@@ -53,8 +58,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
               opacity = 0;
             } else {
               // Cards that should be below the expanded card, showing their tops
-              // Position them towards the bottom of the container
-              translateY = 250 + ((index - expandedCardIndex) * 65);
+              translateY = 250 + ((index - expandedCardIndex) * 45);
             }
           }
           
