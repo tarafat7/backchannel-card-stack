@@ -62,7 +62,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, i
       )}
       
       <div className="relative h-full p-4 flex flex-col justify-between overflow-hidden">
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 justify-between">
           <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20 relative z-10">
             {card.avatar && (
               <img 
@@ -72,22 +72,22 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, i
               />
             )}
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className={`flex-1 overflow-hidden ${inStack ? 'text-right' : ''}`}>
             <h3 className="font-semibold text-sm truncate">{card.name}</h3>
             <p className="text-xs opacity-90 truncate">{card.title}</p>
             <p className="text-xs opacity-70 truncate">{card.company}</p>
-            
-            {/* Speech bubble status for stacked view */}
-            {inStack && card.status && (
-              <div className="relative mt-2 group">
-                <div className="speech-bubble px-3 py-1.5 bg-black/30 backdrop-blur-sm rounded-xl text-xs max-w-[200px] relative ml-2 before:content-[''] before:absolute before:left-[-6px] before:top-[6px] before:border-t-[6px] before:border-r-[6px] before:border-b-[6px] before:border-t-transparent before:border-r-black/30 before:border-b-transparent">
-                  <MessageCircle className="w-3 h-3 inline-block mr-1 -translate-y-[1px]" />
-                  <span>{card.status}</span>
-                </div>
-              </div>
-            )}
           </div>
         </div>
+        
+        {/* Speech bubble status for stacked view */}
+        {inStack && card.status && (
+          <div className="relative -mt-8 ml-16">
+            <div className="speech-bubble px-3 py-1.5 bg-black/30 backdrop-blur-sm rounded-xl text-xs max-w-[200px] relative before:content-[''] before:absolute before:left-[-6px] before:top-[6px] before:border-t-[6px] before:border-r-[6px] before:border-b-[6px] before:border-t-transparent before:border-r-black/30 before:border-b-transparent">
+              <MessageCircle className="w-3 h-3 inline-block mr-1 -translate-y-[1px]" />
+              <span>{card.status}</span>
+            </div>
+          </div>
+        )}
         
         {/* Regular status for expanded view */}
         {!inStack && card.status && (
