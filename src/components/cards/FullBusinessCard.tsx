@@ -4,6 +4,7 @@ import { BusinessCard } from '@/context/AppContext';
 import ExpertiseAreas from '../shared/ExpertiseAreas';
 import CardLinks from '../shared/CardLinks';
 import ConnectedStatus from '../shared/ConnectedStatus';
+import { UsersRound } from 'lucide-react';
 
 type FullBusinessCardProps = {
   card: BusinessCard;
@@ -38,11 +39,20 @@ const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
           </div>
         </div>
         
-        {card.status && (
-          <div className="px-3 py-1.5 bg-black/10 rounded-lg text-sm mt-4 w-fit">
-            {card.status}
-          </div>
-        )}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {card.status && (
+            <div className="px-3 py-1.5 bg-black/10 rounded-lg text-sm w-fit">
+              {card.status}
+            </div>
+          )}
+          
+          {card.connectionCount !== undefined && (
+            <div className="px-3 py-1.5 bg-black/10 rounded-lg text-sm w-fit flex items-center gap-1">
+              <UsersRound className="w-4 h-4" />
+              <span>{card.connectionCount} connections</span>
+            </div>
+          )}
+        </div>
         
         <ExpertiseAreas areas={card.expertiseAreas} />
         <CardLinks links={card.links} />

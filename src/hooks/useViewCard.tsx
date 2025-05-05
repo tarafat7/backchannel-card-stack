@@ -14,7 +14,19 @@ export const useViewCard = () => {
   // Get the card for this ID (combining sample data and real connections)
   const allFirstDegreeConnections = [...connections, ...sampleConnections];
   const allConnections = [...allFirstDegreeConnections, ...sampleSecondDegreeConnections];
-  const card = allConnections.find(c => c.id === id);
+  
+  // Update the connections to include random connection counts if they don't have them
+  const connectionsWithCounts = allConnections.map(conn => {
+    if (conn.connectionCount === undefined) {
+      return {
+        ...conn,
+        connectionCount: Math.floor(Math.random() * 20) + 1 // Random number between 1-20
+      };
+    }
+    return conn;
+  });
+
+  const card = connectionsWithCounts.find(c => c.id === id);
   
   const isDirectConnection = card?.connectionDegree === 1;
   

@@ -1,7 +1,7 @@
 
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Github, Twitter, Link as LinkIcon, User } from 'lucide-react';
+import { ExternalLink, Github, Twitter, Link as LinkIcon, User, UsersRound } from 'lucide-react';
 import ProfessionalHistory from './ProfessionalHistory';
 
 type BusinessCardProps = {
@@ -51,6 +51,14 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
         <div className="absolute top-2 right-2 flex items-center bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full text-xs">
           <User className="w-3 h-3 mr-1" />
           <span>2° Connection</span>
+        </div>
+      )}
+      
+      {/* Connection count badge */}
+      {card.connectionCount !== undefined && (
+        <div className="absolute bottom-2 right-2 flex items-center bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full text-xs">
+          <UsersRound className="w-3 h-3 mr-1" />
+          <span>{card.connectionCount}</span>
         </div>
       )}
       

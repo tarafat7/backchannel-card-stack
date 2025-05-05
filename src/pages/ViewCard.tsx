@@ -9,8 +9,11 @@ import ProfessionalHistory from '@/components/ProfessionalHistory';
 import { useViewCard } from '@/hooks/useViewCard';
 import MutualConnectionsList from '@/components/connections/MutualConnectionsList';
 import SecondDegreeConnectionBadge from '@/components/connections/SecondDegreeConnectionBadge';
+import ConnectionCounter from '@/components/home/ConnectionCounter';
+import { useNavigate } from 'react-router-dom';
 
 const ViewCard = () => {
+  const navigate = useNavigate();
   const {
     card,
     isDirectConnection,
@@ -34,6 +37,11 @@ const ViewCard = () => {
     ? card.mutualConnections[0] 
     : undefined;
   
+  // Handle click on connection counter
+  const handleConnectionCounterClick = () => {
+    navigate(`/connections/${card.id}`);
+  };
+  
   return (
     <>
       <div className="min-h-screen bg-background flex flex-col pb-20">
@@ -52,6 +60,17 @@ const ViewCard = () => {
         {!isDirectConnection && <SecondDegreeConnectionBadge />}
 
         <FullBusinessCard card={card} />
+
+        {/* Connection Counter (clickable) */}
+        {card.connectionCount !== undefined && (
+          <div className="mt-4 cursor-pointer" onClick={handleConnectionCounterClick}>
+            <ConnectionCounter 
+              totalConnections={card.connectionCount} 
+              label={`${card.name.split(' ')[0]}'s Connections`}
+              isClickable
+            />
+          </div>
+        )}
 
         {/* Professional Experience section - always visible for all connections */}
         <div className="px-6 py-4">
