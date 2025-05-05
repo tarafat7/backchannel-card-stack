@@ -55,7 +55,7 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Hanken Grotesk', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
