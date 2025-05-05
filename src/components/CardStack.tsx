@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, Timeline } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
+import ProfessionalHistory from './ProfessionalHistory';
 
 type CardStackProps = {
   cards: BusinessCardType[];
@@ -11,17 +13,24 @@ type CardStackProps = {
 
 const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
+  const [showTimelineIndex, setShowTimelineIndex] = useState<number | null>(null);
   
   const handleCardClick = (index: number, id: string) => {
     if (expandedCardIndex === index) {
-      onCardClick(id);
+      if (showTimelineIndex === index) {
+        setShowTimelineIndex(null); // Hide timeline if already showing
+      } else {
+        setShowTimelineIndex(index); // Show timeline
+      }
     } else {
       setExpandedCardIndex(index);
+      setShowTimelineIndex(null); // Reset timeline when expanding a new card
     }
   };
 
   const handleCollapseStack = () => {
     setExpandedCardIndex(null);
+    setShowTimelineIndex(null);
   };
 
   return (
@@ -32,6 +41,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           // Create a unique key by combining the card id and index
           const uniqueKey = `card-${card.id}-${index}`;
           const isExpanded = expandedCardIndex === index;
+          const showTimeline = showTimelineIndex === index;
           const zIndex = expandedCardIndex === null 
             ? cards.length - index  // In collapsed state, first card has highest z-index
             : (index === expandedCardIndex ? 10 : (index < expandedCardIndex ? 1 : 5 - (index - expandedCardIndex)));
@@ -65,36 +75,74 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           return (
             <div
               key={uniqueKey}
-              className="absolute w-full transition-all duration-300 ease-in-out cursor-pointer"
+              className="absolute w-full transition-all duration-300 ease-in-out"
               style={{
                 transform: `translateY(${translateY}px)`,
                 zIndex: zIndex,
                 opacity: opacity,
                 width: "100%"
               }}
-              onClick={() => handleCardClick(index, card.id)}
             >
               <div className="relative">
-                <div className="wallet-card-shadow">
+                <div 
+                  className={`wallet-card-shadow cursor-pointer ${showTimeline ? 'rounded-b-none' : ''}`}
+                  onClick={() => handleCardClick(index, card.id)}
+                >
                   <BusinessCard card={card} isPreview={false} />
                 </div>
+                
                 {isExpanded && (
-                  <button
-                    className="absolute top-2 right-2 bg-black/40 p-1 rounded-full z-10"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCollapseStack();
-                    }}
-                  >
-                    <ChevronDown className="w-4 h-4 text-white" />
-                  </button>
+                  <Collapsible open={showTimeline}>
+                    <CollapsibleContent className="bg-secondary/80 backdrop-blur-sm rounded-b-xl p-4 border-t border-white/5 shadow-lg">
+                      <ProfessionalHistory id={card.id} />
+                    </CollapsibleContent>
+                  </Collapsible>
                 )}
+                
+                {isExpanded && (
+                  <div className="absolute top-2 right-2 flex gap-2">
+                    {showTimeline && (
+                      <button 
+                        className="bg-black/40 p-1 rounded-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowTimelineIndex(null);
+                        }}
+                      >
+                        <ChevronUp className="w-4 h-4 text-white" />
+                      </button>
+                    )}
+                    <button
+                      className="bg-black/40 p-1 rounded-full z-10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCollapseStack();
+                      }}
+                    >
+                      <ChevronDown className="w-4 h-4 text-white" />
+                    </button>
+                  </div>
+                )}
+                
                 {expandedCardIndex === null && index === 0 && (
                   <div className="absolute -bottom-4 left-0 right-0 flex justify-center">
                     <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
                       <ChevronUp className="w-4 h-4 text-primary" />
                     </div>
                   </div>
+                )}
+                
+                {isExpanded && !showTimeline && (
+                  <button 
+                    className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-primary/20 backdrop-blur-sm p-1.5 rounded-full flex items-center gap-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowTimelineIndex(index);
+                    }}
+                  >
+                    <Timeline className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-xs text-primary">History</span>
+                  </button>
                 )}
               </div>
             </div>
