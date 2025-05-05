@@ -25,67 +25,78 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto mt-4 pt-12 pb-12">
+    <div className="relative w-full max-w-md mx-auto mt-4 pb-8">
       {/* Main card stack */}
-      {cards.map((card, index) => {
-        // Create a unique key by combining the card id and index
-        const uniqueKey = `card-${card.id}-${index}`;
-        const isExpanded = expandedCardIndex === index;
-        const zIndex = cards.length - index;
-        const isActive = expandedCardIndex === null || isExpanded;
-        const isPrevious = expandedCardIndex !== null && index < expandedCardIndex;
-        const isNext = expandedCardIndex !== null && index > expandedCardIndex;
-        
-        // Calculate position based on state
-        let translateY = index * 12; // Default stacked position
-        
-        if (expandedCardIndex !== null) {
-          if (isExpanded) {
-            translateY = 0; // Focused card at the top
-          } else if (isPrevious) {
-            translateY = -100; // Cards above the focused card
-          } else if (isNext) {
-            translateY = 100 + (index - expandedCardIndex - 1) * 30; // Cards below the focused card
+      <div className="relative h-[500px] pt-4">
+        {cards.map((card, index) => {
+          // Create a unique key by combining the card id and index
+          const uniqueKey = `card-${card.id}-${index}`;
+          const isExpanded = expandedCardIndex === index;
+          const zIndex = cards.length - index;
+          
+          // Calculate position based on state
+          // Show all cards at the bottom with only a small portion visible by default
+          let translateY = 0;
+          let opacity = 1;
+          let scale = 1;
+          
+          if (expandedCardIndex === null) {
+            // When no card is expanded, stack all cards at the bottom
+            // with just enough showing to see each one
+            translateY = index * 60; // Each card shows about 60px
+          } else {
+            if (index === expandedCardIndex) {
+              // This is the expanded card, show it at the top
+              translateY = 0;
+            } else if (index < expandedCardIndex) {
+              // Cards that should be above the expanded card (hidden off-screen)
+              translateY = -500;
+              opacity = 0;
+            } else {
+              // Cards that should be below the expanded card
+              translateY = 400 + (index - expandedCardIndex) * 60;
+            }
           }
-        }
-        
-        return (
-          <div
-            key={uniqueKey}
-            className={`absolute w-full transition-all duration-300 ease-in-out cursor-pointer
-              ${isExpanded ? 'scale-100' : 'scale-95'}
-              ${isActive ? 'opacity-100' : 'opacity-80'}
-              ${isPrevious ? 'pointer-events-none' : ''}
-            `}
-            style={{
-              transform: `translateY(${translateY}px) ${isExpanded ? 'scale(1)' : ''}`,
-              zIndex: zIndex,
-            }}
-            onClick={() => handleCardClick(index, card.id)}
-          >
-            <div className="relative">
-              <div className="card-shadow">
-                <BusinessCard card={card} isPreview={false} />
-              </div>
-              {isExpanded && (
-                <button
-                  className="absolute top-2 right-2 bg-black/40 p-1 rounded-full"
-                  onClick={handleCollapseStack}
-                >
-                  <ChevronDown className="w-4 h-4 text-white" />
-                </button>
-              )}
-              {!isExpanded && expandedCardIndex === null && index === 0 && (
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-[-20px]">
-                  <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
-                    <ChevronUp className="w-4 h-4 text-primary" />
-                  </div>
+          
+          return (
+            <div
+              key={uniqueKey}
+              className="absolute w-full transition-all duration-300 ease-in-out cursor-pointer"
+              style={{
+                transform: `translateY(${translateY}px) scale(${scale})`,
+                zIndex: zIndex,
+                opacity: opacity,
+                width: "100%"
+              }}
+              onClick={() => handleCardClick(index, card.id)}
+            >
+              <div className="relative">
+                <div className="wallet-card-shadow">
+                  <BusinessCard card={card} isPreview={false} />
                 </div>
-              )}
+                {isExpanded && (
+                  <button
+                    className="absolute top-2 right-2 bg-black/40 p-1 rounded-full z-10"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCollapseStack();
+                    }}
+                  >
+                    <ChevronDown className="w-4 h-4 text-white" />
+                  </button>
+                )}
+                {expandedCardIndex === null && index === 0 && (
+                  <div className="absolute -bottom-4 left-0 right-0 flex justify-center">
+                    <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
+                      <ChevronUp className="w-4 h-4 text-primary" />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
       
       {/* Empty state message */}
       {cards.length === 0 && (
@@ -96,9 +107,6 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           </p>
         </div>
       )}
-      
-      {/* Extra spacing at the bottom to allow for expansion */}
-      {expandedCardIndex !== null && <div className="h-[400px]"></div>}
     </div>
   );
 };

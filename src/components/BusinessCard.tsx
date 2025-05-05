@@ -42,7 +42,7 @@ const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) =
 
   return (
     <div
-      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full sm:w-60 h-36'}`}
+      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full h-56'}`}
       style={{ color: card.design.textColor }}
       onClick={handleClick}
     >
