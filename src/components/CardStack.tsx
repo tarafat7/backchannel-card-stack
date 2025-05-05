@@ -38,11 +38,6 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     });
   };
 
-  const handleViewFullProfile = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation(); // Prevent card collapse
-    onCardClick(id); // Navigate to full profile
-  };
-
   return (
     <div className="relative w-full max-w-md mx-auto mt-4 pb-8">
       {/* Main card stack */}
@@ -104,25 +99,14 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                     showHistory={showTimeline} 
                   />
 
-                  {/* Message and View Profile buttons when card is expanded */}
+                  {/* Small message button in the corner when card is expanded */}
                   {isExpanded && (
-                    <div className="absolute bottom-4 left-0 right-0 px-4">
-                      <div className="flex gap-2">
-                        <Button 
-                          className="flex-1"
-                          onClick={(e) => handleSendMessage(e, card.name)}
-                        >
-                          Message
-                          <MessageCircle className="w-4 h-4 ml-2" />
-                        </Button>
-                        <Button 
-                          variant="outline"
-                          onClick={(e) => handleViewFullProfile(e, card.id)}
-                        >
-                          Full Profile
-                        </Button>
-                      </div>
-                    </div>
+                    <button
+                      className="absolute bottom-3 right-3 bg-primary/90 hover:bg-primary p-2 rounded-full shadow-lg z-20"
+                      onClick={(e) => handleSendMessage(e, card.name)}
+                    >
+                      <MessageCircle className="w-4 h-4 text-white" />
+                    </button>
                   )}
                 </div>
                 
