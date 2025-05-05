@@ -42,10 +42,14 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
 
   const handleClearSearch = () => setSearchQuery('');
 
-  // Combine first and second degree connections without duplication
-  const allConnections = [...firstDegreeConnections, ...sampleSecondDegreeConnections];
+  // Determine which connections to use based on the active filter
+  // For 'All' tab, only show first-degree connections
+  // For other tabs, we can include second-degree connections that match the criteria
+  const connectionsToFilter = activeFilter === 'All' 
+    ? firstDegreeConnections 
+    : [...firstDegreeConnections, ...sampleSecondDegreeConnections];
 
-  const filteredConnections = allConnections.filter((connection) => {
+  const filteredConnections = connectionsToFilter.filter((connection) => {
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       return (
@@ -58,7 +62,7 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
     }
     
     if (activeFilter === 'All') {
-      // Show all connections in the 'All' filter
+      // Show only first-degree connections in the 'All' filter
       return true;
     }
     
@@ -92,7 +96,7 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
 
   return {
     filteredConnections,
-    totalConnections: firstDegreeConnections.length + sampleSecondDegreeConnections.length,
+    totalConnections: firstDegreeConnections.length,
     searchQuery,
     setSearchQuery,
     viewMode,

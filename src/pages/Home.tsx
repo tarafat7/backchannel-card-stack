@@ -58,8 +58,8 @@ const Home = () => {
         resetUpdatesCount={resetUpdatesCount}
       />
       
-      {/* Connection count display - now showing filtered connections count */}
-      <ConnectionCounter totalConnections={filteredConnections.length} />
+      {/* Connection count display - now showing total first-degree connections count */}
+      <ConnectionCounter totalConnections={totalConnections} />
       
       <main className="flex-1 p-4 overflow-hidden">
         <HomeContent 
