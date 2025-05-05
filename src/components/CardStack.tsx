@@ -73,7 +73,14 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
             if (expandedCardIndex === null) {
               // When no card is expanded, create a stacked effect showing the top of each card
               // Invert the calculation so first card is on top, later cards peek from underneath
-              translateY = displayIndex * 45; // Stack cards with visible top portions
+              // Limit the number of visible cards to avoid performance issues
+              if (index < 20) {
+                translateY = displayIndex * 45; // Stack cards with visible top portions
+              } else {
+                // Hide cards beyond the first 20 when collapsed to improve performance
+                opacity = 0;
+                translateY = 2000; // Move them far off-screen
+              }
             } else {
               if (index === expandedCardIndex) {
                 // This is the expanded card, show it at the top
@@ -84,7 +91,13 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                 opacity = 0;
               } else {
                 // Cards that should be below the expanded card, showing their tops
-                translateY = 250 + ((index - expandedCardIndex) * 45);
+                // Only show a few cards below the expanded one
+                if (index < expandedCardIndex + 8) {
+                  translateY = 250 + ((index - expandedCardIndex) * 45);
+                } else {
+                  opacity = 0;
+                  translateY = 2000; // Move them far off-screen
+                }
               }
             }
 
