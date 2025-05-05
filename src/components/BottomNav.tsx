@@ -10,7 +10,7 @@ const BottomNav = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-[#333333]/95 backdrop-blur-xl border-t border-white/5 py-4 px-4 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-[#333333]/95 backdrop-blur-xl border-t border-white/5 py-2 px-4 z-50">
       <div className="flex items-center justify-center gap-16 max-w-md mx-auto relative">
         {/* Home button */}
         <Link to="/home" className={`flex flex-col items-center`}>
@@ -21,9 +21,9 @@ const BottomNav = () => {
         {/* Center QR code button */}
         <Link 
           to="/connect" 
-          className="bg-black rounded-full p-6 border-2 border-white relative"
+          className="bg-black rounded-full p-7 border-2 border-white relative -translate-y-6"
         >
-          <QrCode className="w-6 h-6 text-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+          <QrCode className="w-7 h-7 text-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
         </Link>
         
         {/* Profile button */}
