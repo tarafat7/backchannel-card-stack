@@ -2,14 +2,16 @@
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Github, Twitter, Link as LinkIcon } from 'lucide-react';
+import ProfessionalHistory from './ProfessionalHistory';
 
 type BusinessCardProps = {
   card: BusinessCardType;
   isPreview?: boolean;
   onClick?: () => void;
+  showHistory?: boolean;
 };
 
-const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) => {
+const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }: BusinessCardProps) => {
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -42,7 +44,7 @@ const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) =
 
   return (
     <div
-      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full h-56'}`}
+      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'}`}
       style={{ color: card.design.textColor }}
       onClick={handleClick}
     >
@@ -67,6 +69,12 @@ const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) =
         {card.status && (
           <div className="px-2 py-1 bg-black/10 rounded text-xs mt-2 backdrop-blur-sm w-fit">
             {card.status}
+          </div>
+        )}
+        
+        {showHistory && (
+          <div className="mt-3 mb-2">
+            <ProfessionalHistory id={card.id} />
           </div>
         )}
         

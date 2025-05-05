@@ -1,9 +1,9 @@
+
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
 import { ChevronUp, ChevronDown, History } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
-import ProfessionalHistory from './ProfessionalHistory';
 
 type CardStackProps = {
   cards: BusinessCardType[];
@@ -84,19 +84,15 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
             >
               <div className="relative">
                 <div 
-                  className={`wallet-card-shadow cursor-pointer ${showTimeline ? 'rounded-b-none' : ''}`}
+                  className="wallet-card-shadow cursor-pointer"
                   onClick={() => handleCardClick(index, card.id)}
                 >
-                  <BusinessCard card={card} isPreview={false} />
+                  <BusinessCard 
+                    card={card} 
+                    isPreview={false}
+                    showHistory={showTimeline} 
+                  />
                 </div>
-                
-                {isExpanded && (
-                  <Collapsible open={showTimeline}>
-                    <CollapsibleContent className="bg-secondary/80 backdrop-blur-sm rounded-b-xl p-4 border-t border-white/5 shadow-lg">
-                      <ProfessionalHistory id={card.id} />
-                    </CollapsibleContent>
-                  </Collapsible>
-                )}
                 
                 {isExpanded && (
                   <div className="absolute top-2 right-2 flex gap-2">
