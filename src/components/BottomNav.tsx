@@ -1,5 +1,5 @@
 
-import { Home, User, QrCode, Compass } from "lucide-react";
+import { Home, User, QrCode } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const BottomNav = () => {
@@ -11,7 +11,7 @@ const BottomNav = () => {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-[#333333]/95 backdrop-blur-xl border-t border-white/5 py-4 px-4 z-50">
-      <div className="flex items-center justify-between max-w-md mx-auto relative">
+      <div className="flex items-center justify-center gap-16 max-w-md mx-auto relative">
         {/* Home button */}
         <Link to="/home" className={`flex flex-col items-center`}>
           <Home className={`w-6 h-6 ${isActive('/home') ? 'text-white' : 'text-[#999]'}`} />
@@ -21,12 +21,12 @@ const BottomNav = () => {
         {/* Center QR code button */}
         <Link 
           to="/connect" 
-          className="absolute left-1/2 -translate-x-1/2 -translate-y-8 bg-black rounded-full p-6 border-2 border-white"
+          className="bg-black rounded-full p-6 border-2 border-white relative"
         >
           <QrCode className="w-6 h-6 text-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
         </Link>
         
-        {/* Explore/Profile button */}
+        {/* Profile button */}
         <Link to="/profile" className={`flex flex-col items-center`}>
           <User className={`w-6 h-6 ${isActive('/profile') ? 'text-white' : 'text-[#999]'}`} />
           <span className={`text-xs mt-1 ${isActive('/profile') ? 'text-white' : 'text-[#999]'}`}>Profile</span>
