@@ -26,7 +26,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
           className="w-full mb-3"
           onClick={handleSendMessage}
         >
-          Message
+          Send message to {personName}
           <MessageCircle className="w-4 h-4 ml-2" />
         </Button>
       ) : (
