@@ -16,6 +16,13 @@ const ConnectionsView = () => {
   const [connectionCards, setConnectionCards] = useState<BusinessCard[]>([]);
   
   useEffect(() => {
+    // If viewing all connections
+    if (id === 'all') {
+      setPersonName('Your');
+      setConnectionCards([...connections, ...sampleConnections]);
+      return;
+    }
+    
     // Find the person whose connections we're viewing
     const allConnections = [...connections, ...sampleConnections, ...sampleSecondDegreeConnections];
     const person = allConnections.find(c => c.id === id);
@@ -54,13 +61,13 @@ const ConnectionsView = () => {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        <h1 className="ml-2 text-lg font-medium">{personName}'s Network</h1>
+        <h1 className="ml-2 text-lg font-medium">{personName} Network</h1>
       </header>
       
       {/* Connection count */}
       <ConnectionCounter 
         totalConnections={connectionCards.length} 
-        label={connectionCards.length === 1 ? "Connection" : "Connections"}
+        label={`${personName}'s Connections`}
       />
       
       {/* Card Stack */}

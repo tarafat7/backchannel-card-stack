@@ -53,6 +53,12 @@ const Home = () => {
     setUpdatesCount(0);
   };
 
+  // Handler for ConnectionCounter click
+  const handleConnectionCounterClick = () => {
+    // If no specific person, just show all connections
+    navigate('/connections/all');
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <HomeHeader 
@@ -67,10 +73,13 @@ const Home = () => {
         resetUpdatesCount={resetUpdatesCount}
       />
       
-      {/* Connection count display - make sure the arrow shows on the home page */}
+      {/* Connection count display - make clickable and with appropriate label */}
       <ConnectionCounter 
         totalConnections={filteredConnections.length} 
+        label="Your Network"
+        isClickable={true}
         showArrow={true}
+        onClick={handleConnectionCounterClick}
       />
       
       <main className="flex-1 p-4 overflow-hidden">
