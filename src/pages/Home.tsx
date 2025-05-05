@@ -26,13 +26,14 @@ const Home = () => {
   
   const filters = ['All', 'Updates', 'Hiring', 'Investing', 'Building'];
 
-  // Simulate new status updates - in a real app this would come from notifications or real-time updates
+  // Check for new status updates when not on the Updates tab
   useEffect(() => {
-    // Only increment the counter if we're not already on the Updates tab
     if (activeFilter !== 'Updates') {
-      // This is just a mock implementation - in a real app, you would check for actual new updates
+      // Find connections with new status updates
       const statusUpdateConnections = filteredConnections.filter(conn => 
-        conn.status.includes('New') || conn.status.includes('Just')
+        conn.status.includes('New') || 
+        conn.status.includes('Just') ||
+        conn.status.toLowerCase().includes('updated')
       );
       
       setUpdatesCount(statusUpdateConnections.length);
