@@ -3,13 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 import { 
   ArrowRight, 
   CheckCircle, 
   Linkedin,
   Upload,
   Image as ImageIcon,
-  ExternalLink
+  ShieldCheck,
+  Lock
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import BusinessCard from '../components/BusinessCard';
@@ -74,6 +76,7 @@ const Onboarding = () => {
   const [textColor, setTextColor] = useState<string>('text-white');
   const [status, setStatus] = useState<string>('Open to work');
   const [isImporting, setIsImporting] = useState(false);
+  const [importProgress, setImportProgress] = useState(0);
   const [links, setLinks] = useState([
     { type: 'Twitter', url: 'https://twitter.com' },
     { type: 'GitHub', url: 'https://github.com' },
@@ -100,18 +103,36 @@ const Onboarding = () => {
     }
   }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep]);
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isImporting) {
+      interval = setInterval(() => {
+        setImportProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            // When progress reaches 100%, complete the import
+            setTimeout(() => {
+              updateProfile({
+                experiences: mockLinkedInData.experiences,
+              });
+              
+              setIsImporting(false);
+              setOnboardingStep(1);
+            }, 500);
+            return 100;
+          }
+          return prev + 5;
+        });
+      }, 100);
+    }
+    
+    return () => clearInterval(interval);
+  }, [isImporting]);
+
   const handleLinkedInImport = () => {
     setIsImporting(true);
-    
-    // Simulate API call delay
-    setTimeout(() => {
-      updateProfile({
-        experiences: mockLinkedInData.experiences,
-      });
-      
-      setIsImporting(false);
-      setOnboardingStep(1);
-    }, 1500);
+    setImportProgress(0);
   };
 
   const handleExpertiseToggle = (area: string) => {
@@ -139,24 +160,51 @@ const Onboarding = () => {
       case 0:
         return (
           <div className="animate-fade-in">
-            <h2 className="text-2xl font-semibold mb-6">Import your experience</h2>
-            <p className="text-muted-foreground mb-8">
-              Let's start by importing your professional experience from LinkedIn
-            </p>
-            
-            <Button 
-              onClick={handleLinkedInImport}
-              disabled={isImporting}
-              className="w-full flex items-center justify-center gap-2 bg-[#0077B5] hover:bg-[#0077B5]/90"
-            >
-              <Linkedin className="w-5 h-5" />
-              {isImporting ? 'Importing...' : 'Import from LinkedIn'}
-            </Button>
-            
-            <div className="mt-8">
-              <p className="text-sm text-center text-muted-foreground">
-                We'll only import your job titles, companies, and years
+            <div className="flex flex-col items-center mb-8">
+              <div className="bg-gradient-to-br from-primary/20 to-primary/10 p-6 rounded-full mb-6">
+                <ShieldCheck className="w-10 h-10 text-primary" />
+              </div>
+              <h2 className="text-2xl font-semibold mb-2">Import your experience</h2>
+              <p className="text-muted-foreground text-center max-w-xs">
+                Join our exclusive community by securely importing your professional experience
               </p>
+            </div>
+            
+            <div className="glass-card p-6 mb-8 rounded-xl border border-white/10">
+              <div className="flex items-center mb-4">
+                <Lock className="w-4 h-4 text-primary mr-2" />
+                <span className="text-sm text-muted-foreground">Secure, encrypted connection</span>
+              </div>
+              
+              <Button 
+                onClick={handleLinkedInImport}
+                disabled={isImporting}
+                className="w-full flex items-center justify-center gap-2 bg-[#0077B5] hover:bg-[#0077B5]/90 transition-all"
+              >
+                <Linkedin className="w-5 h-5" />
+                {isImporting ? 'Connecting...' : 'Connect with LinkedIn'}
+              </Button>
+              
+              {isImporting && (
+                <div className="mt-6 space-y-2">
+                  <div className="flex justify-between mb-1 text-xs">
+                    <span>{importProgress < 100 ? 'Importing profile...' : 'Import complete!'}</span>
+                    <span>{importProgress}%</span>
+                  </div>
+                  <Progress value={importProgress} className="h-1.5" />
+                  <p className="text-xs text-muted-foreground text-center animate-pulse mt-2">
+                    {importProgress < 30 && "Establishing secure connection..."}
+                    {importProgress >= 30 && importProgress < 60 && "Retrieving professional history..."}
+                    {importProgress >= 60 && importProgress < 90 && "Analyzing experience..."}
+                    {importProgress >= 90 && "Finalizing import..."}
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+              <ShieldCheck className="w-3 h-3" />
+              <span>Your data is private and securely encrypted</span>
             </div>
           </div>
         );
@@ -168,7 +216,7 @@ const Onboarding = () => {
             
             <div className="space-y-4 mb-8">
               {profile.experiences.map((exp, index) => (
-                <div key={index} className="p-4 rounded-lg bg-secondary flex justify-between items-center">
+                <div key={index} className="p-4 rounded-lg bg-secondary/50 backdrop-blur-sm border border-white/5 flex justify-between items-center">
                   <div>
                     <h3 className="font-medium">{exp.title}</h3>
                     <p className="text-sm text-muted-foreground">{exp.company}</p>
@@ -209,7 +257,7 @@ const Onboarding = () => {
             <h2 className="text-2xl font-semibold mb-6">Profile photo</h2>
             
             <div className="mb-8 flex flex-col items-center">
-              <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center mb-4 overflow-hidden border border-white/10">
+              <div className="w-24 h-24 rounded-full bg-secondary/70 backdrop-blur-sm flex items-center justify-center mb-4 overflow-hidden border border-white/10 ring-2 ring-primary/20">
                 {mockLinkedInData.avatar ? (
                   <img 
                     src={mockLinkedInData.avatar} 
@@ -222,11 +270,11 @@ const Onboarding = () => {
               </div>
               
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="flex items-center gap-1">
+                <Button variant="outline" size="sm" className="flex items-center gap-1 bg-secondary/50 backdrop-blur-sm border border-white/10">
                   <Upload className="w-4 h-4" />
                   Upload
                 </Button>
-                <Button variant="outline" size="sm" className="flex items-center gap-1">
+                <Button variant="outline" size="sm" className="flex items-center gap-1 bg-secondary/50 backdrop-blur-sm border border-white/10">
                   <ArrowRight className="w-4 h-4" />
                   Use LinkedIn photo
                 </Button>
@@ -235,7 +283,7 @@ const Onboarding = () => {
             
             <Button 
               onClick={() => setOnboardingStep(3)} 
-              className="w-full"
+              className="w-full bg-gradient-to-r from-primary to-primary/80 hover:opacity-90"
             >
               Continue
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -288,7 +336,7 @@ const Onboarding = () => {
                   value={status} 
                   onChange={(e) => setStatus(e.target.value)} 
                   placeholder="What are you up to now?"
-                  className="bg-secondary border-none"
+                  className="bg-secondary/50 backdrop-blur-sm border border-white/10"
                 />
               </div>
               
@@ -301,13 +349,13 @@ const Onboarding = () => {
                         value={link.type} 
                         onChange={(e) => handleLinkChange(index, 'type', e.target.value)} 
                         placeholder="Type"
-                        className="bg-secondary border-none w-1/3"
+                        className="bg-secondary/50 backdrop-blur-sm border border-white/10 w-1/3"
                       />
                       <Input 
                         value={link.url} 
                         onChange={(e) => handleLinkChange(index, 'url', e.target.value)} 
                         placeholder="URL"
-                        className="bg-secondary border-none flex-1"
+                        className="bg-secondary/50 backdrop-blur-sm border border-white/10 flex-1"
                       />
                     </div>
                   ))}
@@ -317,7 +365,7 @@ const Onboarding = () => {
             
             <Button 
               onClick={handleComplete} 
-              className="w-full mt-8"
+              className="w-full mt-8 bg-gradient-to-r from-primary to-primary/80 hover:opacity-90"
             >
               Finish
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -331,7 +379,7 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/80 flex flex-col">
       <div className="px-6 py-8 flex-1">
         <div className="mb-10 flex justify-center">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
