@@ -15,7 +15,7 @@ const Onboarding = () => {
   const { onboardingStep, setOnboardingStep, updateProfile, profile, updateBusinessCard } = useAppContext();
   
   const [selectedExpertise, setSelectedExpertise] = useState<string[]>([]);
-  const [selectedBackground, setSelectedBackground] = useState<string>(backgroundOptions[0]);
+  const [selectedBackground, setSelectedBackground] = useState<string>('#1A1A1A');
   const [textColor, setTextColor] = useState<string>('text-white');
   const [status, setStatus] = useState<string>('Open to work');
   const [links, setLinks] = useState([
@@ -23,6 +23,14 @@ const Onboarding = () => {
     { type: 'GitHub', url: 'https://github.com' },
     { type: 'Portfolio', url: 'https://example.com' }
   ]);
+
+  // Enhanced background options including solid colors, gradients, and defaults
+  const enhancedBackgroundOptions = [
+    '#222222', '#403E43', '#1A1A1A', '#0f0f10', '#5B61F3', '#2166EE',
+    'linear-gradient(90deg, hsla(277, 75%, 84%, 1) 0%, hsla(297, 50%, 51%, 1) 100%)',
+    'linear-gradient(90deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%)',
+    'linear-gradient(to right, #243949 0%, #517fa4 100%)'
+  ];
 
   useEffect(() => {
     // Create a preview card whenever these values change
@@ -109,7 +117,7 @@ const Onboarding = () => {
             links={links}
             handleLinkChange={handleLinkChange}
             onComplete={handleComplete}
-            backgroundOptions={backgroundOptions}
+            backgroundOptions={enhancedBackgroundOptions}
           />
         );
         

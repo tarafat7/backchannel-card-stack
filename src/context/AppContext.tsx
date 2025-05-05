@@ -1,8 +1,7 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type CardDesign = {
-  backgroundStyle: string;
+  backgroundStyle: string; // Can now be solid color, gradient or image URL
   textColor: string;
 }
 

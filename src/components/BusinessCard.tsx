@@ -28,26 +28,26 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
     }
   };
 
-  // Define solid background color based on the card's background style
-  let solidBgColor = "bg-[#0f0f10]"; // Default dark background
-  
-  if (card.design.backgroundStyle.includes("bg-gradient-card-2")) {
-    solidBgColor = "bg-[#5B61F3]"; // Solid color for gradient-2
-  } else if (card.design.backgroundStyle.includes("bg-gradient-card-3")) {
-    solidBgColor = "bg-[#2166EE]"; // Solid color for gradient-3
-  } else if (card.design.backgroundStyle.includes("bg-black")) {
-    solidBgColor = "bg-[#222222]"; // Dark gray instead of pure black
-  } else if (card.design.backgroundStyle.includes("bg-[#1A1A1A]")) {
-    solidBgColor = "bg-[#1A1A1A]"; // Keep the original dark gray
-  }
+  // Determine the background style based on the card's design
+  const backgroundStyle = {
+    ...(card.design.backgroundStyle.includes('url(') 
+      ? { background: card.design.backgroundStyle }
+      : card.design.backgroundStyle.includes('linear-gradient')
+        ? { background: card.design.backgroundStyle }
+        : { backgroundColor: card.design.backgroundStyle }
+    )
+  };
 
   // Determine if this is a 2nd-degree connection
   const isSecondDegree = card.connectionDegree === 2;
 
   return (
     <div
-      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`}
-      style={{ color: card.design.textColor }}
+      className={`business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`}
+      style={{ 
+        ...backgroundStyle,
+        color: card.design.textColor === 'text-white' ? 'white' : 'black'
+      }}
       onClick={handleClick}
     >
       {/* Badge for 2nd-degree connections */}
