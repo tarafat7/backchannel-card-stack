@@ -6,35 +6,35 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Pure black background */
-    --foreground: 0 0% 100%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
     
-    --card: 0 0% 7%; /* Very dark gray for cards */
-    --card-foreground: 0 0% 100%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
     
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
     
-    --primary: 0 0% 100%; /* Pure white for primary elements */
-    --primary-foreground: 0 0% 0%;
+    --primary: 252 87% 67.5%;
+    --primary-foreground: 0 0% 98%;
     
-    --secondary: 0 0% 11%; /* Dark gray for secondary elements */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
     
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
     
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
     
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 98%;
     
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 0 0% 83.9%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
     
-    --radius: 1rem;
+    --radius: 0.75rem;
   }
 }
 
@@ -55,11 +55,11 @@
 
 @layer components {
   .glass-card {
-    @apply bg-card/90 backdrop-blur-xl border border-white/5 shadow-lg;
+    @apply bg-secondary/50 backdrop-blur-xl border border-white/5 shadow-lg;
   }
   
   .business-card {
-    @apply relative overflow-hidden rounded-xl transition-all duration-300 shadow-lg;
+    @apply relative overflow-hidden rounded-xl transition-all duration-300 shadow-lg bg-gradient-to-br;
   }
 
   .social-icon-button {
@@ -78,8 +78,15 @@
     @apply flex items-center justify-center w-10 h-10 rounded-full bg-secondary hover:bg-secondary/80 transition-colors;
   }
   
-  .blackbird-card {
-    @apply bg-card rounded-2xl px-5 py-4 my-3;
+  .card-stack-wrapper {
+    @apply relative w-full h-full;
+    perspective: 1000px;
+  }
+  
+  .card-stack-item {
+    @apply absolute w-full transition-all duration-300;
+    transform-origin: bottom center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -148,23 +155,32 @@
   animation: card-collapse 0.3s forwards cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Updated card gradients for sleek design */
+/* Apple Wallet style background patterns */
+.bg-subtle-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Apple Wallet style card gradients */
 .bg-gradient-card-1 {
-  background: #1a1a1a;
+  background: linear-gradient(135deg, #1a1f2c 0%, #2c3345 100%);
 }
 
 .bg-gradient-card-2 {
-  background: #222;
+  background: linear-gradient(135deg, #6e59a5 0%, #9b87f5 100%);
 }
 
 .bg-gradient-card-3 {
-  background: #2a2a2a;
+  background: linear-gradient(135deg, #403e43 0%, #5e5c62 100%);
 }
 
+/* Add more wallet-like card styles */
 .bg-gradient-card-4 {
-  background: #333;
+  background: linear-gradient(135deg, #24283b 0%, #414868 100%);
 }
 
 .bg-gradient-card-5 {
-  background: #292929;
+  background: linear-gradient(135deg, #292e42 0%, #545c7e 100%);
 }
