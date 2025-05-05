@@ -21,25 +21,9 @@ const BottomNav = () => {
         {/* Center QR code button */}
         <Link 
           to="/connect" 
-          className="bg-black rounded-full p-8 border-[3px] border-white relative -translate-y-8 shadow-lg"
+          className="bg-black rounded-full p-7 border-2 border-white relative -translate-y-6"
         >
-          {/* Custom QR code icon that looks like the one in the screenshot */}
-          <div className="w-8 h-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <svg 
-              width="100%" 
-              height="100%" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="text-white"
-            >
-              <path 
-                d="M12 4L19.5 15H4.5L12 4Z" 
-                fill="currentColor" 
-                transform="rotate(180, 12, 12)"
-              />
-            </svg>
-          </div>
+          <QrCode className="w-7 h-7 text-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
         </Link>
         
         {/* Profile button */}
@@ -49,9 +33,9 @@ const BottomNav = () => {
         </Link>
       </div>
       
-      {/* Bottom indicator line - make it more similar to screenshot */}
+      {/* Bottom indicator line */}
       <div className="flex justify-center mt-2">
-        <div className="h-1 bg-white rounded-full w-96 max-w-[80%]"></div>
+        <div className="h-1 bg-white/20 rounded-full w-36"></div>
       </div>
     </div>
   );
