@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
@@ -15,11 +16,8 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   
   const handleCardClick = (index: number, id: string) => {
     if (expandedCardIndex === index) {
-      if (showTimelineIndex === index) {
-        setShowTimelineIndex(null); // Hide timeline if already showing
-      } else {
-        setShowTimelineIndex(index); // Show timeline
-      }
+      // If the card is already expanded, navigate to the card detail
+      onCardClick(id);
     } else {
       setExpandedCardIndex(index);
       setShowTimelineIndex(index); // Automatically show timeline when expanding a card
@@ -95,17 +93,6 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                 
                 {isExpanded && (
                   <div className="absolute top-2 right-2 flex gap-2">
-                    {showTimeline && (
-                      <button 
-                        className="bg-black/40 p-1 rounded-full"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowTimelineIndex(null);
-                        }}
-                      >
-                        <ChevronUp className="w-4 h-4 text-white" />
-                      </button>
-                    )}
                     <button
                       className="bg-black/40 p-1 rounded-full z-10"
                       onClick={(e) => {
@@ -124,19 +111,6 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                       <ChevronUp className="w-4 h-4 text-primary" />
                     </div>
                   </div>
-                )}
-                
-                {isExpanded && !showTimeline && card.status && (
-                  <button 
-                    className="absolute top-[88px] right-4 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-md flex items-center gap-1.5 border border-white/30 shadow-sm hover:bg-black/50 transition-colors"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowTimelineIndex(index);
-                    }}
-                  >
-                    <Briefcase className="w-3.5 h-3.5 text-white" />
-                    <span className="text-xs font-medium text-white">Experience</span>
-                  </button>
                 )}
               </div>
             </div>
