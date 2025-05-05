@@ -32,16 +32,17 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           // Create a unique key by combining the card id and index
           const uniqueKey = `card-${card.id}-${index}`;
           const isExpanded = expandedCardIndex === index;
-          const zIndex = cards.length - index;
+          const zIndex = expandedCardIndex === null 
+            ? cards.length - index  // In collapsed state, first card has highest z-index
+            : (index === expandedCardIndex ? 10 : (index < expandedCardIndex ? 1 : 5 - (index - expandedCardIndex)));
           
           // Calculate position based on state
           let translateY = 0;
           let opacity = 1;
-          let scale = 1;
           
           if (expandedCardIndex === null) {
-            // When no card is expanded, stack cards with top portions visible
-            translateY = index * 30; // Only offset each card by 30px to show mostly tops
+            // When no card is expanded, create a stacked effect showing the top of each card
+            translateY = index * 65; // Stack cards with top portions visible
           } else {
             if (index === expandedCardIndex) {
               // This is the expanded card, show it at the top
@@ -51,8 +52,9 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
               translateY = -500;
               opacity = 0;
             } else {
-              // Cards that should be below the expanded card, showing top portions
-              translateY = 400 + (index - expandedCardIndex) * 30;
+              // Cards that should be below the expanded card, showing their tops
+              // Position them towards the bottom of the container
+              translateY = 250 + ((index - expandedCardIndex) * 65);
             }
           }
           
@@ -61,7 +63,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
               key={uniqueKey}
               className="absolute w-full transition-all duration-300 ease-in-out cursor-pointer"
               style={{
-                transform: `translateY(${translateY}px) scale(${scale})`,
+                transform: `translateY(${translateY}px)`,
                 zIndex: zIndex,
                 opacity: opacity,
                 width: "100%"
