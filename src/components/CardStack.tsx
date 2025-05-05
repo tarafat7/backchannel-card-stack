@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
-import { ChevronUp, ChevronDown, History } from 'lucide-react';
+import { ChevronUp, ChevronDown, Briefcase } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 
 type CardStackProps = {
@@ -127,16 +127,16 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                   </div>
                 )}
                 
-                {isExpanded && !showTimeline && (
+                {isExpanded && !showTimeline && card.status && (
                   <button 
-                    className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-primary/30 backdrop-blur-sm p-1.5 rounded-full flex items-center gap-1 border border-white/20 shadow-sm hover:bg-primary/40 transition-colors"
+                    className="absolute top-[88px] right-4 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-md flex items-center gap-1.5 border border-white/30 shadow-sm hover:bg-black/50 transition-colors"
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowTimelineIndex(index);
                     }}
                   >
-                    <History className="w-3.5 h-3.5 text-white" />
-                    <span className="text-xs font-medium text-white">History</span>
+                    <Briefcase className="w-3.5 h-3.5 text-white" />
+                    <span className="text-xs font-medium text-white">Experience</span>
                   </button>
                 )}
               </div>

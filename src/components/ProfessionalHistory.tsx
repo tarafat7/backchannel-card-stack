@@ -90,14 +90,14 @@ const ProfessionalHistory: React.FC<ProfessionalHistoryProps> = ({ id }) => {
   if (history.length === 0) {
     return (
       <div className="text-center py-2">
-        <p className="text-sm text-muted-foreground">No professional history available</p>
+        <p className="text-sm text-muted-foreground">No professional experience available</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-3 max-h-[250px] overflow-auto no-scrollbar">
-      <h4 className="text-sm font-medium text-white/90">Professional History</h4>
+      <h4 className="text-sm font-medium text-white/90">Professional Experience</h4>
       <div className="relative border-l border-primary/30 ml-2 pl-4 space-y-4">
         {history.map((item, index) => (
           <div key={index} className="relative">
