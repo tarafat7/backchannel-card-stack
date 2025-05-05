@@ -9,11 +9,8 @@ import ProfessionalHistory from '@/components/ProfessionalHistory';
 import { useViewCard } from '@/hooks/useViewCard';
 import MutualConnectionsList from '@/components/connections/MutualConnectionsList';
 import SecondDegreeConnectionBadge from '@/components/connections/SecondDegreeConnectionBadge';
-import ConnectionCounter from '@/components/home/ConnectionCounter';
-import { useNavigate } from 'react-router-dom';
 
 const ViewCard = () => {
-  const navigate = useNavigate();
   const {
     card,
     isDirectConnection,
@@ -37,35 +34,24 @@ const ViewCard = () => {
     ? card.mutualConnections[0] 
     : undefined;
   
-  // Handle click on connection counter
-  const handleConnectionCounterClick = () => {
-    navigate(`/connections/${card.id}`);
-  };
-  
   return (
     <>
       <div className="min-h-screen bg-background flex flex-col pb-20">
-        {/* Header - removing the arrow button */}
-        <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
-          {/* Button with arrow removed */}
+        {/* Header */}
+        <header className="p-4 flex justify-start items-center sticky top-0 bg-background/80 backdrop-blur-xl z-10">
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={goBack}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
         </header>
 
         {/* Connection degree badge */}
         {!isDirectConnection && <SecondDegreeConnectionBadge />}
 
         <FullBusinessCard card={card} />
-
-        {/* Connection Counter (clickable) - make sure it has no arrow */}
-        {card.connectionCount !== undefined && (
-          <div className="mt-4 cursor-pointer" onClick={handleConnectionCounterClick}>
-            <ConnectionCounter 
-              totalConnections={card.connectionCount} 
-              label={`${card.name.split(' ')[0]}'s Connections`}
-              isClickable={true}
-              showArrow={false}
-            />
-          </div>
-        )}
 
         {/* Professional Experience section - always visible for all connections */}
         <div className="px-6 py-4">

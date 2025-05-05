@@ -23,7 +23,6 @@ export type BusinessCard = {
   connectionEvent?: string;
   connectionDegree?: 1 | 2;
   mutualConnections: string[]; // Names of mutual connections
-  connectionCount?: number; // Number of connections this person has
 }
 
 export type UserProfile = {
@@ -72,8 +71,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const connectionWithDefaults = {
       ...connection,
       connectionDegree: connection.connectionDegree || 1,
-      mutualConnections: connection.mutualConnections || [],
-      connectionCount: connection.connectionCount || Math.floor(Math.random() * 20) + 1 // Random connection count if not provided
+      mutualConnections: connection.mutualConnections || []
     };
     setConnections(prev => [...prev, connectionWithDefaults]);
   };

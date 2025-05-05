@@ -67,11 +67,8 @@ const Home = () => {
         resetUpdatesCount={resetUpdatesCount}
       />
       
-      {/* Connection count display - make sure the arrow shows on the home page */}
-      <ConnectionCounter 
-        totalConnections={filteredConnections.length} 
-        showArrow={true}
-      />
+      {/* Connection count display - now showing filtered connections count */}
+      <ConnectionCounter totalConnections={filteredConnections.length} />
       
       <main className="flex-1 p-4 overflow-hidden">
         <HomeContent 

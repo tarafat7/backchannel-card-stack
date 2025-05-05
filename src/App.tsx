@@ -10,7 +10,6 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Connect from "./pages/Connect";
 import ViewCard from "./pages/ViewCard";
-import ConnectionsView from "./pages/ConnectionsView";
 import NotFound from "./pages/NotFound";
 import { AppProvider, useAppContext } from "./context/AppContext";
 
@@ -58,7 +57,6 @@ const AppRoutes = () => {
         } 
       />
       <Route path="/card/:id" element={<ViewCard />} />
-      <Route path="/connections/:id" element={<ConnectionsView />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
