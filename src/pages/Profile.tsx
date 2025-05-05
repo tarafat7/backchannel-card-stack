@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,8 +20,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <header className="p-4 flex justify-between items-center">
-        <h1 className="text-xl font-semibold">Your Profile</h1>
+      <header className="p-4 flex justify-end items-center">
         <Button variant="ghost" size="icon">
           <Settings className="w-5 h-5" />
         </Button>

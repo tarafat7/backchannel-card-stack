@@ -30,8 +30,7 @@ const HomeHeader = ({
 }: HomeHeaderProps) => {
   return (
     <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold">Your Network</h1>
+      <div className="flex justify-end items-center mb-4">
         <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
       </div>
       
