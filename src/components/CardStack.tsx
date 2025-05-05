@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
-import { ChevronUp, ChevronDown, Briefcase } from 'lucide-react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
+import { ChevronUp, ChevronDown, MessageCircle } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+import { Button } from './ui/button';
 
 type CardStackProps = {
   cards: BusinessCardType[];
@@ -16,8 +17,8 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   
   const handleCardClick = (index: number, id: string) => {
     if (expandedCardIndex === index) {
-      // If the card is already expanded, navigate to the card detail
-      onCardClick(id);
+      // If the card is already expanded, collapse it back
+      handleCollapseStack();
     } else {
       setExpandedCardIndex(index);
       setShowTimelineIndex(index); // Automatically show timeline when expanding a card
@@ -27,6 +28,19 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   const handleCollapseStack = () => {
     setExpandedCardIndex(null);
     setShowTimelineIndex(null);
+  };
+
+  const handleSendMessage = (e: React.MouseEvent, name: string) => {
+    e.stopPropagation(); // Prevent card collapse
+    toast({
+      title: "Message Sent",
+      description: `Your message has been sent to ${name}`,
+    });
+  };
+
+  const handleViewFullProfile = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation(); // Prevent card collapse
+    onCardClick(id); // Navigate to full profile
   };
 
   return (
@@ -89,6 +103,27 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                     isPreview={false}
                     showHistory={showTimeline} 
                   />
+
+                  {/* Message and View Profile buttons when card is expanded */}
+                  {isExpanded && (
+                    <div className="absolute bottom-4 left-0 right-0 px-4">
+                      <div className="flex gap-2">
+                        <Button 
+                          className="flex-1"
+                          onClick={(e) => handleSendMessage(e, card.name)}
+                        >
+                          Message
+                          <MessageCircle className="w-4 h-4 ml-2" />
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          onClick={(e) => handleViewFullProfile(e, card.id)}
+                        >
+                          Full Profile
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 {isExpanded && (
