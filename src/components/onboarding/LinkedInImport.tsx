@@ -68,9 +68,6 @@ const LinkedInImport: React.FC<LinkedInImportProps> = ({ onImportComplete }) => 
   return (
     <div className="animate-fade-in">
       <div className="flex flex-col items-center mb-8">
-        <div className="bg-gradient-to-br from-primary/20 to-primary/10 p-6 rounded-full mb-6">
-          <ShieldCheck className="w-10 h-10 text-primary" />
-        </div>
         <h2 className="text-2xl font-semibold mb-2">Import your experience</h2>
         <p className="text-muted-foreground text-center max-w-xs">
           Join our exclusive community by securely importing your professional experience
