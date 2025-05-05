@@ -1,13 +1,9 @@
-
 import { useState, useEffect } from 'react';
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
-import { Search, Plus, LayoutGrid, List } from "lucide-react";
-import BottomNav from '../components/BottomNav';
-import BusinessCard from '../components/BusinessCard';
-import CardStack from '../components/CardStack';
 import { useAppContext } from '../context/AppContext';
+import BottomNav from '../components/BottomNav';
+import HomeHeader from '../components/home/HomeHeader';
+import HomeContent from '../components/home/HomeContent';
 
 // Sample connection data
 const sampleConnections = [
@@ -85,11 +81,13 @@ const sampleConnections = [
   }
 ];
 
+type ViewMode = 'stack' | 'grid' | 'list';
+
 const Home = () => {
   const navigate = useNavigate();
   const { connections, addConnection } = useAppContext();
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<'stack' | 'grid' | 'list'>('stack');
+  const [viewMode, setViewMode] = useState<ViewMode>('stack');
   const [activeFilter, setActiveFilter] = useState('All');
   
   // Initialize with sample connections if none exist
@@ -155,107 +153,30 @@ const Home = () => {
     return true;
   });
 
+  const handleClearSearch = () => setSearchQuery('');
+
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-semibold">Your Network</h1>
-          <div className="flex gap-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => setViewMode('stack')}
-              className={viewMode === 'stack' ? 'text-primary' : 'text-muted-foreground'}
-            >
-              <LayoutGrid className="w-5 h-5" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => setViewMode('grid')}
-              className={viewMode === 'grid' ? 'text-primary' : 'text-muted-foreground'}
-            >
-              <LayoutGrid className="w-5 h-5" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => setViewMode('list')}
-              className={viewMode === 'list' ? 'text-primary' : 'text-muted-foreground'}
-            >
-              <List className="w-5 h-5" />
-            </Button>
-          </div>
-        </div>
-        
-        <div className="relative">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search connections..."
-            className="pl-9 bg-secondary border-none"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        
-        <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              className={`px-3 py-1.5 rounded-full whitespace-nowrap text-sm transition-colors ${
-                activeFilter === filter
-                  ? 'bg-primary text-white'
-                  : 'bg-secondary text-muted-foreground'
-              }`}
-              onClick={() => setActiveFilter(filter)}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-      </header>
+      <HomeHeader 
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        filters={filters}
+        activeFilter={activeFilter}
+        setActiveFilter={setActiveFilter}
+      />
       
-      {/* Content */}
       <main className="p-4">
-        {filteredConnections.length > 0 ? (
-          <>
-            {viewMode === 'stack' && (
-              <CardStack 
-                cards={filteredConnections}
-                onCardClick={handleCardClick}
-              />
-            )}
-            {(viewMode === 'grid' || viewMode === 'list') && (
-              <div className={`grid ${viewMode === 'grid' ? 'grid-cols-2 gap-3' : 'grid-cols-1 gap-4'}`}>
-                {filteredConnections.map((connection) => (
-                  <div key={connection.id} className="animate-fade-in">
-                    <BusinessCard
-                      card={connection}
-                      onClick={() => handleCardClick(connection.id)}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-40 text-center">
-            <p className="text-muted-foreground mb-2">No connections found</p>
-            {searchQuery && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setSearchQuery('')}
-              >
-                Clear search
-              </Button>
-            )}
-          </div>
-        )}
+        <HomeContent 
+          viewMode={viewMode}
+          filteredConnections={filteredConnections}
+          searchQuery={searchQuery}
+          onCardClick={handleCardClick}
+          onClearSearch={handleClearSearch}
+        />
       </main>
       
-      {/* Bottom Navigation */}
       <BottomNav />
     </div>
   );
