@@ -1,13 +1,13 @@
 
-import { BusinessCard } from "@/context/AppContext";
+import { BusinessCard as BusinessCardType } from "@/context/AppContext";
 import { Button } from "@/components/ui/button";
 import { Edit2 } from 'lucide-react';
-import BusinessCard from '../../components/BusinessCard';
+import BusinessCardComponent from '../../components/BusinessCard';
 import CardEditorDialog from './CardEditorDialog';
 
 interface BusinessCardSectionProps {
-  card: BusinessCard | null;
-  onCardUpdate: (card: BusinessCard) => void;
+  card: BusinessCardType | null;
+  onCardUpdate: (card: BusinessCardType) => void;
   cardEditorOpen: boolean;
   setCardEditorOpen: (open: boolean) => void;
 }
@@ -22,7 +22,7 @@ const BusinessCardSection = ({
     <section className="mb-8">
       <h2 className="text-sm font-medium text-muted-foreground mb-4">Your Business Card</h2>
       {card ? (
-        <BusinessCard card={card} isPreview={true} />
+        <BusinessCardComponent card={card} isPreview={true} />
       ) : (
         <div className="h-56 rounded-xl bg-secondary flex items-center justify-center">
           <p className="text-muted-foreground">Complete onboarding to create your card</p>
