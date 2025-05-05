@@ -38,7 +38,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
           className="w-full mb-3 gap-2"
           onClick={onRequestIntro}
         >
-          {mutualConnectionName && (
+          {mutualConnectionName ? (
             <>
               <Avatar className="h-6 w-6">
                 <AvatarFallback className="bg-primary/20">
@@ -47,8 +47,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
               </Avatar>
               <span>Ask {mutualConnectionName} for an intro</span>
             </>
-          )}
-          {!mutualConnectionName && (
+          ) : (
             <>
               Request Intro
               <ExternalLink className="w-4 h-4 ml-2" />
