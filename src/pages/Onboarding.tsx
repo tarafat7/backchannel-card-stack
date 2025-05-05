@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -122,9 +121,7 @@ const Onboarding = () => {
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80 flex flex-col">
       <div className="px-6 py-8 flex-1">
         <div className="mb-10 flex justify-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
-            Backchannel
-          </h1>
+          <img src="/lovable-uploads/616f61db-76fc-4df2-b8ac-403e36a20ee4.png" alt="Backchannel Logo" className="h-12" />
         </div>
         
         {renderStep()}

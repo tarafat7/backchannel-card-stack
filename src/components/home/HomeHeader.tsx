@@ -37,6 +37,9 @@ const HomeHeader = ({
 
   return (
     <header className="sticky top-0 z-10 bg-background pt-4 px-4 pb-2">
+      <div className="flex items-center justify-between mb-4">
+        <img src="/lovable-uploads/616f61db-76fc-4df2-b8ac-403e36a20ee4.png" alt="Backchannel Logo" className="h-8" />
+      </div>
       <div className="flex items-center gap-2">
         <div className="flex-grow">
           <SearchBar 
