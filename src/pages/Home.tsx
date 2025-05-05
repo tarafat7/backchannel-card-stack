@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -171,10 +170,10 @@ const Home = () => {
         setActiveFilter={setActiveFilter}
       />
       
-      {/* Connection count display - smaller and repositioned */}
+      {/* Connection count display - stacked with number on top */}
       <div className="flex items-center justify-center py-3 bg-background">
-        <div className="flex items-baseline">
-          <span className="text-2xl font-medium mr-1.5">{totalConnections}</span>
+        <div className="flex flex-col items-center">
+          <span className="text-2xl font-medium">{totalConnections}</span>
           <span className="text-xs uppercase text-muted-foreground tracking-wide">Connections</span>
         </div>
       </div>
