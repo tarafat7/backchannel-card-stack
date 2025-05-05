@@ -27,9 +27,22 @@ const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) =
     }
   };
 
+  // Define solid background color based on the card's background style
+  let solidBgColor = "bg-[#0f0f10]"; // Default dark background
+  
+  if (card.design.backgroundStyle.includes("bg-gradient-card-2")) {
+    solidBgColor = "bg-[#5B61F3]"; // Solid color for gradient-2
+  } else if (card.design.backgroundStyle.includes("bg-gradient-card-3")) {
+    solidBgColor = "bg-[#2166EE]"; // Solid color for gradient-3
+  } else if (card.design.backgroundStyle.includes("bg-black")) {
+    solidBgColor = "bg-black"; // Solid black
+  } else if (card.design.backgroundStyle.includes("bg-[#1A1A1A]")) {
+    solidBgColor = "bg-[#1A1A1A]"; // Keep the original dark gray
+  }
+
   return (
     <div
-      className={`business-card ${card.design.backgroundStyle} ${isPreview ? 'w-full h-56' : 'w-full sm:w-60 h-36'}`}
+      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full sm:w-60 h-36'}`}
       style={{ color: card.design.textColor }}
       onClick={handleClick}
     >

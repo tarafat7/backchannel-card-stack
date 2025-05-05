@@ -28,6 +28,8 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     <div className="relative w-full max-w-md mx-auto mt-4 pt-12 pb-12">
       {/* Main card stack */}
       {cards.map((card, index) => {
+        // Create a unique key by combining the card id and index
+        const uniqueKey = `card-${card.id}-${index}`;
         const isExpanded = expandedCardIndex === index;
         const zIndex = cards.length - index;
         const isActive = expandedCardIndex === null || isExpanded;
@@ -49,7 +51,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
         
         return (
           <div
-            key={card.id}
+            key={uniqueKey}
             className={`absolute w-full transition-all duration-300 ease-in-out cursor-pointer
               ${isExpanded ? 'scale-100' : 'scale-95'}
               ${isActive ? 'opacity-100' : 'opacity-80'}
