@@ -8,13 +8,14 @@ type IntroRequestDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   personName: string;
+  mutualConnection: string;
 };
 
-const IntroRequestDialog = ({ open, onOpenChange, personName }: IntroRequestDialogProps) => {
+const IntroRequestDialog = ({ open, onOpenChange, personName, mutualConnection }: IntroRequestDialogProps) => {
   const handleSendIntroRequest = () => {
     toast({
       title: "Introduction Requested",
-      description: "Your introduction request has been sent!",
+      description: `Your introduction request has been sent to ${mutualConnection}!`,
     });
     
     onOpenChange(false);
@@ -29,12 +30,12 @@ const IntroRequestDialog = ({ open, onOpenChange, personName }: IntroRequestDial
         
         <div className="py-4">
           <p className="text-sm text-muted-foreground mb-4">
-            This will send a request to a mutual connection to introduce you to {personName}.
+            This will send a request to {mutualConnection} to introduce you to {personName}.
           </p>
           
           <div className="p-3 rounded-lg bg-secondary mb-4">
-            <p className="text-sm font-medium">Via Jordan Lee</p>
-            <p className="text-xs text-muted-foreground">You and {personName} both know Jordan</p>
+            <p className="text-sm font-medium">Via {mutualConnection}</p>
+            <p className="text-xs text-muted-foreground">You and {personName} both know {mutualConnection}</p>
           </div>
           
           <div className="space-y-4">

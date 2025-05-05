@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { User } from 'lucide-react';
 
 type SharedConnectionsProps = {
   connections?: string[];
@@ -18,9 +19,9 @@ const SharedConnections = ({ connections }: SharedConnectionsProps) => {
           {Array(Math.min(connectionsCount, 3)).fill(0).map((_, i) => (
             <div 
               key={i} 
-              className="w-8 h-8 rounded-full bg-secondary border-2 border-background overflow-hidden"
+              className="w-8 h-8 rounded-full bg-secondary border-2 border-background overflow-hidden flex items-center justify-center"
             >
-              <div className="w-full h-full bg-primary/30" />
+              <User className="w-4 h-4 text-secondary-foreground" />
             </div>
           ))}
         </div>

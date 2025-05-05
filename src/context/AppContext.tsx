@@ -21,7 +21,8 @@ export type BusinessCard = {
   design: CardDesign;
   connectionDate?: string;
   connectionEvent?: string;
-  sharedConnections?: string[]; // This is a string array, not a number
+  connectionDegree?: 1 | 2;
+  mutualConnections: string[]; // Names of mutual connections
 }
 
 export type UserProfile = {
@@ -66,12 +67,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addConnection = (connection: BusinessCard) => {
-    // Ensure the connection has the sharedConnections property as a string array
-    const connectionWithShared = {
+    // Ensure the connection has the connectionDegree and mutualConnections properties
+    const connectionWithDefaults = {
       ...connection,
-      sharedConnections: connection.sharedConnections || []
+      connectionDegree: connection.connectionDegree || 1,
+      mutualConnections: connection.mutualConnections || []
     };
-    setConnections(prev => [...prev, connectionWithShared]);
+    setConnections(prev => [...prev, connectionWithDefaults]);
   };
 
   return (

@@ -1,7 +1,7 @@
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MessageCircle, Share2 } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Share2, User, Users } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
 import FullBusinessCard from '@/components/cards/FullBusinessCard';
@@ -15,6 +15,7 @@ const ViewCard = () => {
   const navigate = useNavigate();
   const { connections } = useAppContext();
   const [introDialogOpen, setIntroDialogOpen] = useState(false);
+  const [selectedMutualConnection, setSelectedMutualConnection] = useState<string | null>(null);
   
   // Get the card for this ID (combining sample data and real connections)
   const sampleConnections = [
@@ -36,7 +37,8 @@ const ViewCard = () => {
       },
       connectionDate: '2023-10-15',
       connectionEvent: 'React Conference',
-      sharedConnections: ['Jordan Lee', 'Alex Kim', 'Taylor Swift']
+      connectionDegree: 1,
+      mutualConnections: []
     },
     {
       id: '3',
@@ -55,11 +57,72 @@ const ViewCard = () => {
       },
       connectionDate: '2023-11-02',
       connectionEvent: 'Startup Mixer',
-      sharedConnections: ['Jordan Lee', 'Pat Johnson', 'Sam Chen', 'Aisha Patel', 'Miguel Rodriguez']
+      connectionDegree: 1,
+      mutualConnections: []
     }
   ];
   
-  const allConnections = [...connections, ...sampleConnections];
+  // Sample second degree connections
+  const sampleSecondDegreeConnections = [
+    {
+      id: '6',
+      name: 'Alicia Chen',
+      title: 'Senior UX Designer',
+      company: 'Shopify',
+      avatar: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+      expertiseAreas: ['UX Design', 'Research', 'UI Design'],
+      links: [
+        { type: 'Twitter', url: 'https://twitter.com' }
+      ],
+      status: 'Hiring junior designers',
+      design: {
+        backgroundStyle: 'bg-gradient-card-1',
+        textColor: 'text-white'
+      },
+      connectionDegree: 2,
+      mutualConnections: ['Riley Johnson', 'Sam Wilson']
+    },
+    {
+      id: '7',
+      name: 'Marcus James',
+      title: 'Tech Lead',
+      company: 'Airbnb',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+      expertiseAreas: ['Engineering Leadership', 'System Design', 'React Native'],
+      links: [
+        { type: 'GitHub', url: 'https://github.com' },
+        { type: 'Portfolio', url: 'https://example.com' }
+      ],
+      status: 'Building mobile team',
+      design: {
+        backgroundStyle: 'bg-black',
+        textColor: 'text-white'
+      },
+      connectionDegree: 2,
+      mutualConnections: ['Sam Wilson']
+    },
+    {
+      id: '8',
+      name: 'Priya Patel',
+      title: 'Venture Capitalist',
+      company: 'Sequoia Capital',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1376&q=80',
+      expertiseAreas: ['Investing', 'SaaS', 'Fintech'],
+      links: [
+        { type: 'Twitter', url: 'https://twitter.com' }
+      ],
+      status: 'Seeking early-stage startups',
+      design: {
+        backgroundStyle: 'bg-[#1A1A1A] bg-subtle-grid',
+        textColor: 'text-white'
+      },
+      connectionDegree: 2,
+      mutualConnections: ['Jordan Lee']
+    }
+  ];
+  
+  const allFirstDegreeConnections = [...connections, ...sampleConnections];
+  const allConnections = [...allFirstDegreeConnections, ...sampleSecondDegreeConnections];
   const card = allConnections.find(c => c.id === id);
   
   if (!card) {
@@ -70,7 +133,12 @@ const ViewCard = () => {
     );
   }
   
-  const isDirectConnection = card.connectionDate !== undefined;
+  const isDirectConnection = card.connectionDegree === 1;
+  
+  const handleRequestIntro = (mutualConnectionName: string) => {
+    setSelectedMutualConnection(mutualConnectionName);
+    setIntroDialogOpen(true);
+  };
   
   return (
     <>
@@ -86,6 +154,16 @@ const ViewCard = () => {
           </Button>
         </header>
 
+        {/* Connection degree badge */}
+        {!isDirectConnection && (
+          <div className="px-4 mb-2">
+            <div className="inline-flex items-center gap-1 text-xs font-medium bg-secondary/70 text-secondary-foreground px-2 py-1 rounded-full">
+              <Users className="w-3 h-3" />
+              <span>2nd Degree Connection</span>
+            </div>
+          </div>
+        )}
+
         <FullBusinessCard card={card} />
 
         {/* Professional Experience section - always visible */}
@@ -93,12 +171,38 @@ const ViewCard = () => {
           <ProfessionalHistory id={card.id} />
         </div>
         
-        {/* Connection Info */}
-        <div className="px-4 py-2 mb-4">
-          {card.sharedConnections && card.sharedConnections.length > 0 && (
-            <SharedConnections connections={card.sharedConnections} />
-          )}
-        </div>
+        {/* Mutual Connections for 2nd degree */}
+        {!isDirectConnection && card.mutualConnections && card.mutualConnections.length > 0 && (
+          <div className="px-4 py-2 mb-4">
+            <h3 className="text-sm font-medium mb-2">Mutual Connections</h3>
+            <div className="space-y-2">
+              {card.mutualConnections.map((connection, index) => (
+                <div key={index} className="p-3 rounded-lg bg-secondary/50 flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                      <User className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm">{connection}</span>
+                  </div>
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    onClick={() => handleRequestIntro(connection)}
+                  >
+                    Ask for intro
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {/* Connection Info for 1st degree */}
+        {isDirectConnection && card.connectionEvent && (
+          <div className="px-4 py-2 mb-4">
+            <SharedConnections connections={card.mutualConnections} />
+          </div>
+        )}
           
         <CardActions 
           isDirectConnection={isDirectConnection}
@@ -111,6 +215,7 @@ const ViewCard = () => {
         open={introDialogOpen} 
         onOpenChange={setIntroDialogOpen}
         personName={card.name}
+        mutualConnection={selectedMutualConnection || (card.mutualConnections ? card.mutualConnections[0] : "Jordan Lee")}
       />
     </>
   );

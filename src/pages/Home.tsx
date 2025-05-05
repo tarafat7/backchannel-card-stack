@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -24,7 +25,9 @@ const sampleConnections = [
       textColor: 'text-white'
     },
     connectionDate: '2023-10-15',
-    connectionEvent: 'React Conference'
+    connectionEvent: 'React Conference',
+    connectionDegree: 1,
+    mutualConnections: []
   },
   {
     id: '3',
@@ -42,7 +45,9 @@ const sampleConnections = [
       textColor: 'text-white'
     },
     connectionDate: '2023-11-02',
-    connectionEvent: 'Startup Mixer'
+    connectionEvent: 'Startup Mixer',
+    connectionDegree: 1,
+    mutualConnections: []
   },
   {
     id: '4',
@@ -61,7 +66,9 @@ const sampleConnections = [
       textColor: 'text-white'
     },
     connectionDate: '2023-09-20',
-    connectionEvent: 'YC Demo Day'
+    connectionEvent: 'YC Demo Day',
+    connectionDegree: 1,
+    mutualConnections: []
   },
   {
     id: '5',
@@ -77,7 +84,68 @@ const sampleConnections = [
       textColor: 'text-white'
     },
     connectionDate: '2023-08-05',
-    connectionEvent: 'Marketing Meetup'
+    connectionEvent: 'Marketing Meetup',
+    connectionDegree: 1,
+    mutualConnections: []
+  }
+];
+
+// Sample second degree connections
+const sampleSecondDegreeConnections = [
+  {
+    id: '6',
+    name: 'Alicia Chen',
+    title: 'Senior UX Designer',
+    company: 'Shopify',
+    avatar: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+    expertiseAreas: ['UX Design', 'Research', 'UI Design'],
+    links: [
+      { type: 'Twitter', url: 'https://twitter.com' }
+    ],
+    status: 'Hiring junior designers',
+    design: {
+      backgroundStyle: 'bg-gradient-card-1',
+      textColor: 'text-white'
+    },
+    connectionDegree: 2,
+    mutualConnections: ['Riley Johnson', 'Sam Wilson']
+  },
+  {
+    id: '7',
+    name: 'Marcus James',
+    title: 'Tech Lead',
+    company: 'Airbnb',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+    expertiseAreas: ['Engineering Leadership', 'System Design', 'React Native'],
+    links: [
+      { type: 'GitHub', url: 'https://github.com' },
+      { type: 'Portfolio', url: 'https://example.com' }
+    ],
+    status: 'Building mobile team',
+    design: {
+      backgroundStyle: 'bg-black',
+      textColor: 'text-white'
+    },
+    connectionDegree: 2,
+    mutualConnections: ['Sam Wilson']
+  },
+  {
+    id: '8',
+    name: 'Priya Patel',
+    title: 'Venture Capitalist',
+    company: 'Sequoia Capital',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1376&q=80',
+    expertiseAreas: ['Investing', 'SaaS', 'Fintech'],
+    links: [
+      { type: 'Twitter', url: 'https://twitter.com' }
+    ],
+    status: 'Seeking early-stage startups',
+    design: {
+      backgroundStyle: 'bg-[#1A1A1A] bg-subtle-grid',
+      textColor: 'text-white'
+    },
+    connectionDegree: 2,
+    mutualConnections: ['Jordan Lee']
   }
 ];
 
@@ -99,7 +167,8 @@ const Home = () => {
     }
   }, [connections.length, addConnection]);
 
-  const allConnections = [...connections, ...sampleConnections];
+  const allFirstDegreeConnections = [...connections, ...sampleConnections];
+  const allConnections = [...allFirstDegreeConnections, ...sampleSecondDegreeConnections];
   
   const handleCardClick = (id: string) => {
     navigate(`/card/${id}`);
@@ -124,11 +193,13 @@ const Home = () => {
     }
     
     if (activeFilter === 'Recent') {
-      // Last 7 days
-      if (!connection.connectionDate) return false;
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      return new Date(connection.connectionDate) >= sevenDaysAgo;
+      // For 1st degree connections, check last 7 days
+      if (connection.connectionDegree === 1 && connection.connectionDate) {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        return new Date(connection.connectionDate) >= sevenDaysAgo;
+      }
+      return false;
     }
     
     if (activeFilter === 'Hiring') {

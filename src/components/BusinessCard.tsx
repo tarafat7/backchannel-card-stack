@@ -1,7 +1,7 @@
 
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Github, Twitter, Link as LinkIcon } from 'lucide-react';
+import { ExternalLink, Github, Twitter, Link as LinkIcon, User } from 'lucide-react';
 import ProfessionalHistory from './ProfessionalHistory';
 
 type BusinessCardProps = {
@@ -42,12 +42,23 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
     solidBgColor = "bg-[#1A1A1A]"; // Keep the original dark gray
   }
 
+  // Determine if this is a 2nd-degree connection
+  const isSecondDegree = card.connectionDegree === 2;
+
   return (
     <div
-      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'}`}
+      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`}
       style={{ color: card.design.textColor }}
       onClick={handleClick}
     >
+      {/* Badge for 2nd-degree connections */}
+      {isSecondDegree && (
+        <div className="absolute top-2 right-2 flex items-center bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full text-xs">
+          <User className="w-3 h-3 mr-1" />
+          <span>2° Connection</span>
+        </div>
+      )}
+      
       <div className="relative h-full p-4 flex flex-col justify-between overflow-hidden">
         <div className="flex items-start gap-3">
           <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20">
