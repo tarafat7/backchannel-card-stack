@@ -57,14 +57,10 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
       return connection.connectionDegree === 1;
     }
     
-    if (activeFilter === 'Recent') {
-      // For 1st degree connections, check last 7 days
-      if (connection.connectionDegree === 1 && connection.connectionDate) {
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-        return new Date(connection.connectionDate) >= sevenDaysAgo;
-      }
-      return false;
+    if (activeFilter === 'Updates') {
+      // Show connections with status updates (for this demo, we'll use those with "new" or "just" in the status)
+      return connection.status.toLowerCase().includes('new') || 
+             connection.status.toLowerCase().includes('just');
     }
     
     if (activeFilter === 'Hiring') {

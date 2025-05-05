@@ -5,9 +5,12 @@ import HomeHeader from '../components/home/HomeHeader';
 import HomeContent from '../components/home/HomeContent';
 import ConnectionCounter from '../components/home/ConnectionCounter';
 import { useConnections } from '../hooks/useConnections';
+import { useState, useEffect } from 'react';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [updatesCount, setUpdatesCount] = useState(0);
+  
   const {
     filteredConnections,
     totalConnections,
@@ -21,7 +24,24 @@ const Home = () => {
     handleClearSearch
   } = useConnections(navigate);
   
-  const filters = ['All', 'Recent', 'Hiring', 'Investing', 'Building'];
+  const filters = ['All', 'Updates', 'Hiring', 'Investing', 'Building'];
+
+  // Simulate new status updates - in a real app this would come from notifications or real-time updates
+  useEffect(() => {
+    // Only increment the counter if we're not already on the Updates tab
+    if (activeFilter !== 'Updates') {
+      // This is just a mock implementation - in a real app, you would check for actual new updates
+      const statusUpdateConnections = filteredConnections.filter(conn => 
+        conn.status.includes('New') || conn.status.includes('Just')
+      );
+      
+      setUpdatesCount(statusUpdateConnections.length);
+    }
+  }, [filteredConnections, activeFilter]);
+  
+  const resetUpdatesCount = () => {
+    setUpdatesCount(0);
+  };
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -33,6 +53,8 @@ const Home = () => {
         filters={filters}
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
+        updatesCount={updatesCount}
+        resetUpdatesCount={resetUpdatesCount}
       />
       
       {/* Connection count display */}
@@ -40,7 +62,7 @@ const Home = () => {
       
       <main className="p-4">
         <HomeContent 
-          viewMode={viewMode}
+          viewMode={activeFilter === 'Updates' ? 'list' : viewMode}
           filteredConnections={filteredConnections}
           searchQuery={searchQuery}
           onCardClick={handleCardClick}
