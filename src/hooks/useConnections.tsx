@@ -14,7 +14,6 @@ type UseConnectionsResult = {
   setActiveFilter: (filter: string) => void;
   handleCardClick: (id: string) => void;
   handleClearSearch: () => void;
-  unreadUpdates: number;
 };
 
 export const useConnections = (navigate: (path: string) => void): UseConnectionsResult => {
@@ -22,8 +21,6 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'stack' | 'grid' | 'list'>('stack');
   const [activeFilter, setActiveFilter] = useState('All');
-  const [unreadUpdates, setUnreadUpdates] = useState<number>(3); // Initial value for demo
-  const [checkedUpdates, setCheckedUpdates] = useState<boolean>(false);
 
   // Initialize with sample connections if none exist
   useEffect(() => {
@@ -33,20 +30,6 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
       });
     }
   }, [connections.length, addConnection]);
-  
-  // Handle the read status of updates
-  useEffect(() => {
-    if (activeFilter === 'Updates' && unreadUpdates > 0) {
-      setCheckedUpdates(true);
-    }
-  }, [activeFilter]);
-
-  // Reset notification count when user checks updates tab
-  useEffect(() => {
-    if (checkedUpdates && activeFilter === 'Updates') {
-      setUnreadUpdates(0);
-    }
-  }, [checkedUpdates, activeFilter]);
 
   const allFirstDegreeConnections = [...connections, ...sampleConnections];
   const allConnections = [...allFirstDegreeConnections, ...sampleSecondDegreeConnections];
@@ -56,16 +39,6 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
   };
 
   const handleClearSearch = () => setSearchQuery('');
-
-  // Set view mode to list for Updates tab
-  useEffect(() => {
-    if (activeFilter === 'Updates') {
-      setViewMode('list');
-    } else if (viewMode === 'list' && activeFilter !== 'Updates') {
-      // Optionally return to stack view when leaving Updates tab
-      setViewMode('stack');
-    }
-  }, [activeFilter]);
 
   const filteredConnections = allConnections.filter((connection) => {
     if (searchQuery) {
@@ -84,9 +57,14 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
       return connection.connectionDegree === 1;
     }
     
-    if (activeFilter === 'Updates') {
-      // Show connections with status updates (for demo, we'll show those with status fields)
-      return connection.status && connection.status.length > 0;
+    if (activeFilter === 'Recent') {
+      // For 1st degree connections, check last 7 days
+      if (connection.connectionDegree === 1 && connection.connectionDate) {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        return new Date(connection.connectionDate) >= sevenDaysAgo;
+      }
+      return false;
     }
     
     if (activeFilter === 'Hiring') {
@@ -121,7 +99,6 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
     activeFilter,
     setActiveFilter,
     handleCardClick,
-    handleClearSearch,
-    unreadUpdates
+    handleClearSearch
   };
 };

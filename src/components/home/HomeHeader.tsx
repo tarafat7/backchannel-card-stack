@@ -13,7 +13,6 @@ type HomeHeaderProps = {
   filters: string[];
   activeFilter: string;
   setActiveFilter: (filter: string) => void;
-  unreadUpdates: number;
 };
 
 const HomeHeader = ({
@@ -23,8 +22,7 @@ const HomeHeader = ({
   setViewMode,
   filters,
   activeFilter,
-  setActiveFilter,
-  unreadUpdates
+  setActiveFilter
 }: HomeHeaderProps) => {
   return (
     <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
@@ -37,8 +35,7 @@ const HomeHeader = ({
       <FilterBar 
         filters={filters} 
         activeFilter={activeFilter} 
-        setActiveFilter={setActiveFilter}
-        unreadUpdates={unreadUpdates}
+        setActiveFilter={setActiveFilter} 
       />
     </header>
   );

@@ -1,19 +1,17 @@
 
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Github, Twitter, Link as LinkIcon, User, MessageCircle } from 'lucide-react';
+import { ExternalLink, Github, Twitter, Link as LinkIcon, User } from 'lucide-react';
 import ProfessionalHistory from './ProfessionalHistory';
-import { Badge } from './ui/badge';
 
 type BusinessCardProps = {
   card: BusinessCardType;
   isPreview?: boolean;
   onClick?: () => void;
   showHistory?: boolean;
-  inStack?: boolean; // New prop to determine if card is in stack view
 };
 
-const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, inStack = false }: BusinessCardProps) => {
+const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }: BusinessCardProps) => {
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -62,8 +60,8 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, i
       )}
       
       <div className="relative h-full p-4 flex flex-col justify-between overflow-hidden">
-        <div className="flex items-start gap-3 justify-between">
-          <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20 relative z-10">
+        <div className="flex items-start gap-3">
+          <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20">
             {card.avatar && (
               <img 
                 src={card.avatar} 
@@ -72,25 +70,14 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, i
               />
             )}
           </div>
-          <div className={`flex-1 overflow-hidden ${inStack ? 'text-right' : ''}`}>
+          <div className="flex-1 overflow-hidden">
             <h3 className="font-semibold text-sm truncate">{card.name}</h3>
             <p className="text-xs opacity-90 truncate">{card.title}</p>
             <p className="text-xs opacity-70 truncate">{card.company}</p>
           </div>
         </div>
         
-        {/* Speech bubble status for stacked view */}
-        {inStack && card.status && (
-          <div className="relative -mt-8 ml-16">
-            <div className="speech-bubble px-3 py-1.5 bg-black/30 backdrop-blur-sm rounded-xl text-xs max-w-[200px] relative before:content-[''] before:absolute before:left-[-6px] before:top-[6px] before:border-t-[6px] before:border-r-[6px] before:border-b-[6px] before:border-t-transparent before:border-r-black/30 before:border-b-transparent">
-              <MessageCircle className="w-3 h-3 inline-block mr-1 -translate-y-[1px]" />
-              <span>{card.status}</span>
-            </div>
-          </div>
-        )}
-        
-        {/* Regular status for expanded view */}
-        {!inStack && card.status && (
+        {card.status && (
           <div className="px-2 py-1 bg-black/10 rounded text-xs mt-2 backdrop-blur-sm w-fit">
             {card.status}
           </div>
@@ -104,7 +91,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, i
         
         <div className="mt-2">
           {card.expertiseAreas && card.expertiseAreas.length > 0 && (
-            <div className={`flex flex-wrap gap-1 mb-2 ${inStack ? 'justify-end' : ''}`}>
+            <div className="flex flex-wrap gap-1 mb-2">
               {card.expertiseAreas.slice(0, isPreview ? 5 : 2).map((area, index) => (
                 <span key={index} className="chip text-[10px]">
                   {area}
@@ -117,7 +104,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, i
           )}
 
           {card.links && card.links.length > 0 && (
-            <div className={`flex gap-1 ${inStack ? 'justify-end' : ''}`}>
+            <div className="flex gap-1">
               {card.links.slice(0, 3).map((link, index) => (
                 <a 
                   key={index}

@@ -18,11 +18,10 @@ const Home = () => {
     activeFilter,
     setActiveFilter,
     handleCardClick,
-    handleClearSearch,
-    unreadUpdates
+    handleClearSearch
   } = useConnections(navigate);
   
-  const filters = ['All', 'Updates', 'Hiring', 'Investing', 'Building'];
+  const filters = ['All', 'Recent', 'Hiring', 'Investing', 'Building'];
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -34,7 +33,6 @@ const Home = () => {
         filters={filters}
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
-        unreadUpdates={unreadUpdates}
       />
       
       {/* Connection count display */}
