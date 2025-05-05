@@ -122,7 +122,7 @@ const Onboarding = () => {
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80 flex flex-col">
       <div className="px-6 py-8 flex-1">
         <div className="mb-10 flex justify-center">
-          <img src="/lovable-uploads/616f61db-76fc-4df2-b8ac-403e36a20ee4.png" alt="Backchannel Logo" className="h-16" />
+          <img src="/lovable-uploads/616f61db-76fc-4df2-b8ac-403e36a20ee4.png" alt="Backchannel Logo" className="h-32" />
         </div>
         
         {renderStep()}
