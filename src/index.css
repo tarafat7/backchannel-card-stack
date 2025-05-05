@@ -85,7 +85,7 @@
   
   .card-stack-item {
     @apply absolute w-full transition-all duration-300;
-    transform-origin: top center;
+    transform-origin: bottom center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
@@ -131,14 +131,14 @@
     opacity: 0.9;
   }
   to {
-    transform: translateY(0) scale(1);
+    transform: translateY(-100px) scale(1);
     opacity: 1;
   }
 }
 
 @keyframes card-collapse {
   from {
-    transform: translateY(0) scale(1);
+    transform: translateY(-100px) scale(1);
     opacity: 1;
   }
   to {

@@ -7,7 +7,6 @@ import HomeHeader from '../components/home/HomeHeader';
 import ConnectionList from '../components/home/ConnectionList';
 import EmptyState from '../components/home/EmptyState';
 import { useConnections } from '../hooks/useConnections';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -36,32 +35,34 @@ const Home = () => {
         setActiveFilter={setActiveFilter}
       />
       
-      <ScrollArea className="flex-grow pb-24 overflow-hidden">
-        <main className="p-4 pt-0">
-          {filteredConnections.length > 0 ? (
-            <>
-              {viewMode === 'stack' && (
-                <CardStack 
-                  cards={filteredConnections}
-                  onCardClick={handleCardClick}
-                />
-              )}
-              {(viewMode === 'grid' || viewMode === 'list') && (
+      <main className="flex-grow pb-16 overflow-hidden relative">
+        {filteredConnections.length > 0 ? (
+          <>
+            {viewMode === 'stack' && (
+              <CardStack 
+                cards={filteredConnections}
+                onCardClick={handleCardClick}
+              />
+            )}
+            {(viewMode === 'grid' || viewMode === 'list') && (
+              <div className="p-4 pt-0 overflow-auto h-full pb-16">
                 <ConnectionList 
                   connections={filteredConnections}
                   viewMode={viewMode}
                   onCardClick={handleCardClick}
                 />
-              )}
-            </>
-          ) : (
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="p-4 pt-0">
             <EmptyState 
               searchQuery={searchQuery} 
               onClearSearch={handleClearSearch} 
             />
-          )}
-        </main>
-      </ScrollArea>
+          </div>
+        )}
+      </main>
       
       <BottomNav />
     </div>

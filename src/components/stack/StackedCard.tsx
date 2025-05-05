@@ -34,26 +34,25 @@ const StackedCard: React.FC<StackedCardProps> = ({
   
   // Calculate position based on state
   const getTransform = () => {
-    // Default stacked position - Apple Wallet style staggering
-    let translateY = displayIndex * 12; 
-    let scale = 1 - (displayIndex * 0.015);
-    
-    if (expandedCardIndex !== null) {
+    if (expandedCardIndex === null) {
+      // Default stacked position at the bottom - Apple Wallet style
+      let translateY = 0; 
+      let scale = 1 - (displayIndex * 0.015);
+      
+      return `translateY(${displayIndex * 12}px) scale(${scale})`;
+    } else {
       if (isExpanded) {
-        translateY = 0; // Focused card at the top
-        scale = 1;
+        // Focused card - centered in screen
+        return `translateY(-${displayIndex * 60 + 100}px) scale(1)`;
       } else if (cardOrder.indexOf(expandedCardIndex) > displayIndex) {
-        // Cards above the focused card - move up and out of view
-        translateY = -100 - (displayIndex * 10);
-        scale = 0.95;
+        // Cards above the focused card - move up
+        return `translateY(-${displayIndex * 60 + 200 + (cardOrder.length - displayIndex) * 10}px) scale(${0.95 - displayIndex * 0.01})`;
       } else {
-        // Cards below the focused card - stack at bottom
-        translateY = 300 + ((displayIndex - cardOrder.indexOf(expandedCardIndex) - 1) * 15);
-        scale = 0.9 - ((displayIndex - cardOrder.indexOf(expandedCardIndex) - 1) * 0.01);
+        // Cards below the focused card - stay at bottom with slight offset
+        const offset = (displayIndex - cardOrder.indexOf(expandedCardIndex) - 1);
+        return `translateY(${offset * 12}px) scale(${0.95 - offset * 0.01})`;
       }
     }
-
-    return `translateY(${translateY}px) scale(${scale})`;
   };
   
   // Apply Apple Wallet-like expand/collapse animations
@@ -82,7 +81,7 @@ const StackedCard: React.FC<StackedCardProps> = ({
   return (
     <div
       ref={cardRef}
-      className={`absolute w-full transition-all duration-300 ease-out 
+      className={`absolute w-full left-0 right-0 transition-all duration-300 ease-out 
         ${isExpanded ? 'scale-100' : ''}
         ${!isActive ? 'pointer-events-none' : 'cursor-pointer'}
       `}
@@ -102,7 +101,7 @@ const StackedCard: React.FC<StackedCardProps> = ({
         <BusinessCard card={card} isPreview={isExpanded} />
         
         {showExpandHint && (
-          <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-[-12px]">
+          <div className="absolute top-[-12px] left-0 right-0 flex justify-center">
             <div className="bg-black/40 backdrop-blur-sm p-1 rounded-full">
               <ChevronUp className="w-4 h-4 text-white" />
             </div>
