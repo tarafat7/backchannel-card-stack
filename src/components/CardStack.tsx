@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
@@ -130,15 +131,16 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                             </button>
                           ) : (
                             <button
-                              className="absolute bottom-3 right-3 bg-primary/90 hover:bg-primary p-2 rounded-full shadow-lg z-20"
+                              className="absolute bottom-3 right-3 bg-primary/90 hover:bg-primary px-2 py-1 rounded-md shadow-lg z-20 flex items-center gap-1 text-white text-xs"
                               onClick={(e) => handleSendMessage(e, card.name)}
                             >
-                              <MessageCircle className="w-4 h-4 text-white" />
+                              Send message to {card.name.split(' ')[0]}
+                              <MessageCircle className="w-3.5 h-3.5 text-white ml-1" />
                             </button>
                           )}
                         </TooltipTrigger>
                         <TooltipContent side="top">
-                          {isSecondDegree ? "Request introduction" : "Send message"}
+                          {isSecondDegree ? "Request introduction" : `Message ${card.name.split(' ')[0]}`}
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
