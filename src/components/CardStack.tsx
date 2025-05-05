@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
-import { ChevronUp, ChevronDown, MessageCircle } from 'lucide-react';
+import { ChevronUp, ChevronDown, MessageCircle, Link } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Button } from './ui/button';
 
@@ -35,6 +35,14 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     toast({
       title: "Message Sent",
       description: `Your message has been sent to ${name}`,
+    });
+  };
+
+  const handleRequestIntro = (e: React.MouseEvent, name: string) => {
+    e.stopPropagation(); // Prevent card collapse
+    toast({
+      title: "Introduction Requested",
+      description: `Your introduction request to ${name} has been sent!`,
     });
   };
 
@@ -76,6 +84,9 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
               translateY = 250 + ((index - expandedCardIndex) * 45);
             }
           }
+
+          // Determine if this is a second-degree connection
+          const isSecondDegree = card.connectionDegree === 2;
           
           return (
             <div
@@ -99,13 +110,19 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                     showHistory={showTimeline} 
                   />
 
-                  {/* Small message button in the corner when card is expanded */}
+                  {/* Show different buttons based on connection degree */}
                   {isExpanded && (
                     <button
                       className="absolute bottom-3 right-3 bg-primary/90 hover:bg-primary p-2 rounded-full shadow-lg z-20"
-                      onClick={(e) => handleSendMessage(e, card.name)}
+                      onClick={(e) => isSecondDegree 
+                        ? handleRequestIntro(e, card.name) 
+                        : handleSendMessage(e, card.name)
+                      }
                     >
-                      <MessageCircle className="w-4 h-4 text-white" />
+                      {isSecondDegree 
+                        ? <Link className="w-4 h-4 text-white" /> 
+                        : <MessageCircle className="w-4 h-4 text-white" />
+                      }
                     </button>
                   )}
                 </div>
