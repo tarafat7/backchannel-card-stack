@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,20 +8,64 @@ import BottomNav from '../components/BottomNav';
 import BusinessCard from '../components/BusinessCard';
 import { useAppContext } from '../context/AppContext';
 import CardEditorDialog from '../components/profile/CardEditorDialog';
+import ExperienceEditor from '../components/profile/ExperienceEditor';
+import ExpertiseEditor from '../components/profile/ExpertiseEditor';
+import { useToast } from '@/components/ui/use-toast';
 
 const Profile = () => {
-  const { profile, updateBusinessCard } = useAppContext();
+  const { profile, updateBusinessCard, updateProfile } = useAppContext();
   const [isEditing, setIsEditing] = useState(false);
   const [statusText, setStatusText] = useState(profile.card?.status || "");
   const [cardEditorOpen, setCardEditorOpen] = useState(false);
+  const [isEditingExperience, setIsEditingExperience] = useState(false);
+  const [isEditingExpertise, setIsEditingExpertise] = useState(false);
+  const { toast } = useToast();
 
   const handleStatusUpdate = () => {
-    // In a real app, you'd update the status in your context or API
+    if (profile.card) {
+      const updatedCard = {
+        ...profile.card,
+        status: statusText
+      };
+      updateBusinessCard(updatedCard);
+      toast({
+        title: "Status updated",
+        description: "Your status has been updated successfully."
+      });
+    }
     setIsEditing(false);
   };
 
   const handleCardUpdate = (updatedCard) => {
     updateBusinessCard(updatedCard);
+  };
+
+  const handleExperienceSave = (experiences) => {
+    updateProfile({ experiences });
+    setIsEditingExperience(false);
+    toast({
+      title: "Experience updated",
+      description: "Your professional experience has been updated successfully."
+    });
+  };
+
+  const handleExpertiseSave = (expertiseAreas) => {
+    updateProfile({ expertiseAreas });
+    setIsEditingExpertise(false);
+    
+    // If card exists, update the expertise areas there too
+    if (profile.card) {
+      const updatedCard = {
+        ...profile.card,
+        expertiseAreas
+      };
+      updateBusinessCard(updatedCard);
+    }
+    
+    toast({
+      title: "Expertise updated",
+      description: "Your areas of expertise have been updated successfully."
+    });
   };
 
   return (
@@ -110,27 +155,73 @@ const Profile = () => {
         </section>
         
         <section className="mb-8">
-          <h2 className="text-sm font-medium text-muted-foreground mb-4">Your Experience</h2>
-          <div className="space-y-3">
-            {profile.experiences && profile.experiences.map((exp, index) => (
-              <div key={index} className="p-4 rounded-lg bg-secondary">
-                <h3 className="font-medium">{exp.title}</h3>
-                <p className="text-sm text-muted-foreground">{exp.company}</p>
-                <p className="text-xs text-muted-foreground">{exp.years}</p>
-              </div>
-            ))}
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-sm font-medium text-muted-foreground">Your Experience</h2>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setIsEditingExperience(true)}
+            >
+              Edit
+            </Button>
           </div>
+          
+          {isEditingExperience ? (
+            <ExperienceEditor 
+              experiences={profile.experiences || []}
+              onSave={handleExperienceSave}
+              onCancel={() => setIsEditingExperience(false)}
+            />
+          ) : (
+            <div className="space-y-3">
+              {profile.experiences && profile.experiences.length > 0 ? (
+                profile.experiences.map((exp, index) => (
+                  <div key={index} className="p-4 rounded-lg bg-secondary">
+                    <h3 className="font-medium">{exp.title}</h3>
+                    <p className="text-sm text-muted-foreground">{exp.company}</p>
+                    <p className="text-xs text-muted-foreground">{exp.years}</p>
+                  </div>
+                ))
+              ) : (
+                <div className="p-4 rounded-lg bg-secondary text-center">
+                  <p className="text-sm text-muted-foreground">No experience added yet</p>
+                </div>
+              )}
+            </div>
+          )}
         </section>
         
         <section className="mb-8">
-          <h2 className="text-sm font-medium text-muted-foreground mb-4">Your Expertise</h2>
-          <div className="flex flex-wrap gap-2">
-            {profile.expertiseAreas && profile.expertiseAreas.map((area, index) => (
-              <span key={index} className="chip">
-                {area}
-              </span>
-            ))}
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-sm font-medium text-muted-foreground">Your Expertise</h2>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setIsEditingExpertise(true)}
+            >
+              Edit
+            </Button>
           </div>
+          
+          {isEditingExpertise ? (
+            <ExpertiseEditor 
+              selectedExpertise={profile.expertiseAreas || []}
+              onSave={handleExpertiseSave}
+              onCancel={() => setIsEditingExpertise(false)}
+            />
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {profile.expertiseAreas && profile.expertiseAreas.length > 0 ? (
+                profile.expertiseAreas.map((area, index) => (
+                  <span key={index} className="chip">
+                    {area}
+                  </span>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">No expertise areas selected</p>
+              )}
+            </div>
+          )}
         </section>
         
         <section>
