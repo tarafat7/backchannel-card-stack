@@ -145,6 +145,27 @@ const sampleHistories: Record<string, { position: string; company: string; durat
       duration: '2016 - 2018'
     }
   ],
+  // Adding Marcus Henderson's professional experience
+  '9': [
+    {
+      position: 'Chief Technology Officer',
+      company: 'TechVision Inc',
+      duration: '2022 - Present',
+      description: 'Leading technological innovation and strategic direction for an AI-driven startup.'
+    },
+    {
+      position: 'VP of Engineering',
+      company: 'Salesforce',
+      duration: '2019 - 2022',
+      description: 'Led a team of 50+ engineers building enterprise cloud solutions.'
+    },
+    {
+      position: 'Senior Software Architect',
+      company: 'Microsoft',
+      duration: '2016 - 2019',
+      description: 'Designed scalable cloud infrastructure systems for Azure.'
+    }
+  ],
   // Adding for second degree connections
   '11': [
     {

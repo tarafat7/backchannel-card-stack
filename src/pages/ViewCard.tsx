@@ -36,7 +36,7 @@ const ViewCard = () => {
   
   return (
     <>
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col pb-20">
         {/* Header */}
         <header className="p-4 flex justify-start items-center sticky top-0 bg-background/80 backdrop-blur-xl z-10">
           <Button 
@@ -72,14 +72,14 @@ const ViewCard = () => {
             <SharedConnections connections={card.mutualConnections} />
           </div>
         )}
-          
-        <CardActions 
-          isDirectConnection={isDirectConnection}
-          onRequestIntro={() => setIntroDialogOpen(true)}
-          personName={card.name}
-          mutualConnectionName={firstMutualConnection}
-        />
       </div>
+      
+      <CardActions 
+        isDirectConnection={isDirectConnection}
+        onRequestIntro={() => setIntroDialogOpen(true)}
+        personName={card.name}
+        mutualConnectionName={firstMutualConnection}
+      />
       
       <IntroRequestDialog 
         open={introDialogOpen} 

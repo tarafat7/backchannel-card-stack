@@ -20,7 +20,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
   };
   
   return (
-    <div className="px-4 mt-auto mb-8">
+    <div className="sticky bottom-0 px-4 py-3 bg-background/80 backdrop-blur-sm mt-4 z-10">
       {isDirectConnection ? (
         <Button 
           className="w-full mb-3"
