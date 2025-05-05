@@ -8,6 +8,20 @@ type ProfessionalHistoryProps = {
 
 // Sample professional histories for demonstration
 const sampleHistories: Record<string, { position: string; company: string; duration: string; description?: string }[]> = {
+  '1': [
+    {
+      position: 'Frontend Engineer',
+      company: 'Linear',
+      duration: '2022 - Present',
+      description: 'Building cutting-edge interface components and improving product performance.'
+    },
+    {
+      position: 'UI Developer',
+      company: 'Figma',
+      duration: '2020 - 2022',
+      description: 'Developed key UI components for design system implementation.'
+    }
+  ],
   '2': [
     {
       position: 'Frontend Engineer',
@@ -129,6 +143,86 @@ const sampleHistories: Record<string, { position: string; company: string; durat
       position: 'Financial Analyst',
       company: 'Goldman Sachs',
       duration: '2016 - 2018'
+    }
+  ],
+  // Adding for second degree connections
+  '11': [
+    {
+      position: 'Lead UX Designer',
+      company: 'Shopify',
+      duration: '2021 - Present',
+      description: 'Leading merchant experience design team and design system development.'
+    },
+    {
+      position: 'Senior UX Designer',
+      company: 'Facebook',
+      duration: '2018 - 2021',
+      description: 'Redesigned core mobile app features, increasing user engagement by 22%.'
+    },
+    {
+      position: 'UI Designer',
+      company: 'Dribbble',
+      duration: '2016 - 2018'
+    }
+  ],
+  '12': [
+    {
+      position: 'Mobile Engineering Lead',
+      company: 'Airbnb',
+      duration: '2022 - Present',
+      description: 'Leading a team of 12 engineers building the next generation mobile experience.'
+    },
+    {
+      position: 'Senior Mobile Developer',
+      company: 'Twitter',
+      duration: '2019 - 2022',
+      description: 'Architected and implemented core components of the Twitter mobile feed.'
+    },
+    {
+      position: 'Frontend Developer',
+      company: 'Google',
+      duration: '2017 - 2019',
+      description: 'Contributed to the Material Design component library and Chrome extensions.'
+    }
+  ],
+  '13': [
+    {
+      position: 'Partner',
+      company: 'Sequoia Capital',
+      duration: '2020 - Present',
+      description: 'Leading early-stage investments in SaaS, fintech, and AI startups.'
+    },
+    {
+      position: 'Investment Principal',
+      company: 'Andreessen Horowitz',
+      duration: '2018 - 2020',
+      description: 'Sourced and led investments in over 15 early-stage startups.'
+    },
+    {
+      position: 'Senior Financial Analyst',
+      company: 'Goldman Sachs',
+      duration: '2016 - 2018',
+      description: 'Specialized in tech sector IPOs and M&A transactions.'
+    }
+  ],
+  '14': [
+    {
+      position: 'Research Scientist',
+      company: 'DeepMind',
+      duration: '2022 - Present',
+      description: 'Leading research in computer vision and reinforcement learning applications.'
+    },
+    {
+      position: 'AI Researcher',
+      company: 'OpenAI',
+      duration: '2019 - 2022',
+      description: 'Contributed to key breakthroughs in generative models for language and images.'
+    },
+    {
+      position: 'PhD Candidate',
+      company: 'Stanford University',
+      duration: '2015 - 2019',
+      description: 'Specialized in machine learning with focus on neural networks.'
     }
   ]
 };

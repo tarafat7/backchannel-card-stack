@@ -53,7 +53,7 @@ const ViewCard = () => {
 
         <FullBusinessCard card={card} />
 
-        {/* Professional Experience section - always visible */}
+        {/* Professional Experience section - always visible for all connections */}
         <div className="px-6 py-4">
           <ProfessionalHistory id={card.id} />
         </div>
