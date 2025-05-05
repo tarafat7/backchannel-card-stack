@@ -57,8 +57,8 @@ const Home = () => {
         resetUpdatesCount={resetUpdatesCount}
       />
       
-      {/* Connection count display */}
-      <ConnectionCounter totalConnections={totalConnections} />
+      {/* Connection count display - now showing filtered connections count */}
+      <ConnectionCounter totalConnections={filteredConnections.length} />
       
       <main className="p-4">
         <HomeContent 
