@@ -161,12 +161,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      {/* Connection count display */}
-      <div className="bg-black py-8 px-4 flex flex-col items-center justify-center">
-        <h1 className="text-white text-6xl font-medium">{totalConnections}</h1>
-        <p className="text-[#999] uppercase tracking-wider text-sm mt-2">Connections</p>
-      </div>
-      
       <HomeHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -176,6 +170,14 @@ const Home = () => {
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
       />
+      
+      {/* Connection count display - smaller and repositioned */}
+      <div className="flex items-center justify-center py-3 bg-background">
+        <div className="flex items-baseline">
+          <span className="text-2xl font-medium mr-1.5">{totalConnections}</span>
+          <span className="text-xs uppercase text-muted-foreground tracking-wide">Connections</span>
+        </div>
+      </div>
       
       <main className="p-4">
         <HomeContent 
