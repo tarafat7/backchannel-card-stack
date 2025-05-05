@@ -1,9 +1,12 @@
 
-import { Home, User, QrCode } from "lucide-react";
+import { Home, QrCode } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useAppContext } from "@/context/AppContext";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const BottomNav = () => {
   const location = useLocation();
+  const { profile } = useAppContext();
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -26,9 +29,19 @@ const BottomNav = () => {
           <QrCode className="w-7 h-7 text-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
         </Link>
         
-        {/* Profile button */}
+        {/* Profile button with user avatar */}
         <Link to="/profile" className={`flex flex-col items-center`}>
-          <User className={`w-6 h-6 ${isActive('/profile') ? 'text-white' : 'text-[#999]'}`} />
+          <div className={`${isActive('/profile') ? 'ring-1 ring-white' : ''} rounded-full`}>
+            <Avatar className="w-6 h-6">
+              {profile.card?.avatar ? (
+                <AvatarImage src={profile.card.avatar} alt="Profile" />
+              ) : (
+                <AvatarFallback className={`${isActive('/profile') ? 'text-white bg-primary' : 'text-[#999] bg-[#444]'}`}>
+                  {profile.card?.name ? profile.card.name.charAt(0) : 'U'}
+                </AvatarFallback>
+              )}
+            </Avatar>
+          </div>
           <span className={`text-xs mt-1 ${isActive('/profile') ? 'text-white' : 'text-[#999]'}`}>Profile</span>
         </Link>
       </div>
