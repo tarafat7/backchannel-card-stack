@@ -1,7 +1,9 @@
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import SearchBar from "./SearchBar";
 import FilterBar from "./FilterBar";
 import ViewModeToggle from "./ViewModeToggle";
+import { useAppContext } from "@/context/AppContext";
 
 type ViewMode = 'stack' | 'grid' | 'list';
 
@@ -28,13 +30,21 @@ const HomeHeader = ({
   updatesCount = 0,
   resetUpdatesCount
 }: HomeHeaderProps) => {
+  const { profile } = useAppContext();
+  
   return (
     <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
-      <div className="flex justify-end items-center mb-4">
+      <div className="flex items-center gap-3 mb-4">
+        <Avatar className="h-9 w-9">
+          <AvatarImage src={profile.card?.photoUrl} alt={profile.card?.name || "Profile"} />
+          <AvatarFallback>{profile.card?.name?.[0] || "U"}</AvatarFallback>
+        </Avatar>
+        <div className="flex-1">
+          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        </div>
         <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
       </div>
       
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <FilterBar 
         filters={filters} 
         activeFilter={activeFilter} 
