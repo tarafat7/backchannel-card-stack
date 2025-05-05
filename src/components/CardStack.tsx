@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
-import { ChevronUp, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import StackedCard from './stack/StackedCard';
 import EmptyStackState from './stack/EmptyStackState';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -27,7 +27,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     if (expandedCardIndex !== null) {
       setContainerHeight(window.innerHeight * 0.7); // Expand to 70% of viewport height when a card is selected
     } else {
-      setContainerHeight(Math.min(cards.length * 80 + 100, 500)); // Stack height or max 500px
+      setContainerHeight(Math.min(cards.length * 60 + 40, 400)); // Stack height or max 400px
     }
   }, [expandedCardIndex, cards.length]);
   
@@ -76,32 +76,30 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
         </button>
       )}
       
-      <ScrollArea className="h-full overflow-hidden">
-        <div className="relative px-2 pb-6 pt-2 h-full" style={{ minHeight: `${containerHeight}px` }}>
-          {cardOrder.map((originalIndex, displayIndex) => {
-            const card = cards[originalIndex];
-            const isExpanded = expandedCardIndex === originalIndex;
-            const zIndex = cards.length - displayIndex;
-            const isActive = expandedCardIndex === null || isExpanded;
-            
-            return (
-              <StackedCard
-                key={`card-${card.id}-${originalIndex}`}
-                card={card}
-                isExpanded={isExpanded}
-                isActive={isActive}
-                displayIndex={displayIndex}
-                expandedCardIndex={expandedCardIndex}
-                cardOrder={cardOrder}
-                zIndex={zIndex}
-                onCardClick={() => handleCardClick(originalIndex, card.id)}
-                onCollapse={handleCollapseStack}
-                showExpandHint={!isExpanded && expandedCardIndex === null && displayIndex === 0}
-              />
-            );
-          })}
-        </div>
-      </ScrollArea>
+      <div className="relative h-full overflow-hidden px-2">
+        {cardOrder.map((originalIndex, displayIndex) => {
+          const card = cards[originalIndex];
+          const isExpanded = expandedCardIndex === originalIndex;
+          const zIndex = cards.length - displayIndex;
+          const isActive = expandedCardIndex === null || isExpanded;
+          
+          return (
+            <StackedCard
+              key={`card-${card.id}-${originalIndex}`}
+              card={card}
+              isExpanded={isExpanded}
+              isActive={isActive}
+              displayIndex={displayIndex}
+              expandedCardIndex={expandedCardIndex}
+              cardOrder={cardOrder}
+              zIndex={zIndex}
+              onCardClick={() => handleCardClick(originalIndex, card.id)}
+              onCollapse={handleCollapseStack}
+              showExpandHint={!isExpanded && expandedCardIndex === null && displayIndex === 0}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

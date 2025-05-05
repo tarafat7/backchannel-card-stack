@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { BusinessCard as BusinessCardType } from '../../context/AppContext';
 import BusinessCard from '../BusinessCard';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 
 type StackedCardProps = {
   card: BusinessCardType;
@@ -35,8 +35,8 @@ const StackedCard: React.FC<StackedCardProps> = ({
   // Calculate position based on state
   const getTransform = () => {
     // Default stacked position - Apple Wallet style staggering
-    let translateY = displayIndex * 16; 
-    let scale = 1 - (displayIndex * 0.02);
+    let translateY = displayIndex * 12; 
+    let scale = 1 - (displayIndex * 0.015);
     
     if (expandedCardIndex !== null) {
       if (isExpanded) {
@@ -68,10 +68,10 @@ const StackedCard: React.FC<StackedCardProps> = ({
       
       // Add appropriate animation class
       if (isExpanded) {
-        cardElement.style.setProperty('--offset', `${displayIndex * 16}px`);
+        cardElement.style.setProperty('--offset', `${displayIndex * 12}px`);
         cardElement.classList.add('card-expanding');
       } else if (prevExpandedState.current) {
-        cardElement.style.setProperty('--offset', `${displayIndex * 16}px`);
+        cardElement.style.setProperty('--offset', `${displayIndex * 12}px`);
         cardElement.classList.add('card-collapsing');
       }
       
@@ -91,7 +91,7 @@ const StackedCard: React.FC<StackedCardProps> = ({
         zIndex: zIndex,
         boxShadow: isExpanded 
           ? '0 10px 25px -5px rgba(0, 0, 0, 0.3)' 
-          : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          : '0 2px 4px rgba(0, 0, 0, 0.15)',
       }}
       onClick={(e) => {
         e.preventDefault();
@@ -99,9 +99,7 @@ const StackedCard: React.FC<StackedCardProps> = ({
       }}
     >
       <div className={`relative ${isExpanded ? 'ring-2 ring-primary ring-opacity-50' : ''}`}>
-        <div className="overflow-hidden rounded-xl">
-          <BusinessCard card={card} isPreview={false} />
-        </div>
+        <BusinessCard card={card} isPreview={isExpanded} />
         
         {showExpandHint && (
           <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-[-12px]">
