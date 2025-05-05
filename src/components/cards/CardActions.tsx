@@ -24,6 +24,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
   return (
     <div className="px-4 mt-auto mb-8">
       {isDirectConnection ? (
+        // For 1st degree connections - can send a direct message
         <Button 
           className="w-full mb-3"
           onClick={handleSendMessage}
@@ -32,6 +33,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
           <MessageCircle className="w-4 h-4 ml-2" />
         </Button>
       ) : (
+        // For 2nd degree connections - can only request an intro
         <Button 
           className="w-full mb-3 gap-2"
           onClick={onRequestIntro}
