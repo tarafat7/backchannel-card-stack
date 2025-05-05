@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
@@ -23,7 +22,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
       }
     } else {
       setExpandedCardIndex(index);
-      setShowTimelineIndex(null); // Reset timeline when expanding a new card
+      setShowTimelineIndex(index); // Automatically show timeline when expanding a card
     }
   };
 

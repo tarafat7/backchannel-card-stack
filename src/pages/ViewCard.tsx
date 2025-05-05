@@ -1,13 +1,14 @@
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Share2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
 import FullBusinessCard from '@/components/cards/FullBusinessCard';
 import SharedConnections from '@/components/shared/SharedConnections';
 import CardActions from '@/components/cards/CardActions';
 import IntroRequestDialog from '@/components/dialogs/IntroRequestDialog';
+import ProfessionalHistory from '@/components/ProfessionalHistory';
 
 const ViewCard = () => {
   const { id } = useParams();
@@ -86,6 +87,11 @@ const ViewCard = () => {
         </header>
 
         <FullBusinessCard card={card} />
+
+        {/* Professional Experience section - always visible */}
+        <div className="px-6 py-4">
+          <ProfessionalHistory id={card.id} />
+        </div>
         
         {/* Connection Info */}
         <div className="px-4 py-2 mb-4">
