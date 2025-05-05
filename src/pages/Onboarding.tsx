@@ -24,6 +24,7 @@ const Onboarding = () => {
     { type: 'Portfolio', url: 'https://example.com' }
   ]);
 
+  // Fix for infinite loop - add proper dependency array
   useEffect(() => {
     // Create a preview card whenever these values change
     if (onboardingStep >= 2) {
@@ -40,10 +41,11 @@ const Onboarding = () => {
           backgroundStyle: selectedBackground,
           textColor: textColor
         },
-        mutualConnections: [] // Add the required property
+        mutualConnections: [], // Add the required property
+        connectionDegree: 1 // Add this to prevent type errors
       });
     }
-  }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep, updateBusinessCard]);
+  }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep]);
 
   const handleExpertiseToggle = (area: string) => {
     if (selectedExpertise.includes(area)) {

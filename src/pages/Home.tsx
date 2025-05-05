@@ -6,10 +6,12 @@ import HomeContent from '../components/home/HomeContent';
 import ConnectionCounter from '../components/home/ConnectionCounter';
 import { useConnections } from '../hooks/useConnections';
 import { useState, useEffect } from 'react';
+import { useAppContext } from '../context/AppContext';
 
 const Home = () => {
   const navigate = useNavigate();
   const [updatesCount, setUpdatesCount] = useState(0);
+  const { profile } = useAppContext();
   
   const {
     filteredConnections,
