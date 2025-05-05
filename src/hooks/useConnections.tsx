@@ -5,7 +5,6 @@ import { sampleConnections, sampleSecondDegreeConnections } from '@/data/connect
 
 type UseConnectionsResult = {
   filteredConnections: BusinessCard[];
-  firstDegreeConnections: BusinessCard[];
   totalConnections: number;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -93,7 +92,6 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
 
   return {
     filteredConnections,
-    firstDegreeConnections,
     totalConnections: firstDegreeConnections.length + sampleSecondDegreeConnections.length,
     searchQuery,
     setSearchQuery,

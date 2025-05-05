@@ -22,7 +22,6 @@ const Home = () => {
   
   const {
     filteredConnections,
-    firstDegreeConnections,
     totalConnections,
     searchQuery,
     setSearchQuery,
@@ -69,10 +68,7 @@ const Home = () => {
       />
       
       {/* Connection count display - now showing filtered connections count */}
-      <ConnectionCounter 
-        totalConnections={filteredConnections.length}
-        firstDegreeConnections={firstDegreeConnections}
-      />
+      <ConnectionCounter totalConnections={filteredConnections.length} />
       
       <main className="flex-1 p-4 overflow-hidden">
         <HomeContent 
