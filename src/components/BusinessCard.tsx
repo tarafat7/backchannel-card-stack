@@ -62,16 +62,6 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, i
       )}
       
       <div className="relative h-full p-4 flex flex-col justify-between overflow-hidden">
-        {/* Status at the top of the card */}
-        {card.status && (
-          <div className={`mb-2 ${inStack ? 'ml-14 -mt-1' : ''}`}>
-            <div className={`${inStack ? 'speech-bubble' : ''} px-3 py-1.5 bg-black/30 backdrop-blur-sm rounded-xl text-xs max-w-[90%] ${inStack ? 'relative before:content-[\'\'] before:absolute before:left-[-6px] before:top-[8px] before:border-t-[6px] before:border-r-[6px] before:border-b-[6px] before:border-t-transparent before:border-r-black/30 before:border-b-transparent' : ''}`}>
-              <MessageCircle className="w-3 h-3 inline-block mr-1 -translate-y-[1px]" />
-              <span>{card.status}</span>
-            </div>
-          </div>
-        )}
-        
         <div className="flex items-start gap-3 justify-between">
           <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20 relative z-10">
             {card.avatar && (
@@ -88,6 +78,23 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, i
             <p className="text-xs opacity-70 truncate">{card.company}</p>
           </div>
         </div>
+        
+        {/* Speech bubble status for stacked view */}
+        {inStack && card.status && (
+          <div className="relative -mt-8 ml-16">
+            <div className="speech-bubble px-3 py-1.5 bg-black/30 backdrop-blur-sm rounded-xl text-xs max-w-[200px] relative before:content-[''] before:absolute before:left-[-6px] before:top-[6px] before:border-t-[6px] before:border-r-[6px] before:border-b-[6px] before:border-t-transparent before:border-r-black/30 before:border-b-transparent">
+              <MessageCircle className="w-3 h-3 inline-block mr-1 -translate-y-[1px]" />
+              <span>{card.status}</span>
+            </div>
+          </div>
+        )}
+        
+        {/* Regular status for expanded view */}
+        {!inStack && card.status && (
+          <div className="px-2 py-1 bg-black/10 rounded text-xs mt-2 backdrop-blur-sm w-fit">
+            {card.status}
+          </div>
+        )}
         
         {showHistory && (
           <div className="mt-3 mb-2">
