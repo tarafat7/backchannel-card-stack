@@ -1,11 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
 import { ChevronUp, ChevronDown, MessageCircle, Link } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { Slider } from './ui/slider';
+import { ScrollArea } from './ui/scroll-area';
 
 type CardStackProps = {
   cards: BusinessCardType[];
@@ -15,7 +17,13 @@ type CardStackProps = {
 const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
   const [showTimelineIndex, setShowTimelineIndex] = useState<number | null>(null);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startY, setStartY] = useState(0);
+  const [scrollOffset, setScrollOffset] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   
+  // Handle card interaction
   const handleCardClick = (index: number, id: string) => {
     if (expandedCardIndex === index) {
       // If the card is already expanded, collapse it back
@@ -47,42 +55,172 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     });
   };
 
+  // Touch and mouse event handlers for rolodex effect
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (expandedCardIndex !== null) return; // Don't allow dragging when a card is expanded
+    setIsDragging(true);
+    setStartY(e.touches[0].clientY);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (expandedCardIndex !== null) return; // Don't allow dragging when a card is expanded
+    setIsDragging(true);
+    setStartY(e.clientY);
+    e.preventDefault(); // Prevent text selection during drag
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || expandedCardIndex !== null) return;
+    const currentY = e.touches[0].clientY;
+    const diff = currentY - startY;
+    handleScroll(diff);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || expandedCardIndex !== null) return;
+    const currentY = e.clientY;
+    const diff = currentY - startY;
+    handleScroll(diff);
+    e.preventDefault(); // Prevent text selection during drag
+  };
+
+  const handleScroll = (diff: number) => {
+    // Determine the card height and spacing
+    const cardHeight = 70; // Approximate height of visible part of each card
+    
+    // Calculate how many cards to scroll based on the drag distance
+    const newOffset = scrollOffset + diff / 2; // Divide by 2 to slow down the scroll
+    setScrollOffset(newOffset);
+    
+    // Calculate the new active card index
+    let newIndex = Math.floor(newOffset / cardHeight) % cards.length;
+    
+    // Handle negative indexes
+    if (newIndex < 0) newIndex = cards.length + newIndex;
+    
+    // Update active card index
+    if (newIndex !== activeCardIndex) {
+      setActiveCardIndex(newIndex);
+      // Provide haptic feedback here if device supports it
+    }
+    
+    // Update the start position for the next move event
+    setStartY(curr => curr + diff);
+  };
+
+  const handleTouchEnd = () => {
+    if (expandedCardIndex !== null) return;
+    setIsDragging(false);
+    snapToCard();
+  };
+
+  const handleMouseUp = () => {
+    if (expandedCardIndex !== null) return;
+    setIsDragging(false);
+    snapToCard();
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      setIsDragging(false);
+      snapToCard();
+    }
+  };
+
+  const snapToCard = () => {
+    // Snap to the nearest card position
+    const cardHeight = 70; // Should match the card spacing in the CSS
+    const targetOffset = activeCardIndex * cardHeight;
+    setScrollOffset(targetOffset);
+  };
+
+  // Handle slider change for direct card selection
+  const handleSliderChange = (value: number[]) => {
+    const newIndex = Math.round(value[0]);
+    setActiveCardIndex(newIndex);
+    // Also update the scroll offset to match
+    const cardHeight = 70;
+    setScrollOffset(newIndex * cardHeight);
+  };
+
+  useEffect(() => {
+    // Add window event listeners to handle mouse up outside the component
+    const handleGlobalMouseUp = () => {
+      if (isDragging) {
+        setIsDragging(false);
+        snapToCard();
+      }
+    };
+
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, [isDragging]);
+
   return (
-    <div className="relative w-full max-w-md mx-auto mt-4 pb-8">
-      {/* Main card stack */}
+    <div 
+      className="relative w-full max-w-md mx-auto mt-4 pb-8 select-none"
+      ref={containerRef}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Rolodex card stack */}
       <div className="relative h-[500px] pt-4">
         {cards.map((card, index) => {
           // Create a unique key by combining the card id and index
           const uniqueKey = `card-${card.id}-${index}`;
           const isExpanded = expandedCardIndex === index;
           const showTimeline = showTimelineIndex === index;
-          const zIndex = expandedCardIndex === null 
-            ? cards.length - index  // In collapsed state, first card has highest z-index
-            : (index === expandedCardIndex ? 10 : (index < expandedCardIndex ? 1 : 5 - (index - expandedCardIndex)));
           
-          // Invert the order for display so first card is on top
-          const displayIndex = expandedCardIndex === null ? 
-            (cards.length - 1) - index : index;
-          
-          // Calculate position based on state
+          // Calculate z-index and position for rolodex effect
+          let zIndex = cards.length - Math.abs(index - activeCardIndex);
+          let rotateX = 0;
           let translateY = 0;
           let opacity = 1;
           
           if (expandedCardIndex === null) {
-            // When no card is expanded, create a stacked effect showing the top of each card
-            // Invert the calculation so first card is on top, later cards peek from underneath
-            translateY = displayIndex * 45; // Stack cards with visible top portions
-          } else {
-            if (index === expandedCardIndex) {
-              // This is the expanded card, show it at the top
+            // When in rolodex mode (no expanded card)
+            const distanceFromActive = index - activeCardIndex;
+            
+            // Cards in front of the active card rotate one way
+            if (distanceFromActive < 0) {
+              rotateX = Math.min(distanceFromActive * 5, -5); // Max -40 degrees
+              translateY = Math.abs(distanceFromActive) * 45;
+              opacity = Math.max(1 - Math.abs(distanceFromActive) * 0.2, 0.3);
+            } 
+            // Cards behind the active card rotate the other way
+            else if (distanceFromActive > 0) {
+              rotateX = Math.max(distanceFromActive * -5, -40); // Max -40 degrees
+              translateY = distanceFromActive * 45; 
+              opacity = Math.max(1 - distanceFromActive * 0.2, 0.3);
+            }
+            // Active card is flat
+            else {
+              rotateX = 0;
               translateY = 0;
+              opacity = 1;
+              zIndex = cards.length + 1; // Make sure active card is on top
+            }
+          } else {
+            // When a card is expanded
+            if (index === expandedCardIndex) {
+              rotateX = 0;
+              translateY = 0;
+              opacity = 1;
+              zIndex = cards.length + 1;
             } else if (index < expandedCardIndex) {
-              // Cards that should be above the expanded card (hidden off-screen)
               translateY = -500;
               opacity = 0;
             } else {
-              // Cards that should be below the expanded card, showing their tops
               translateY = 250 + ((index - expandedCardIndex) * 45);
+              rotateX = -30;
+              opacity = 0.5;
             }
           }
 
@@ -99,15 +237,17 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
               key={uniqueKey}
               className="absolute w-full transition-all duration-300 ease-in-out"
               style={{
-                transform: `translateY(${translateY}px)`,
+                transform: `translateY(${translateY}px) rotateX(${rotateX}deg)`,
                 zIndex: zIndex,
                 opacity: opacity,
+                transformOrigin: "center top",
+                perspective: "1000px",
                 width: "100%"
               }}
             >
               <div className="relative">
                 <div 
-                  className="wallet-card-shadow cursor-pointer"
+                  className={`wallet-card-shadow cursor-pointer ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
                   onClick={() => handleCardClick(index, card.id)}
                 >
                   <BusinessCard 
@@ -161,7 +301,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                   </div>
                 )}
                 
-                {expandedCardIndex === null && index === 0 && (
+                {expandedCardIndex === null && index === activeCardIndex && (
                   <div className="absolute -bottom-4 left-0 right-0 flex justify-center">
                     <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
                       <ChevronUp className="w-4 h-4 text-primary" />
@@ -173,6 +313,18 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           );
         })}
       </div>
+      
+      {/* Slider for direct scrolling through the rolodex */}
+      {cards.length > 0 && expandedCardIndex === null && (
+        <div className="w-3/4 mx-auto mt-6">
+          <Slider
+            value={[activeCardIndex]}
+            max={cards.length - 1}
+            step={1}
+            onValueChange={handleSliderChange}
+          />
+        </div>
+      )}
       
       {/* Empty state message */}
       {cards.length === 0 && (

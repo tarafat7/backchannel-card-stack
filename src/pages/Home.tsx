@@ -61,7 +61,7 @@ const Home = () => {
       {/* Connection count display - now showing filtered connections count */}
       <ConnectionCounter totalConnections={filteredConnections.length} />
       
-      <main className="p-4">
+      <main className="perspective-1000 p-4">
         <HomeContent 
           viewMode={activeFilter === 'Updates' ? 'list' : viewMode}
           filteredConnections={filteredConnections}
