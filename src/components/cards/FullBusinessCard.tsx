@@ -11,7 +11,7 @@ type FullBusinessCardProps = {
 
 const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
   return (
-    <div className={`m-4 p-6 rounded-xl ${card.design.backgroundStyle}`}>
+    <div className={`m-4 p-6 rounded-xl shadow-lg ${card.design.backgroundStyle}`}>
       <div className={`h-full ${card.design.textColor}`}>
         <div className="flex items-start gap-4 mb-4">
           <div className="w-20 h-20 rounded-full bg-black/20 overflow-hidden border border-white/20">
@@ -31,7 +31,7 @@ const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
         </div>
         
         {card.status && (
-          <div className="px-3 py-1.5 bg-black/10 rounded-lg text-sm mt-4 backdrop-blur-sm w-fit">
+          <div className="px-3 py-1.5 bg-black/10 rounded-lg text-sm mt-4 w-fit">
             {card.status}
           </div>
         )}

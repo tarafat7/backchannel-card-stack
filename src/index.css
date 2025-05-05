@@ -88,6 +88,45 @@
     transform-origin: top center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
+  
+  /* New styles for card stacking without transparency */
+  .card-shadow {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+  
+  .bg-gradient-card-2,
+  .bg-gradient-card-3,
+  .bg-black,
+  .bg-\[\#1A1A1A\] {
+    position: relative;
+  }
+  
+  .bg-gradient-card-2::before,
+  .bg-gradient-card-3::before,
+  .bg-black::before,
+  .bg-\[\#1A1A1A\]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: inherit;
+  }
+  
+  /* Make sure backgrounds are solid, not transparent */
+  .business-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+    border-radius: inherit;
+    background: #0f0f10; /* Fallback solid color */
+  }
 }
 
 /* No scrollbar for webkit browsers */

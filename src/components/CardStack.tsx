@@ -52,7 +52,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
             key={card.id}
             className={`absolute w-full transition-all duration-300 ease-in-out cursor-pointer
               ${isExpanded ? 'scale-100' : 'scale-95'}
-              ${isActive ? 'opacity-100' : 'opacity-70'}
+              ${isActive ? 'opacity-100' : 'opacity-80'}
               ${isPrevious ? 'pointer-events-none' : ''}
             `}
             style={{
@@ -62,10 +62,12 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
             onClick={() => handleCardClick(index, card.id)}
           >
             <div className="relative">
-              <BusinessCard card={card} isPreview={false} />
+              <div className="card-shadow">
+                <BusinessCard card={card} isPreview={false} />
+              </div>
               {isExpanded && (
                 <button
-                  className="absolute top-2 right-2 bg-black/30 p-1 rounded-full"
+                  className="absolute top-2 right-2 bg-black/40 p-1 rounded-full"
                   onClick={handleCollapseStack}
                 >
                   <ChevronDown className="w-4 h-4 text-white" />
