@@ -36,7 +36,7 @@ const HomeHeader = ({
     <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
       <div className="flex items-center gap-3 mb-4">
         <Avatar className="h-9 w-9">
-          <AvatarImage src={profile.card?.photoUrl} alt={profile.card?.name || "Profile"} />
+          <AvatarImage src={profile.card?.avatar} alt={profile.card?.name || "Profile"} />
           <AvatarFallback>{profile.card?.name?.[0] || "U"}</AvatarFallback>
         </Avatar>
         <div className="flex-1">
