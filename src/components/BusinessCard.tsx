@@ -9,9 +9,10 @@ type BusinessCardProps = {
   isPreview?: boolean;
   onClick?: () => void;
   showHistory?: boolean;
+  inStack?: boolean; // New prop to determine if card is in stack view
 };
 
-const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }: BusinessCardProps) => {
+const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false, inStack = false }: BusinessCardProps) => {
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -60,7 +61,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
       )}
       
       <div className="relative h-full p-4 flex flex-col justify-between overflow-hidden">
-        <div className="flex items-start gap-3">
+        <div className={`flex items-start gap-3 ${inStack ? 'flex-row-reverse' : ''}`}>
           <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20">
             {card.avatar && (
               <img 
@@ -70,7 +71,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
               />
             )}
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className={`flex-1 overflow-hidden ${inStack ? 'text-right' : ''}`}>
             <h3 className="font-semibold text-sm truncate">{card.name}</h3>
             <p className="text-xs opacity-90 truncate">{card.title}</p>
             <p className="text-xs opacity-70 truncate">{card.company}</p>
@@ -78,7 +79,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
         </div>
         
         {card.status && (
-          <div className="px-2 py-1 bg-black/10 rounded text-xs mt-2 backdrop-blur-sm w-fit">
+          <div className={`px-2 py-1 bg-black/10 rounded text-xs mt-2 backdrop-blur-sm w-fit ${inStack ? 'ml-auto mr-16' : ''}`}>
             {card.status}
           </div>
         )}
@@ -91,7 +92,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
         
         <div className="mt-2">
           {card.expertiseAreas && card.expertiseAreas.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-2">
+            <div className={`flex flex-wrap gap-1 mb-2 ${inStack ? 'justify-end' : ''}`}>
               {card.expertiseAreas.slice(0, isPreview ? 5 : 2).map((area, index) => (
                 <span key={index} className="chip text-[10px]">
                   {area}
@@ -104,7 +105,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
           )}
 
           {card.links && card.links.length > 0 && (
-            <div className="flex gap-1">
+            <div className={`flex gap-1 ${inStack ? 'justify-end' : ''}`}>
               {card.links.slice(0, 3).map((link, index) => (
                 <a 
                   key={index}

@@ -97,6 +97,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                     card={card} 
                     isPreview={false}
                     showHistory={showTimeline} 
+                    inStack={!isExpanded} // Add inStack prop - true when not expanded
                   />
 
                   {/* Small message button in the corner when card is expanded */}
