@@ -4,7 +4,7 @@ import { BusinessCard } from "@/context/AppContext";
 // Sample connection data
 export const sampleConnections: BusinessCard[] = [
   {
-    id: '2',
+    id: '1',
     name: 'Sam Wilson',
     title: 'Frontend Engineer',
     company: 'Linear',
@@ -25,7 +25,7 @@ export const sampleConnections: BusinessCard[] = [
     mutualConnections: []
   },
   {
-    id: '3',
+    id: '2',
     name: 'Olivia Parker',
     title: 'Product Manager',
     company: 'Stripe',
@@ -45,7 +45,7 @@ export const sampleConnections: BusinessCard[] = [
     mutualConnections: []
   },
   {
-    id: '4',
+    id: '3',
     name: 'Jordan Lee',
     title: 'Startup Founder',
     company: 'Acme Inc',
@@ -66,7 +66,7 @@ export const sampleConnections: BusinessCard[] = [
     mutualConnections: []
   },
   {
-    id: '5',
+    id: '4',
     name: 'Maya Rodriguez',
     title: 'Marketing Director',
     company: 'Netflix',
@@ -88,7 +88,7 @@ export const sampleConnections: BusinessCard[] = [
 // Sample second degree connections
 export const sampleSecondDegreeConnections: BusinessCard[] = [
   {
-    id: '6',
+    id: '5',
     name: 'Alicia Chen',
     title: 'Senior UX Designer',
     company: 'Shopify',
@@ -106,7 +106,7 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
     mutualConnections: ['Olivia Parker', 'Sam Wilson']
   },
   {
-    id: '7',
+    id: '6',
     name: 'Marcus James',
     title: 'Tech Lead',
     company: 'Airbnb',
@@ -125,7 +125,7 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
     mutualConnections: ['Sam Wilson']
   },
   {
-    id: '8',
+    id: '7',
     name: 'Priya Patel',
     title: 'Venture Capitalist',
     company: 'Sequoia Capital',
@@ -143,7 +143,7 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
     mutualConnections: ['Jordan Lee']
   },
   {
-    id: '9',
+    id: '8',
     name: 'David Kim',
     title: 'AI Researcher',
     company: 'DeepMind',
@@ -160,24 +160,5 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
     },
     connectionDegree: 2 as 2,
     mutualConnections: ['Sam Wilson', 'Jordan Lee']
-  },
-  {
-    id: '10',
-    name: 'Elena Martinez',
-    title: 'Creative Director',
-    company: 'Figma',
-    avatar: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
-    expertiseAreas: ['Design Systems', 'Brand Identity', 'Typography'],
-    links: [
-      { type: 'Twitter', url: 'https://twitter.com' },
-      { type: 'Portfolio', url: 'https://example.com' }
-    ],
-    status: 'Launching design system',
-    design: {
-      backgroundStyle: 'bg-gradient-to-r from-purple-400 to-indigo-500',
-      textColor: 'text-white'
-    },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Alicia Chen', 'Maya Rodriguez']
   }
 ];
