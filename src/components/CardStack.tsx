@@ -129,14 +129,14 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                 
                 {isExpanded && !showTimeline && (
                   <button 
-                    className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-primary/20 backdrop-blur-sm p-1.5 rounded-full flex items-center gap-1"
+                    className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-primary/30 backdrop-blur-sm p-1.5 rounded-full flex items-center gap-1 border border-white/20 shadow-sm hover:bg-primary/40 transition-colors"
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowTimelineIndex(index);
                     }}
                   >
-                    <History className="w-3.5 h-3.5 text-primary" />
-                    <span className="text-xs text-primary">History</span>
+                    <History className="w-3.5 h-3.5 text-white" />
+                    <span className="text-xs font-medium text-white">History</span>
                   </button>
                 )}
               </div>
