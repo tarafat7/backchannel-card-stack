@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Linkedin, Lock, ShieldCheck } from 'lucide-react';
+import ConnectionDiagram from './ConnectionDiagram';
 
 // Mock LinkedIn data for demo
 const mockLinkedInData = {
@@ -67,12 +68,15 @@ const LinkedInImport: React.FC<LinkedInImportProps> = ({ onImportComplete }) => 
 
   return (
     <div className="animate-fade-in">
-      <div className="flex flex-col items-center mb-8">
+      <div className="flex flex-col items-center mb-4">
         <h2 className="text-2xl font-semibold mb-2">Import your experience</h2>
         <p className="text-muted-foreground text-center max-w-xs">
           Join our exclusive community by securely importing your professional experience
         </p>
       </div>
+      
+      {/* Add the connection diagram component */}
+      <ConnectionDiagram />
       
       <div className="glass-card p-6 mb-8 rounded-xl border border-white/10">
         <div className="flex items-center mb-4">
