@@ -18,7 +18,7 @@ const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
   } else if (card.design.backgroundStyle.includes("bg-gradient-card-3")) {
     solidBgColor = "bg-[#2166EE]"; // Solid color for gradient-3
   } else if (card.design.backgroundStyle.includes("bg-black")) {
-    solidBgColor = "bg-black"; // Solid black
+    solidBgColor = "bg-[#222222]"; // Dark gray instead of pure black
   } else if (card.design.backgroundStyle.includes("bg-[#1A1A1A]")) {
     solidBgColor = "bg-[#1A1A1A]"; // Keep the original dark gray
   }

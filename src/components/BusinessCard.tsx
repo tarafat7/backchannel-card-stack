@@ -1,5 +1,5 @@
 
-import { BusinessCard as BusinessCardType } from '../context/AppContext';
+import { BusinessCardType } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Github, Twitter, Link as LinkIcon, User } from 'lucide-react';
 import ProfessionalHistory from './ProfessionalHistory';
@@ -37,7 +37,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
   } else if (card.design.backgroundStyle.includes("bg-gradient-card-3")) {
     solidBgColor = "bg-[#2166EE]"; // Solid color for gradient-3
   } else if (card.design.backgroundStyle.includes("bg-black")) {
-    solidBgColor = "bg-black"; // Solid black
+    solidBgColor = "bg-[#222222]"; // Dark gray instead of pure black
   } else if (card.design.backgroundStyle.includes("bg-[#1A1A1A]")) {
     solidBgColor = "bg-[#1A1A1A]"; // Keep the original dark gray
   }

@@ -26,7 +26,7 @@ export const backgroundOptions = [
   'bg-gradient-card-1',
   'bg-gradient-card-2',
   'bg-gradient-card-3',
-  'bg-black',
+  'bg-[#222222]', // Changed from bg-black to a dark gray
   'bg-[#1A1A1A] bg-subtle-grid'
 ];
 
