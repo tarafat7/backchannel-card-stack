@@ -4,6 +4,7 @@ import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
 import { ChevronUp, ChevronDown, MessageCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { Button } from './ui/button';
 
 type CardStackProps = {
   cards: BusinessCardType[];
@@ -38,7 +39,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto mt-4 pb-8 card-stack-wrapper">
+    <div className="relative w-full max-w-md mx-auto mt-4 pb-8">
       {/* Main card stack */}
       <div className="relative h-[500px] pt-4">
         {cards.map((card, index) => {
@@ -57,12 +58,11 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           // Calculate position based on state
           let translateY = 0;
           let opacity = 1;
-          let scale = 1;
           
           if (expandedCardIndex === null) {
             // When no card is expanded, create a stacked effect showing the top of each card
-            translateY = displayIndex * 20; // Stack cards with visible top portions
-            scale = 1 - (displayIndex * 0.02); // Slightly scale down lower cards
+            // Invert the calculation so first card is on top, later cards peek from underneath
+            translateY = displayIndex * 45; // Stack cards with visible top portions
           } else {
             if (index === expandedCardIndex) {
               // This is the expanded card, show it at the top
@@ -73,17 +73,16 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
               opacity = 0;
             } else {
               // Cards that should be below the expanded card, showing their tops
-              translateY = 250 + ((index - expandedCardIndex) * 20);
-              scale = 0.95 - ((index - expandedCardIndex) * 0.02);
+              translateY = 250 + ((index - expandedCardIndex) * 45);
             }
           }
           
           return (
             <div
               key={uniqueKey}
-              className="absolute w-full transition-all duration-300 ease-in-out card-stack-item"
+              className="absolute w-full transition-all duration-300 ease-in-out"
               style={{
-                transform: `translateY(${translateY}px) scale(${scale})`,
+                transform: `translateY(${translateY}px)`,
                 zIndex: zIndex,
                 opacity: opacity,
                 width: "100%"
@@ -125,7 +124,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                   </div>
                 )}
                 
-                {expandedCardIndex === null && index === 0 && cards.length > 1 && (
+                {expandedCardIndex === null && index === 0 && (
                   <div className="absolute -bottom-4 left-0 right-0 flex justify-center">
                     <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
                       <ChevronUp className="w-4 h-4 text-primary" />
@@ -140,7 +139,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
       
       {/* Empty state message */}
       {cards.length === 0 && (
-        <div className="text-center p-8 glass-card rounded-xl">
+        <div className="text-center p-8 bg-secondary/50 rounded-xl border border-white/5">
           <p className="text-muted-foreground">No business cards yet</p>
           <p className="text-xs text-muted-foreground/70 mt-1">
             Connect with others to start building your network

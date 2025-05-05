@@ -15,7 +15,7 @@ const Onboarding = () => {
   const { onboardingStep, setOnboardingStep, updateProfile, profile, updateBusinessCard } = useAppContext();
   
   const [selectedExpertise, setSelectedExpertise] = useState<string[]>([]);
-  const [selectedBackground, setSelectedBackground] = useState<string>('#1A1A1A');
+  const [selectedBackground, setSelectedBackground] = useState<string>(backgroundOptions[0]);
   const [textColor, setTextColor] = useState<string>('text-white');
   const [status, setStatus] = useState<string>('Open to work');
   const [links, setLinks] = useState([
@@ -24,19 +24,10 @@ const Onboarding = () => {
     { type: 'Portfolio', url: 'https://example.com' }
   ]);
 
-  // Enhanced background options including solid colors, gradients, and defaults
-  const enhancedBackgroundOptions = [
-    '#222222', '#403E43', '#1A1A1A', '#0f0f10', '#5B61F3', '#2166EE',
-    'linear-gradient(90deg, hsla(277, 75%, 84%, 1) 0%, hsla(297, 50%, 51%, 1) 100%)',
-    'linear-gradient(90deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%)',
-    'linear-gradient(to right, #243949 0%, #517fa4 100%)'
-  ];
-
-  // Fix the infinite update loop by adding dependencies
   useEffect(() => {
-    // Only create a preview card when on steps that need it
-    if (onboardingStep >= 2 && profile) {
-      const card = {
+    // Create a preview card whenever these values change
+    if (onboardingStep >= 2) {
+      updateBusinessCard({
         id: '1',
         name: mockLinkedInData.name,
         title: mockLinkedInData.experiences[0].title,
@@ -50,12 +41,9 @@ const Onboarding = () => {
           textColor: textColor
         },
         mutualConnections: [] // Add the required property
-      };
-      
-      updateBusinessCard(card);
+      });
     }
-  }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep]);
-  // We removed updateBusinessCard from the dependency array to prevent infinite loops
+  }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep, updateBusinessCard]);
 
   const handleExpertiseToggle = (area: string) => {
     if (selectedExpertise.includes(area)) {
@@ -121,7 +109,7 @@ const Onboarding = () => {
             links={links}
             handleLinkChange={handleLinkChange}
             onComplete={handleComplete}
-            backgroundOptions={enhancedBackgroundOptions}
+            backgroundOptions={backgroundOptions}
           />
         );
         
