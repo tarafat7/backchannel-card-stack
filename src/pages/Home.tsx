@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -155,8 +156,17 @@ const Home = () => {
 
   const handleClearSearch = () => setSearchQuery('');
 
+  // Calculate the total connections count
+  const totalConnections = allConnections.length;
+
   return (
     <div className="min-h-screen bg-background pb-20">
+      {/* Connection count display */}
+      <div className="bg-black py-8 px-4 flex flex-col items-center justify-center">
+        <h1 className="text-white text-6xl font-medium">{totalConnections}</h1>
+        <p className="text-[#999] uppercase tracking-wider text-sm mt-2">Connections</p>
+      </div>
+      
       <HomeHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
