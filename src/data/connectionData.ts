@@ -26,7 +26,7 @@ export const sampleConnections: BusinessCard[] = [
   },
   {
     id: '3',
-    name: 'Riley Johnson',
+    name: 'Olivia Parker',
     title: 'Product Manager',
     company: 'Stripe',
     avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
@@ -103,7 +103,7 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       textColor: 'text-white'
     },
     connectionDegree: 2 as 2,
-    mutualConnections: ['Riley Johnson', 'Sam Wilson']
+    mutualConnections: ['Olivia Parker', 'Sam Wilson']
   },
   {
     id: '7',
@@ -160,5 +160,24 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
     },
     connectionDegree: 2 as 2,
     mutualConnections: ['Sam Wilson', 'Jordan Lee']
+  },
+  {
+    id: '10',
+    name: 'Elena Martinez',
+    title: 'Creative Director',
+    company: 'Figma',
+    avatar: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+    expertiseAreas: ['Design Systems', 'Brand Identity', 'Typography'],
+    links: [
+      { type: 'Twitter', url: 'https://twitter.com' },
+      { type: 'Portfolio', url: 'https://example.com' }
+    ],
+    status: 'Launching design system',
+    design: {
+      backgroundStyle: 'bg-gradient-to-r from-purple-400 to-indigo-500',
+      textColor: 'text-white'
+    },
+    connectionDegree: 2 as 2,
+    mutualConnections: ['Alicia Chen', 'Maya Rodriguez']
   }
 ];
