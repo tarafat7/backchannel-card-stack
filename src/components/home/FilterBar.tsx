@@ -5,17 +5,19 @@ import { BellDot } from "lucide-react";
 type FilterBarProps = {
   filters: string[];
   activeFilter: string;
-  setActiveFilter: (filter: string) => void;
+  onChange: (filter: string) => void;
+  updatesFilter?: string;
   updatesCount?: number;
-  resetUpdatesCount?: () => void;
+  renderBadge?: (filter: string, count: number) => ReactNode;
 };
 
 const FilterBar = ({ 
   filters, 
   activeFilter, 
-  setActiveFilter, 
+  onChange,
+  updatesFilter,
   updatesCount = 0,
-  resetUpdatesCount
+  renderBadge
 }: FilterBarProps) => {
   return (
     <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar">
@@ -27,20 +29,10 @@ const FilterBar = ({
               ? 'bg-primary text-white'
               : 'bg-secondary text-muted-foreground'
           }`}
-          onClick={() => {
-            setActiveFilter(filter);
-            // Reset updates count when clicking on the Updates tab
-            if (filter === 'Updates' && resetUpdatesCount) {
-              resetUpdatesCount();
-            }
-          }}
+          onClick={() => onChange(filter)}
         >
           {filter}
-          {filter === 'Updates' && updatesCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-              {updatesCount}
-            </span>
-          )}
+          {renderBadge && filter === updatesFilter && renderBadge(filter, updatesCount)}
         </button>
       ))}
     </div>

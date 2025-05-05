@@ -6,16 +6,16 @@ type ViewMode = 'stack' | 'list';
 
 type ViewModeToggleProps = {
   viewMode: ViewMode;
-  setViewMode: (mode: ViewMode) => void;
+  onChange: (mode: ViewMode) => void;
 };
 
-const ViewModeToggle = ({ viewMode, setViewMode }: ViewModeToggleProps) => {
+const ViewModeToggle = ({ viewMode, onChange }: ViewModeToggleProps) => {
   return (
     <div className="flex gap-2">
       <Button 
         variant="ghost" 
         size="icon" 
-        onClick={() => setViewMode('stack')}
+        onClick={() => onChange('stack')}
         className={viewMode === 'stack' ? 'text-primary' : 'text-muted-foreground'}
       >
         <LayoutGrid className="w-5 h-5" />
@@ -23,7 +23,7 @@ const ViewModeToggle = ({ viewMode, setViewMode }: ViewModeToggleProps) => {
       <Button 
         variant="ghost" 
         size="icon" 
-        onClick={() => setViewMode('list')}
+        onClick={() => onChange('list')}
         className={viewMode === 'list' ? 'text-primary' : 'text-muted-foreground'}
       >
         <List className="w-5 h-5" />
