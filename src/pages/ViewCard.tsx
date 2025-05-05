@@ -45,15 +45,9 @@ const ViewCard = () => {
   return (
     <>
       <div className="min-h-screen bg-background flex flex-col pb-20">
-        {/* Header */}
-        <header className="p-4 flex justify-start items-center sticky top-0 bg-background/80 backdrop-blur-xl z-10">
-          <Button 
-            variant="ghost" 
-            size="icon"
-            onClick={goBack}
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
+        {/* Header - removing the arrow button */}
+        <header className="p-4 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
+          {/* Button with arrow removed */}
         </header>
 
         {/* Connection degree badge */}
