@@ -8,8 +8,8 @@ type UseConnectionsResult = {
   totalConnections: number;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  viewMode: 'stack' | 'grid' | 'list';
-  setViewMode: (mode: 'stack' | 'grid' | 'list') => void;
+  viewMode: 'stack' | 'list';
+  setViewMode: (mode: 'stack' | 'list') => void;
   activeFilter: string;
   setActiveFilter: (filter: string) => void;
   handleCardClick: (id: string) => void;
@@ -19,7 +19,7 @@ type UseConnectionsResult = {
 export const useConnections = (navigate: (path: string) => void): UseConnectionsResult => {
   const { connections, addConnection } = useAppContext();
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<'stack' | 'grid' | 'list'>('stack');
+  const [viewMode, setViewMode] = useState<'stack' | 'list'>('stack');
   const [activeFilter, setActiveFilter] = useState('All');
 
   // Initialize with sample connections if none exist

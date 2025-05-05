@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { LayoutGrid, List } from "lucide-react";
 
-type ViewMode = 'stack' | 'grid' | 'list';
+type ViewMode = 'stack' | 'list';
 
 type ViewModeToggleProps = {
   viewMode: ViewMode;
@@ -17,14 +17,6 @@ const ViewModeToggle = ({ viewMode, setViewMode }: ViewModeToggleProps) => {
         size="icon" 
         onClick={() => setViewMode('stack')}
         className={viewMode === 'stack' ? 'text-primary' : 'text-muted-foreground'}
-      >
-        <LayoutGrid className="w-5 h-5" />
-      </Button>
-      <Button 
-        variant="ghost" 
-        size="icon" 
-        onClick={() => setViewMode('grid')}
-        className={viewMode === 'grid' ? 'text-primary' : 'text-muted-foreground'}
       >
         <LayoutGrid className="w-5 h-5" />
       </Button>

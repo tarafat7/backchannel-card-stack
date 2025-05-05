@@ -5,7 +5,7 @@ import FilterBar from "./FilterBar";
 import ViewModeToggle from "./ViewModeToggle";
 import { useAppContext } from "@/context/AppContext";
 
-type ViewMode = 'stack' | 'grid' | 'list';
+type ViewMode = 'stack' | 'list';
 
 type HomeHeaderProps = {
   searchQuery: string;

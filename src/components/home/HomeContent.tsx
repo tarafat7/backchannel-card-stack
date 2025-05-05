@@ -4,7 +4,7 @@ import ConnectionsGrid from './ConnectionsGrid';
 import NoConnectionsFound from './NoConnectionsFound';
 import { BusinessCard } from '@/context/AppContext';
 
-type ViewMode = 'stack' | 'grid' | 'list';
+type ViewMode = 'stack' | 'list';
 
 type HomeContentProps = {
   viewMode: ViewMode;
@@ -42,7 +42,7 @@ const HomeContent = ({
   return (
     <ConnectionsGrid 
       connections={filteredConnections} 
-      viewMode={viewMode as 'grid' | 'list'} 
+      viewMode="list"
       onCardClick={onCardClick}
     />
   );
