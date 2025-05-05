@@ -4,7 +4,6 @@ import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
 import { ChevronUp, ChevronDown, MessageCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { Button } from './ui/button';
 
 type CardStackProps = {
   cards: BusinessCardType[];

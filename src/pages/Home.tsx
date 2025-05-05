@@ -32,10 +32,12 @@ const Home = () => {
     if (activeFilter !== 'Updates') {
       // This is just a mock implementation - in a real app, you would check for actual new updates
       const statusUpdateConnections = filteredConnections.filter(conn => 
-        conn.status.includes('New') || conn.status.includes('Just')
+        conn.status && (conn.status.includes('New') || conn.status.includes('Just'))
       );
       
       setUpdatesCount(statusUpdateConnections.length);
+    } else {
+      setUpdatesCount(0);
     }
   }, [filteredConnections, activeFilter]);
   
