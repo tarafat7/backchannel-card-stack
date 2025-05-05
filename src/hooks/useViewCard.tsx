@@ -16,7 +16,8 @@ export const useViewCard = () => {
   const allConnections = [...allFirstDegreeConnections, ...sampleSecondDegreeConnections];
   const card = allConnections.find(c => c.id === id);
   
-  const isDirectConnection = card?.connectionDegree === 1;
+  // Explicitly check the connection degree, default to 1st degree if not specified
+  const isDirectConnection = card ? (card.connectionDegree === 2 ? false : true) : true;
   
   const handleRequestIntro = (mutualConnectionName: string) => {
     setSelectedMutualConnection(mutualConnectionName);

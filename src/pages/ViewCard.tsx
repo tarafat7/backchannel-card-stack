@@ -85,7 +85,7 @@ const ViewCard = () => {
         open={introDialogOpen} 
         onOpenChange={setIntroDialogOpen}
         personName={card.name}
-        mutualConnection={selectedMutualConnection || (card.mutualConnections ? card.mutualConnections[0] : "Jordan Lee")}
+        mutualConnection={selectedMutualConnection || (card.mutualConnections && card.mutualConnections.length > 0 ? card.mutualConnections[0] : "Jordan Lee")}
       />
     </>
   );
