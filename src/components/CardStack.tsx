@@ -1,10 +1,8 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
-import { ChevronUp } from 'lucide-react';
-import StackedCard from './stack/StackedCard';
-import EmptyStackState from './stack/EmptyStackState';
-import { useIsMobile } from '@/hooks/use-mobile';
+import BusinessCard from './BusinessCard';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 
 type CardStackProps = {
   cards: BusinessCardType[];
@@ -13,31 +11,12 @@ type CardStackProps = {
 
 const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
-  const [cardOrder, setCardOrder] = useState<number[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
-  
-  // Initialize or update card order when cards change
-  useEffect(() => {
-    setCardOrder(Array.from({ length: cards.length }, (_, i) => i));
-  }, [cards.length]);
   
   const handleCardClick = (index: number, id: string) => {
     if (expandedCardIndex === index) {
-      onCardClick(id); // Navigate to detail view on second click
+      onCardClick(id);
     } else {
       setExpandedCardIndex(index);
-      
-      // When clicking a card, bring it to the front by updating the order
-      const newOrder = [...cardOrder];
-      const clickedCardPosition = newOrder.indexOf(index);
-      
-      // Remove the clicked card from its position
-      newOrder.splice(clickedCardPosition, 1);
-      // Add it to the beginning (top of the stack)
-      newOrder.unshift(index);
-      
-      setCardOrder(newOrder);
     }
   };
 
@@ -45,69 +24,77 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     setExpandedCardIndex(null);
   };
 
-  if (cards.length === 0) {
-    return <EmptyStackState />;
-  }
-
   return (
-    <div className="fixed inset-x-0 bottom-16 flex items-end justify-center">
-      <div 
-        className={`relative w-full max-w-md mx-auto transition-all duration-300 px-4 pb-4 ${
-          expandedCardIndex !== null ? 'h-[calc(100vh-148px)]' : 'h-auto'
-        }`}
-        ref={containerRef}
-      >
-        {expandedCardIndex !== null && (
-          <button
-            onClick={handleCollapseStack}
-            className="absolute top-4 right-4 z-50 bg-black/30 backdrop-blur-sm p-1 rounded-full"
-          >
-            <ChevronUp className="w-4 h-4 text-white transform rotate-180" />
-          </button>
-        )}
+    <div className="relative w-full max-w-md mx-auto mt-4 pt-12 pb-12">
+      {/* Main card stack */}
+      {cards.map((card, index) => {
+        const isExpanded = expandedCardIndex === index;
+        const zIndex = cards.length - index;
+        const isActive = expandedCardIndex === null || isExpanded;
+        const isPrevious = expandedCardIndex !== null && index < expandedCardIndex;
+        const isNext = expandedCardIndex !== null && index > expandedCardIndex;
         
-        <div className={`relative ${expandedCardIndex !== null ? 'h-full' : 'h-auto'} overflow-visible`}>
-          {/* Card Count Overlay */}
-          {expandedCardIndex === null && (
-            <div className="absolute bottom-8 w-full flex justify-center z-10 pointer-events-none">
-              <div className="text-white text-sm font-medium bg-black/40 backdrop-blur-sm py-1 px-3 rounded-full">
-                {cards.length} {cards.length === 1 ? 'Card' : 'Cards'}
-              </div>
+        // Calculate position based on state
+        let translateY = index * 12; // Default stacked position
+        
+        if (expandedCardIndex !== null) {
+          if (isExpanded) {
+            translateY = 0; // Focused card at the top
+          } else if (isPrevious) {
+            translateY = -100; // Cards above the focused card
+          } else if (isNext) {
+            translateY = 100 + (index - expandedCardIndex - 1) * 30; // Cards below the focused card
+          }
+        }
+        
+        return (
+          <div
+            key={card.id}
+            className={`absolute w-full transition-all duration-300 ease-in-out cursor-pointer
+              ${isExpanded ? 'scale-100' : 'scale-95'}
+              ${isActive ? 'opacity-100' : 'opacity-70'}
+              ${isPrevious ? 'pointer-events-none' : ''}
+            `}
+            style={{
+              transform: `translateY(${translateY}px) ${isExpanded ? 'scale(1)' : ''}`,
+              zIndex: zIndex,
+            }}
+            onClick={() => handleCardClick(index, card.id)}
+          >
+            <div className="relative">
+              <BusinessCard card={card} isPreview={false} />
+              {isExpanded && (
+                <button
+                  className="absolute top-2 right-2 bg-black/30 p-1 rounded-full"
+                  onClick={handleCollapseStack}
+                >
+                  <ChevronDown className="w-4 h-4 text-white" />
+                </button>
+              )}
+              {!isExpanded && expandedCardIndex === null && index === 0 && (
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center mb-[-20px]">
+                  <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
+                    <ChevronUp className="w-4 h-4 text-primary" />
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-          
-          {cardOrder.map((originalIndex, displayIndex) => {
-            const card = cards[originalIndex];
-            const isExpanded = expandedCardIndex === originalIndex;
-            const zIndex = cards.length - displayIndex;
-            const isActive = expandedCardIndex === null || isExpanded;
-            
-            return (
-              <StackedCard
-                key={`card-${card.id}-${originalIndex}`}
-                card={card}
-                isExpanded={isExpanded}
-                isActive={isActive}
-                displayIndex={displayIndex}
-                expandedCardIndex={expandedCardIndex}
-                cardOrder={cardOrder}
-                zIndex={zIndex}
-                onCardClick={() => handleCardClick(originalIndex, card.id)}
-                onCollapse={handleCollapseStack}
-                showExpandHint={!isExpanded && expandedCardIndex === null && displayIndex === 0}
-              />
-            );
-          })}
-          
-          {expandedCardIndex === null && (
-            <div className="absolute bottom-[-12px] left-0 right-0 flex justify-center">
-              <div className="bg-black/40 backdrop-blur-sm p-1 rounded-full">
-                <ChevronUp className="w-4 h-4 text-white" />
-              </div>
-            </div>
-          )}
+          </div>
+        );
+      })}
+      
+      {/* Empty state message */}
+      {cards.length === 0 && (
+        <div className="text-center p-8 bg-secondary/50 rounded-xl border border-white/5">
+          <p className="text-muted-foreground">No business cards yet</p>
+          <p className="text-xs text-muted-foreground/70 mt-1">
+            Connect with others to start building your network
+          </p>
         </div>
-      </div>
+      )}
+      
+      {/* Extra spacing at the bottom to allow for expansion */}
+      {expandedCardIndex !== null && <div className="h-[400px]"></div>}
     </div>
   );
 };

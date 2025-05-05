@@ -63,11 +63,11 @@
   }
 
   .social-icon-button {
-    @apply flex items-center justify-center w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 transition-colors;
+    @apply flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors;
   }
   
   .chip {
-    @apply rounded-full bg-white/10 text-white/80 whitespace-nowrap;
+    @apply px-3 py-1 text-xs rounded-full bg-white/10 text-white/80 whitespace-nowrap;
   }
   
   .chip-selected {
@@ -85,7 +85,7 @@
   
   .card-stack-item {
     @apply absolute w-full transition-all duration-300;
-    transform-origin: bottom center;
+    transform-origin: top center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
@@ -128,59 +128,25 @@
 @keyframes card-expand {
   from {
     transform: translateY(var(--offset)) scale(0.95);
-    opacity: 0.9;
   }
   to {
-    transform: translateY(-100px) scale(1);
-    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes card-collapse {
   from {
-    transform: translateY(-100px) scale(1);
-    opacity: 1;
+    transform: translateY(0) scale(1);
   }
   to {
     transform: translateY(var(--offset)) scale(0.95);
-    opacity: 0.9;
   }
 }
 
 .card-expanding {
-  animation: card-expand 0.3s forwards cubic-bezier(0.16, 1, 0.3, 1);
+  animation: card-expand 0.3s forwards ease-out;
 }
 
 .card-collapsing {
-  animation: card-collapse 0.3s forwards cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Apple Wallet style background patterns */
-.bg-subtle-grid {
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Apple Wallet style card gradients */
-.bg-gradient-card-1 {
-  background: linear-gradient(135deg, #1a1f2c 0%, #2c3345 100%);
-}
-
-.bg-gradient-card-2 {
-  background: linear-gradient(135deg, #6e59a5 0%, #9b87f5 100%);
-}
-
-.bg-gradient-card-3 {
-  background: linear-gradient(135deg, #403e43 0%, #5e5c62 100%);
-}
-
-/* Add more wallet-like card styles */
-.bg-gradient-card-4 {
-  background: linear-gradient(135deg, #24283b 0%, #414868 100%);
-}
-
-.bg-gradient-card-5 {
-  background: linear-gradient(135deg, #292e42 0%, #545c7e 100%);
+  animation: card-collapse 0.3s forwards ease-in;
 }

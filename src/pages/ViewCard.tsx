@@ -1,7 +1,7 @@
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Edit2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
 import FullBusinessCard from '@/components/cards/FullBusinessCard';
@@ -12,9 +12,8 @@ import IntroRequestDialog from '@/components/dialogs/IntroRequestDialog';
 const ViewCard = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { connections, profile, updateBusinessCard } = useAppContext();
+  const { connections } = useAppContext();
   const [introDialogOpen, setIntroDialogOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   
   // Get the card for this ID (combining sample data and real connections)
   const sampleConnections = [
@@ -62,17 +61,6 @@ const ViewCard = () => {
   const allConnections = [...connections, ...sampleConnections];
   const card = allConnections.find(c => c.id === id);
   
-  // Check if this is the user's own card
-  const isOwnCard = profile.card && profile.card.id === id;
-
-  // Handle saving edited card
-  const handleSaveCard = (updatedCard) => {
-    if (isOwnCard) {
-      updateBusinessCard(updatedCard);
-      setIsEditing(false);
-    }
-  };
-  
   if (!card) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -87,7 +75,7 @@ const ViewCard = () => {
     <>
       <div className="min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <header className="p-4 flex justify-between items-center sticky top-0 bg-background/80 backdrop-blur-xl z-10">
+        <header className="p-4 flex justify-start items-center sticky top-0 bg-background/80 backdrop-blur-xl z-10">
           <Button 
             variant="ghost" 
             size="icon"
@@ -95,40 +83,22 @@ const ViewCard = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          
-          {isOwnCard && !isEditing && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsEditing(true)}
-              className="text-primary"
-            >
-              <Edit2 className="w-5 h-5" />
-            </Button>
-          )}
         </header>
 
-        <FullBusinessCard 
-          card={card} 
-          isEditing={isEditing} 
-          onSave={handleSaveCard}
-          onCancelEdit={() => setIsEditing(false)}
-        />
+        <FullBusinessCard card={card} />
         
         {/* Connection Info */}
-        {!isEditing && card.sharedConnections && card.sharedConnections.length > 0 && (
-          <div className="px-4 py-2 mb-4">
+        <div className="px-4 py-2 mb-4">
+          {card.sharedConnections && card.sharedConnections.length > 0 && (
             <SharedConnections connections={card.sharedConnections} />
-          </div>
-        )}
+          )}
+        </div>
           
-        {!isEditing && (
-          <CardActions 
-            isDirectConnection={isDirectConnection}
-            onRequestIntro={() => setIntroDialogOpen(true)}
-            personName={card.name}
-          />
-        )}
+        <CardActions 
+          isDirectConnection={isDirectConnection}
+          onRequestIntro={() => setIntroDialogOpen(true)}
+          personName={card.name}
+        />
       </div>
       
       <IntroRequestDialog 

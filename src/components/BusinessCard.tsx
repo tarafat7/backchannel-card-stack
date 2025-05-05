@@ -1,6 +1,7 @@
 
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
-import { ExternalLink, Github, Twitter, Link as LinkIcon, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ExternalLink, Github, Twitter, Link as LinkIcon } from 'lucide-react';
 
 type BusinessCardProps = {
   card: BusinessCardType;
@@ -28,14 +29,13 @@ const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) =
 
   return (
     <div
-      className={`business-card ${card.design.backgroundStyle} ${isPreview ? 'h-56' : 'h-44'}`}
+      className={`business-card ${card.design.backgroundStyle} ${isPreview ? 'w-full h-56' : 'w-full sm:w-60 h-36'}`}
       style={{ color: card.design.textColor }}
       onClick={handleClick}
     >
       <div className="relative h-full p-4 flex flex-col justify-between overflow-hidden">
-        {/* Top section with name and avatar */}
         <div className="flex items-start gap-3">
-          <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20 flex-shrink-0">
+          <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20">
             {card.avatar && (
               <img 
                 src={card.avatar} 
@@ -45,33 +45,28 @@ const BusinessCard = ({ card, isPreview = false, onClick }: BusinessCardProps) =
             )}
           </div>
           <div className="flex-1 overflow-hidden">
-            <h3 className="font-semibold text-base truncate">{card.name}</h3>
-            <p className="text-sm opacity-90 truncate">{card.title}</p>
+            <h3 className="font-semibold text-sm truncate">{card.name}</h3>
+            <p className="text-xs opacity-90 truncate">{card.title}</p>
             <p className="text-xs opacity-70 truncate">{card.company}</p>
           </div>
         </div>
         
-        {/* Status badge - Apple Wallet style */}
         {card.status && (
-          <div className="px-2 py-1 bg-black/10 rounded-md text-xs mt-2 backdrop-blur-sm w-fit">
-            <div className="flex items-center gap-1.5">
-              <MapPin className="w-3 h-3 opacity-70" />
-              <span>{card.status}</span>
-            </div>
+          <div className="px-2 py-1 bg-black/10 rounded text-xs mt-2 backdrop-blur-sm w-fit">
+            {card.status}
           </div>
         )}
         
-        {/* Bottom section with expertise and links */}
         <div className="mt-2">
           {card.expertiseAreas && card.expertiseAreas.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-2">
               {card.expertiseAreas.slice(0, isPreview ? 5 : 2).map((area, index) => (
-                <span key={index} className="chip text-[10px] px-1.5 py-0.5">
+                <span key={index} className="chip text-[10px]">
                   {area}
                 </span>
               ))}
               {card.expertiseAreas.length > (isPreview ? 5 : 2) && (
-                <span className="chip text-[10px] px-1.5 py-0.5">+{card.expertiseAreas.length - (isPreview ? 5 : 2)}</span>
+                <span className="chip text-[10px]">+{card.expertiseAreas.length - (isPreview ? 5 : 2)}</span>
               )}
             </div>
           )}
