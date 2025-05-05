@@ -39,7 +39,8 @@ const Onboarding = () => {
         design: {
           backgroundStyle: selectedBackground,
           textColor: textColor
-        }
+        },
+        mutualConnections: [] // Add the required property
       });
     }
   }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep, updateBusinessCard]);

@@ -5,9 +5,10 @@ import { useAppContext } from '../context/AppContext';
 import BottomNav from '../components/BottomNav';
 import HomeHeader from '../components/home/HomeHeader';
 import HomeContent from '../components/home/HomeContent';
+import { BusinessCard } from '../context/AppContext';
 
 // Sample connection data
-const sampleConnections = [
+const sampleConnections: BusinessCard[] = [
   {
     id: '2',
     name: 'Sam Wilson',
@@ -25,8 +26,8 @@ const sampleConnections = [
       textColor: 'text-white'
     },
     connectionDate: '2023-10-15',
-    connectionEvent: 'React Conference',
-    connectionDegree: 1,
+    connectionEvent: '2023-10-15',
+    connectionDegree: 1 as 1,
     mutualConnections: []
   },
   {
@@ -46,7 +47,7 @@ const sampleConnections = [
     },
     connectionDate: '2023-11-02',
     connectionEvent: 'Startup Mixer',
-    connectionDegree: 1,
+    connectionDegree: 1 as 1,
     mutualConnections: []
   },
   {
@@ -67,7 +68,7 @@ const sampleConnections = [
     },
     connectionDate: '2023-09-20',
     connectionEvent: 'YC Demo Day',
-    connectionDegree: 1,
+    connectionDegree: 1 as 1,
     mutualConnections: []
   },
   {
@@ -85,13 +86,13 @@ const sampleConnections = [
     },
     connectionDate: '2023-08-05',
     connectionEvent: 'Marketing Meetup',
-    connectionDegree: 1,
+    connectionDegree: 1 as 1,
     mutualConnections: []
   }
 ];
 
 // Sample second degree connections
-const sampleSecondDegreeConnections = [
+const sampleSecondDegreeConnections: BusinessCard[] = [
   {
     id: '6',
     name: 'Alicia Chen',
@@ -107,7 +108,7 @@ const sampleSecondDegreeConnections = [
       backgroundStyle: 'bg-gradient-card-1',
       textColor: 'text-white'
     },
-    connectionDegree: 2,
+    connectionDegree: 2 as 2,
     mutualConnections: ['Riley Johnson', 'Sam Wilson']
   },
   {
@@ -126,7 +127,7 @@ const sampleSecondDegreeConnections = [
       backgroundStyle: 'bg-black',
       textColor: 'text-white'
     },
-    connectionDegree: 2,
+    connectionDegree: 2 as 2,
     mutualConnections: ['Sam Wilson']
   },
   {
@@ -144,7 +145,7 @@ const sampleSecondDegreeConnections = [
       backgroundStyle: 'bg-[#1A1A1A] bg-subtle-grid',
       textColor: 'text-white'
     },
-    connectionDegree: 2,
+    connectionDegree: 2 as 2,
     mutualConnections: ['Jordan Lee']
   }
 ];

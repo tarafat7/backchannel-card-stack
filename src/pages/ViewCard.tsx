@@ -2,7 +2,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, MessageCircle, Share2, User, Users } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext, BusinessCard } from '../context/AppContext';
 import { useState } from 'react';
 import FullBusinessCard from '@/components/cards/FullBusinessCard';
 import SharedConnections from '@/components/shared/SharedConnections';
@@ -18,7 +18,7 @@ const ViewCard = () => {
   const [selectedMutualConnection, setSelectedMutualConnection] = useState<string | null>(null);
   
   // Get the card for this ID (combining sample data and real connections)
-  const sampleConnections = [
+  const sampleConnections: BusinessCard[] = [
     {
       id: '2',
       name: 'Sam Wilson',
@@ -37,7 +37,7 @@ const ViewCard = () => {
       },
       connectionDate: '2023-10-15',
       connectionEvent: 'React Conference',
-      connectionDegree: 1,
+      connectionDegree: 1 as 1,
       mutualConnections: []
     },
     {
@@ -57,13 +57,13 @@ const ViewCard = () => {
       },
       connectionDate: '2023-11-02',
       connectionEvent: 'Startup Mixer',
-      connectionDegree: 1,
+      connectionDegree: 1 as 1,
       mutualConnections: []
     }
   ];
   
   // Sample second degree connections
-  const sampleSecondDegreeConnections = [
+  const sampleSecondDegreeConnections: BusinessCard[] = [
     {
       id: '6',
       name: 'Alicia Chen',
@@ -79,7 +79,7 @@ const ViewCard = () => {
         backgroundStyle: 'bg-gradient-card-1',
         textColor: 'text-white'
       },
-      connectionDegree: 2,
+      connectionDegree: 2 as 2,
       mutualConnections: ['Riley Johnson', 'Sam Wilson']
     },
     {
@@ -98,7 +98,7 @@ const ViewCard = () => {
         backgroundStyle: 'bg-black',
         textColor: 'text-white'
       },
-      connectionDegree: 2,
+      connectionDegree: 2 as 2,
       mutualConnections: ['Sam Wilson']
     },
     {
@@ -116,7 +116,7 @@ const ViewCard = () => {
         backgroundStyle: 'bg-[#1A1A1A] bg-subtle-grid',
         textColor: 'text-white'
       },
-      connectionDegree: 2,
+      connectionDegree: 2 as 2,
       mutualConnections: ['Jordan Lee']
     }
   ];
