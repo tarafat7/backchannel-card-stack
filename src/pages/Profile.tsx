@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,15 +6,21 @@ import { Settings, ChevronRight, Edit2 } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import BusinessCard from '../components/BusinessCard';
 import { useAppContext } from '../context/AppContext';
+import CardEditorDialog from '../components/profile/CardEditorDialog';
 
 const Profile = () => {
-  const { profile } = useAppContext();
+  const { profile, updateBusinessCard } = useAppContext();
   const [isEditing, setIsEditing] = useState(false);
   const [statusText, setStatusText] = useState(profile.card?.status || "");
+  const [cardEditorOpen, setCardEditorOpen] = useState(false);
 
   const handleStatusUpdate = () => {
     // In a real app, you'd update the status in your context or API
     setIsEditing(false);
+  };
+
+  const handleCardUpdate = (updatedCard) => {
+    updateBusinessCard(updatedCard);
   };
 
   return (
@@ -42,11 +47,21 @@ const Profile = () => {
           <Button 
             variant="outline" 
             className="w-full mt-3"
-            onClick={() => {}}
+            onClick={() => setCardEditorOpen(true)}
           >
             Edit Card Design
             <Edit2 className="w-4 h-4 ml-2" />
           </Button>
+          
+          {/* Card Editor Dialog */}
+          {profile.card && (
+            <CardEditorDialog
+              open={cardEditorOpen}
+              onOpenChange={setCardEditorOpen}
+              card={profile.card}
+              onSave={handleCardUpdate}
+            />
+          )}
         </section>
         
         <section className="mb-8">
