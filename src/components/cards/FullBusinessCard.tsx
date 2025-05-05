@@ -10,21 +10,16 @@ type FullBusinessCardProps = {
 };
 
 const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
-  // Define solid background color based on the card's background style
-  let solidBgColor = "bg-[#0f0f10]"; // Default dark background
+  // Get background style from card design
+  const backgroundStyle = card.design.backgroundStyle;
   
-  if (card.design.backgroundStyle.includes("bg-gradient-card-2")) {
-    solidBgColor = "bg-[#5B61F3]"; // Solid color for gradient-2
-  } else if (card.design.backgroundStyle.includes("bg-gradient-card-3")) {
-    solidBgColor = "bg-[#2166EE]"; // Solid color for gradient-3
-  } else if (card.design.backgroundStyle.includes("bg-black")) {
-    solidBgColor = "bg-[#222222]"; // Dark gray instead of pure black
-  } else if (card.design.backgroundStyle.includes("bg-[#1A1A1A]")) {
-    solidBgColor = "bg-[#1A1A1A]"; // Keep the original dark gray
-  }
+  // Apply the background directly if it's a custom hex value
+  const cardStyle = backgroundStyle.startsWith('bg-[') 
+    ? { backgroundColor: backgroundStyle.slice(4, -1) }
+    : {};
   
   return (
-    <div className={`m-4 p-6 rounded-xl shadow-lg ${solidBgColor}`}>
+    <div className={`m-4 p-6 rounded-xl shadow-lg ${backgroundStyle}`} style={cardStyle}>
       <div className={`h-full ${card.design.textColor}`}>
         <div className="flex items-start gap-4 mb-4">
           <div className="w-20 h-20 rounded-full bg-black/20 overflow-hidden border border-white/20">

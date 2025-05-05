@@ -23,11 +23,28 @@ export const mockLinkedInData = {
 };
 
 export const backgroundOptions = [
-  'bg-gradient-card-1',
-  'bg-gradient-card-2',
-  'bg-gradient-card-3',
-  'bg-[#222222]', // Changed from bg-black to a dark gray
-  'bg-[#1A1A1A] bg-subtle-grid'
+  // Gradients
+  'bg-gradient-card-1', // Purple gradient
+  'bg-gradient-card-2', // Blue-purple gradient
+  'bg-gradient-card-3', // Green-blue gradient
+  'bg-gradient-to-r from-blue-500 to-purple-500', // Blue to purple
+  'bg-gradient-to-r from-green-400 to-blue-500', // Green to blue
+  'bg-gradient-to-r from-pink-500 to-orange-500', // Pink to orange
+  'bg-gradient-to-r from-yellow-400 to-orange-500', // Yellow to orange
+  'bg-gradient-to-r from-teal-400 to-blue-500', // Teal to blue
+  // Solid colors
+  'bg-[#222222]', // Dark gray
+  'bg-[#1A1A1A]', // Black
+  'bg-[#0f172a]', // Navy blue
+  'bg-[#7e22ce]', // Purple
+  'bg-[#0891b2]', // Cyan
+  'bg-[#16a34a]', // Green
+  'bg-[#ca8a04]', // Yellow
+  'bg-[#dc2626]', // Red
+  // Patterns
+  'bg-[#1A1A1A] bg-subtle-grid', // Subtle grid
+  'bg-[#222222] bg-dots-pattern', // Dots pattern
+  'bg-[#0f172a] bg-lines-pattern', // Lines pattern
 ];
 
 export const expertise = [

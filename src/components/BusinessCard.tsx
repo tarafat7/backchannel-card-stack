@@ -1,3 +1,4 @@
+
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Github, Twitter, Link as LinkIcon, User } from 'lucide-react';
@@ -28,26 +29,21 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
     }
   };
 
-  // Define solid background color based on the card's background style
-  let solidBgColor = "bg-[#0f0f10]"; // Default dark background
+  // Get background style from card design
+  const backgroundStyle = card.design.backgroundStyle;
   
-  if (card.design.backgroundStyle.includes("bg-gradient-card-2")) {
-    solidBgColor = "bg-[#5B61F3]"; // Solid color for gradient-2
-  } else if (card.design.backgroundStyle.includes("bg-gradient-card-3")) {
-    solidBgColor = "bg-[#2166EE]"; // Solid color for gradient-3
-  } else if (card.design.backgroundStyle.includes("bg-black")) {
-    solidBgColor = "bg-[#222222]"; // Dark gray instead of pure black
-  } else if (card.design.backgroundStyle.includes("bg-[#1A1A1A]")) {
-    solidBgColor = "bg-[#1A1A1A]"; // Keep the original dark gray
-  }
+  // Apply the background directly if it's a custom hex value
+  const cardStyle = backgroundStyle.startsWith('bg-[') 
+    ? { backgroundColor: backgroundStyle.slice(4, -1) }
+    : {};
 
   // Determine if this is a 2nd-degree connection
   const isSecondDegree = card.connectionDegree === 2;
 
   return (
     <div
-      className={`business-card ${solidBgColor} ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`}
-      style={{ color: card.design.textColor }}
+      className={`business-card ${backgroundStyle} ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`}
+      style={{ color: card.design.textColor, ...cardStyle }}
       onClick={handleClick}
     >
       {/* Badge for 2nd-degree connections */}
