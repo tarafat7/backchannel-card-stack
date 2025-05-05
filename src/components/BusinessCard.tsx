@@ -1,5 +1,4 @@
-
-import { BusinessCardType } from '../context/AppContext';
+import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Github, Twitter, Link as LinkIcon, User } from 'lucide-react';
 import ProfessionalHistory from './ProfessionalHistory';
