@@ -15,6 +15,13 @@ const EmptyStackState: React.FC = () => {
         <Button variant="outline" size="sm" className="mt-2">
           Add New Card
         </Button>
+        
+        {/* Card Count Overlay - Even though empty, we show 0 Cards */}
+        <div className="absolute bottom-[-28px] w-full flex justify-center">
+          <div className="text-white text-sm font-medium bg-black/40 backdrop-blur-sm py-1 px-3 rounded-full">
+            0 Cards
+          </div>
+        </div>
       </div>
     </div>
   );

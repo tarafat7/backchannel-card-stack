@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
-import { ChevronUp, X } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 import StackedCard from './stack/StackedCard';
 import EmptyStackState from './stack/EmptyStackState';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -50,10 +50,10 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-16 flex items-end justify-center h-[calc(100vh-148px)]">
+    <div className="fixed inset-x-0 bottom-16 flex items-end justify-center">
       <div 
-        className={`relative w-full max-w-md mx-auto transition-all duration-300 ${
-          expandedCardIndex !== null ? 'h-full pb-4' : 'h-auto'
+        className={`relative w-full max-w-md mx-auto transition-all duration-300 px-4 pb-4 ${
+          expandedCardIndex !== null ? 'h-[calc(100vh-148px)]' : 'h-auto'
         }`}
         ref={containerRef}
       >
@@ -62,11 +62,20 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
             onClick={handleCollapseStack}
             className="absolute top-4 right-4 z-50 bg-black/30 backdrop-blur-sm p-1 rounded-full"
           >
-            <X className="w-4 h-4 text-white" />
+            <ChevronUp className="w-4 h-4 text-white transform rotate-180" />
           </button>
         )}
         
-        <div className={`relative ${expandedCardIndex !== null ? 'h-full' : 'h-auto'} overflow-visible px-2`}>
+        <div className={`relative ${expandedCardIndex !== null ? 'h-full' : 'h-auto'} overflow-visible`}>
+          {/* Card Count Overlay */}
+          {expandedCardIndex === null && (
+            <div className="absolute bottom-8 w-full flex justify-center z-10 pointer-events-none">
+              <div className="text-white text-sm font-medium bg-black/40 backdrop-blur-sm py-1 px-3 rounded-full">
+                {cards.length} {cards.length === 1 ? 'Card' : 'Cards'}
+              </div>
+            </div>
+          )}
+          
           {cardOrder.map((originalIndex, displayIndex) => {
             const card = cards[originalIndex];
             const isExpanded = expandedCardIndex === originalIndex;
