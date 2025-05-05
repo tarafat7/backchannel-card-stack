@@ -6,27 +6,16 @@ type ConnectionCounterProps = {
   label?: string;
   isClickable?: boolean;
   showArrow?: boolean; // Prop to control arrow visibility
-  onClick?: () => void; // Added onClick handler
 };
 
 const ConnectionCounter = ({ 
   totalConnections, 
   label, 
   isClickable = false, 
-  showArrow = true, // Default to showing the arrow
-  onClick
+  showArrow = true // Default to showing the arrow
 }: ConnectionCounterProps) => {
-  const handleClick = () => {
-    if (isClickable && onClick) {
-      onClick();
-    }
-  };
-
   return (
-    <div 
-      className={`flex items-center justify-center py-3 bg-background ${isClickable ? 'cursor-pointer hover:bg-secondary/30 transition-colors' : ''}`}
-      onClick={handleClick}
-    >
+    <div className={`flex items-center justify-center py-3 bg-background ${isClickable ? 'cursor-pointer hover:bg-secondary/30 transition-colors' : ''}`}>
       <div className="flex flex-col items-center">
         <span className="text-2xl font-medium">{totalConnections}</span>
         <span className="text-xs uppercase text-muted-foreground tracking-wide">
