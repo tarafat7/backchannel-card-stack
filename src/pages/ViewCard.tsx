@@ -61,7 +61,7 @@ const ViewCard = () => {
 
         <FullBusinessCard card={card} />
 
-        {/* Connection Counter (clickable) - explicitly set showArrow to false */}
+        {/* Connection Counter (clickable) - make sure it has no arrow */}
         {card.connectionCount !== undefined && (
           <div className="mt-4 cursor-pointer" onClick={handleConnectionCounterClick}>
             <ConnectionCounter 

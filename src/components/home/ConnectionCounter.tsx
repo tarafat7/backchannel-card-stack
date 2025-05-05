@@ -5,7 +5,7 @@ type ConnectionCounterProps = {
   totalConnections: number;
   label?: string;
   isClickable?: boolean;
-  showArrow?: boolean; // New prop to control arrow visibility
+  showArrow?: boolean; // Prop to control arrow visibility
 };
 
 const ConnectionCounter = ({ 
