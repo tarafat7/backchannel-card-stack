@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Swatch, Droplets, Palette, Image } from 'lucide-react';
+import { ArrowRight, Paintbrush, Droplets, Palette, Image } from 'lucide-react';
 import BusinessCard from '../BusinessCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
@@ -139,7 +138,7 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
             <span className="hidden sm:inline">Gradient</span>
           </TabsTrigger>
           <TabsTrigger value="custom" className="flex items-center gap-1">
-            <Swatch className="w-4 h-4" />
+            <Paintbrush className="w-4 h-4" />
             <span className="hidden sm:inline">Custom</span>
           </TabsTrigger>
           <TabsTrigger value="image" className="flex items-center gap-1">
