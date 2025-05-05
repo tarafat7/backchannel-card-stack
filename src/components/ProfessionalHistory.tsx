@@ -77,6 +77,59 @@ const sampleHistories: Record<string, { position: string; company: string; durat
       company: 'Adobe',
       duration: '2016 - 2018'
     }
+  ],
+  // Adding professional experience for 2nd degree connections
+  '6': [
+    {
+      position: 'Senior UX Designer',
+      company: 'Shopify',
+      duration: '2021 - Present',
+      description: 'Leading design team for merchant experience initiatives.'
+    },
+    {
+      position: 'UX Designer',
+      company: 'Facebook',
+      duration: '2018 - 2021',
+      description: 'Improved mobile app engagement by 22% through interface redesign.'
+    }
+  ],
+  '7': [
+    {
+      position: 'Tech Lead',
+      company: 'Airbnb',
+      duration: '2022 - Present',
+      description: 'Leading mobile application development team.'
+    },
+    {
+      position: 'Senior Developer',
+      company: 'Twitter',
+      duration: '2019 - 2022',
+      description: 'Architected and implemented core components of the main feed.'
+    },
+    {
+      position: 'Frontend Developer',
+      company: 'Google',
+      duration: '2017 - 2019'
+    }
+  ],
+  '8': [
+    {
+      position: 'Venture Capitalist',
+      company: 'Sequoia Capital',
+      duration: '2020 - Present',
+      description: 'Leading investments in early-stage SaaS and fintech startups.'
+    },
+    {
+      position: 'Investment Associate',
+      company: 'Andreessen Horowitz',
+      duration: '2018 - 2020',
+      description: 'Analyzed and evaluated investment opportunities in tech sector.'
+    },
+    {
+      position: 'Financial Analyst',
+      company: 'Goldman Sachs',
+      duration: '2016 - 2018'
+    }
   ]
 };
 
