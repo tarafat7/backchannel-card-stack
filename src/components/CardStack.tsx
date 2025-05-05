@@ -35,15 +35,14 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
           const zIndex = cards.length - index;
           
           // Calculate position based on state
-          // Show all cards at the bottom with only a small portion visible by default
           let translateY = 0;
           let opacity = 1;
           let scale = 1;
           
           if (expandedCardIndex === null) {
             // When no card is expanded, stack all cards at the bottom
-            // with just enough showing to see each one
-            translateY = index * 60; // Each card shows about 60px
+            // but showing the top portion of each card (around 80px visible)
+            translateY = index * 80; 
           } else {
             if (index === expandedCardIndex) {
               // This is the expanded card, show it at the top
@@ -53,8 +52,8 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
               translateY = -500;
               opacity = 0;
             } else {
-              // Cards that should be below the expanded card
-              translateY = 400 + (index - expandedCardIndex) * 60;
+              // Cards that should be below the expanded card, showing top portions
+              translateY = 400 + (index - expandedCardIndex) * 80;
             }
           }
           
