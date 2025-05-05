@@ -29,6 +29,11 @@ const ViewCard = () => {
     );
   }
   
+  // Get the first mutual connection name for the button text
+  const firstMutualConnection = card.mutualConnections && card.mutualConnections.length > 0 
+    ? card.mutualConnections[0] 
+    : undefined;
+  
   return (
     <>
       <div className="min-h-screen bg-background flex flex-col">
@@ -72,6 +77,7 @@ const ViewCard = () => {
           isDirectConnection={isDirectConnection}
           onRequestIntro={() => setIntroDialogOpen(true)}
           personName={card.name}
+          mutualConnectionName={firstMutualConnection}
         />
       </div>
       

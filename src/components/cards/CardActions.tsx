@@ -8,9 +8,10 @@ type CardActionsProps = {
   isDirectConnection: boolean;
   onRequestIntro: () => void;
   personName: string;
+  mutualConnectionName?: string;
 };
 
-const CardActions = ({ isDirectConnection, onRequestIntro, personName }: CardActionsProps) => {
+const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualConnectionName }: CardActionsProps) => {
   const handleSendMessage = () => {
     toast({
       title: "Message Sent",
@@ -33,7 +34,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName }: CardAct
           className="w-full mb-3"
           onClick={onRequestIntro}
         >
-          Request Intro
+          {mutualConnectionName ? `Ask ${mutualConnectionName} for an intro` : "Request Intro"}
           <ExternalLink className="w-4 h-4 ml-2" />
         </Button>
       )}
