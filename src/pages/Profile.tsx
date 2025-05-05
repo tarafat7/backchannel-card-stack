@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +10,8 @@ import CardEditorDialog from '../components/profile/CardEditorDialog';
 import ExperienceEditor from '../components/profile/ExperienceEditor';
 import ExpertiseEditor from '../components/profile/ExpertiseEditor';
 import { useToast } from '@/components/ui/use-toast';
+
+const MAX_STATUS_LENGTH = 100;
 
 const Profile = () => {
   const { profile, updateBusinessCard, updateProfile } = useAppContext();
@@ -34,6 +35,13 @@ const Profile = () => {
       });
     }
     setIsEditing(false);
+  };
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_STATUS_LENGTH) {
+      setStatusText(value);
+    }
   };
 
   const handleCardUpdate = (updatedCard) => {
@@ -127,24 +135,30 @@ const Profile = () => {
             <div className="space-y-3">
               <Textarea 
                 value={statusText}
-                onChange={(e) => setStatusText(e.target.value)}
+                onChange={handleStatusChange}
                 placeholder="What are you up to now?"
                 className="bg-secondary border-none resize-none"
+                maxLength={MAX_STATUS_LENGTH}
               />
-              <div className="flex gap-2 justify-end">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => setIsEditing(false)}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  size="sm"
-                  onClick={handleStatusUpdate}
-                >
-                  Update
-                </Button>
+              <div className="flex justify-between items-center">
+                <div className="text-xs text-muted-foreground">
+                  {statusText.length}/{MAX_STATUS_LENGTH} characters
+                </div>
+                <div className="flex gap-2 justify-end">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    size="sm"
+                    onClick={handleStatusUpdate}
+                  >
+                    Update
+                  </Button>
+                </div>
               </div>
             </div>
           ) : (

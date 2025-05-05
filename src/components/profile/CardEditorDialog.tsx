@@ -17,6 +17,8 @@ interface CardEditorDialogProps {
   onSave: (card: BusinessCardType) => void;
 }
 
+const MAX_STATUS_LENGTH = 100;
+
 const CardEditorDialog = ({ open, onOpenChange, card, onSave }: CardEditorDialogProps) => {
   const { toast } = useToast();
   
@@ -36,6 +38,13 @@ const CardEditorDialog = ({ open, onOpenChange, card, onSave }: CardEditorDialog
       textColor
     }
   } : null;
+  
+  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_STATUS_LENGTH) {
+      setStatus(value);
+    }
+  };
   
   // Handle save
   const handleSave = () => {
@@ -88,10 +97,14 @@ const CardEditorDialog = ({ open, onOpenChange, card, onSave }: CardEditorDialog
             <label className="text-sm font-medium mb-2 block">Status</label>
             <Input 
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={handleStatusChange}
               placeholder="What are you up to now?"
               className="bg-secondary/50 backdrop-blur-sm border border-white/10"
+              maxLength={MAX_STATUS_LENGTH}
             />
+            <div className="text-xs text-muted-foreground mt-1">
+              {status.length}/{MAX_STATUS_LENGTH} characters
+            </div>
           </div>
           
           <CardLinks 

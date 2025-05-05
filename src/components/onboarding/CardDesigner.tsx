@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +18,8 @@ interface CardDesignerProps {
   onComplete: () => void;
   backgroundOptions: string[];
 }
+
+const MAX_STATUS_LENGTH = 100;
 
 const CardDesigner: React.FC<CardDesignerProps> = ({ 
   card,
@@ -57,6 +58,13 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
   const selectPresetBackground = (bg: string) => {
     setIsUsingCustomColor(false);
     setSelectedBackground(bg);
+  };
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_STATUS_LENGTH) {
+      setStatus(value);
+    }
   };
 
   // Group background options
@@ -162,10 +170,14 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
           <label className="text-sm font-medium mb-2 block">Status</label>
           <Input 
             value={status} 
-            onChange={(e) => setStatus(e.target.value)} 
+            onChange={handleStatusChange} 
             placeholder="What are you up to now?"
             className="bg-secondary/50 backdrop-blur-sm border border-white/10"
+            maxLength={MAX_STATUS_LENGTH}
           />
+          <div className="text-xs text-muted-foreground mt-1">
+            {status.length}/{MAX_STATUS_LENGTH} characters
+          </div>
         </div>
         
         <div>
