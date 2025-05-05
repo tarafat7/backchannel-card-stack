@@ -58,8 +58,8 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
     }
     
     if (activeFilter === 'All') {
-      // Only show 1st degree connections in the 'All' filter
-      return connection.connectionDegree === 1;
+      // Show all connections in the 'All' filter
+      return true;
     }
     
     if (activeFilter === 'Updates') {

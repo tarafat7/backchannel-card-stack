@@ -1,6 +1,6 @@
 import { BusinessCard } from "@/context/AppContext";
 
-// Sample connection data - 10 unique first-degree connections
+// Sample connection data - 42 first-degree connections
 export const sampleConnections: BusinessCard[] = [
   {
     id: '1',
@@ -204,11 +204,8 @@ export const sampleConnections: BusinessCard[] = [
     connectionEvent: 'Web Performance Summit',
     connectionDegree: 1 as 1,
     mutualConnections: []
-  }
-];
-
-// Updated with more second-degree connections
-export const sampleSecondDegreeConnections: BusinessCard[] = [
+  },
+  // Converting second-degree connections to first-degree
   {
     id: '11',
     name: 'Alicia Chen',
@@ -224,8 +221,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-green-400 to-blue-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Olivia Parker', 'Sam Wilson']
+    connectionDate: '2023-08-15',
+    connectionEvent: 'Design Systems Workshop',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '12',
@@ -243,8 +242,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-yellow-400 to-orange-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Sam Wilson']
+    connectionDate: '2023-07-05',
+    connectionEvent: 'Mobile Dev Meetup',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '13',
@@ -261,8 +262,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-[#222222] bg-dots-pattern',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Jordan Lee']
+    connectionDate: '2023-09-12',
+    connectionEvent: 'Seed Funding Panel',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '14',
@@ -280,8 +283,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-teal-400 to-blue-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Sam Wilson', 'Jordan Lee']
+    connectionDate: '2023-10-30',
+    connectionEvent: 'AI Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '15',
@@ -299,8 +304,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-purple-400 to-pink-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Aisha Johnson', 'Sam Wilson']
+    connectionDate: '2023-11-20',
+    connectionEvent: 'VR Developer Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '16',
@@ -317,8 +324,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-[#1A1A1A] bg-subtle-grid',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Marcus Henderson']
+    connectionDate: '2023-07-25',
+    connectionEvent: 'Cloud Native Meetup',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '17',
@@ -335,8 +344,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-indigo-500 to-purple-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Maya Rodriguez', 'Sophia Williams']
+    connectionDate: '2023-08-10',
+    connectionEvent: 'Marketing Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '18',
@@ -353,8 +364,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-red-500 to-pink-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Rajiv Patel', 'Marcus Henderson']
+    connectionDate: '2023-09-18',
+    connectionEvent: 'DevOps Days',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '19',
@@ -372,8 +385,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-green-400 to-emerald-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Elena Martinez', 'Sophia Williams']
+    connectionDate: '2023-10-05',
+    connectionEvent: 'Design Leadership Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '20',
@@ -391,8 +406,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-card-3',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Rajiv Patel']
+    connectionDate: '2023-11-08',
+    connectionEvent: 'Blockchain Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '21',
@@ -409,8 +426,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-[#0f172a] bg-lines-pattern',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Sophia Williams', 'Elena Martinez']
+    connectionDate: '2023-06-22',
+    connectionEvent: 'Design Retreat',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '22',
@@ -427,8 +446,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-[#222222] bg-dots-pattern',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Rajiv Patel', 'Sam Wilson']
+    connectionDate: '2023-07-14',
+    connectionEvent: 'Security Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '23',
@@ -445,8 +466,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-pink-500 to-orange-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Thomas Chen', 'Maya Rodriguez']
+    connectionDate: '2023-10-18',
+    connectionEvent: 'Growth Hackers Meetup',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '24',
@@ -463,8 +486,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-cyan-500 to-blue-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Sam Wilson', 'Marcus Henderson']
+    connectionDate: '2023-08-22',
+    connectionEvent: 'iOS Developers Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '25',
@@ -482,8 +507,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-blue-500 to-indigo-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Rajiv Patel', 'Marcus Henderson']
+    connectionDate: '2023-09-25',
+    connectionEvent: 'Cloud Computing Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '26',
@@ -500,8 +527,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-purple-500 to-pink-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Elena Martinez', 'Sophia Williams']
+    connectionDate: '2023-10-10',
+    connectionEvent: 'Design Meetup',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '27',
@@ -518,8 +547,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-[#1A1A1A] bg-subtle-grid',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Aisha Johnson']
+    connectionDate: '2023-07-30',
+    connectionEvent: 'Data Engineering Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '28',
@@ -537,8 +568,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-green-400 to-teal-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Sam Wilson', 'Marcus Henderson']
+    connectionDate: '2023-11-25',
+    connectionEvent: 'Game Developers Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '29',
@@ -555,8 +588,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-yellow-400 to-orange-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Maya Rodriguez', 'Thomas Chen']
+    connectionDate: '2023-08-15',
+    connectionEvent: 'Content Creator Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '30',
@@ -573,8 +608,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-orange-400 to-amber-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Sam Wilson', 'Marcus Henderson']
+    connectionDate: '2023-09-05',
+    connectionEvent: 'Technical Writers Meetup',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '31',
@@ -591,8 +628,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-[#0f172a] bg-lines-pattern',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Thomas Chen', 'Olivia Parker']
+    connectionDate: '2023-10-12',
+    connectionEvent: 'Data Analytics Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '32',
@@ -609,8 +648,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-pink-400 to-rose-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Sophia Williams', 'Olivia Parker']
+    connectionDate: '2023-11-02',
+    connectionEvent: 'UX Research Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '33',
@@ -628,8 +669,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-teal-400 to-emerald-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Thomas Chen']
+    connectionDate: '2023-08-28',
+    connectionEvent: 'Growth Marketing Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '34',
@@ -646,8 +689,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-blue-400 to-violet-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Aisha Johnson']
+    connectionDate: '2023-10-25',
+    connectionEvent: 'AI Ethics Symposium',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '35',
@@ -664,8 +709,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-[#222222] bg-dots-pattern',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Sam Wilson', 'Marcus Henderson']
+    connectionDate: '2023-07-08',
+    connectionEvent: 'React Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '36',
@@ -682,8 +729,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-fuchsia-500 to-purple-600',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Elena Martinez', 'Sophia Williams']
+    connectionDate: '2023-09-15',
+    connectionEvent: 'Interaction Design Workshop',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '37',
@@ -700,8 +749,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-amber-500 to-orange-600',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Marcus Henderson', 'Olivia Parker']
+    connectionDate: '2023-11-10',
+    connectionEvent: 'Tech Recruiting Event',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '38',
@@ -718,8 +769,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-card-2',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Jordan Lee']
+    connectionDate: '2023-10-02',
+    connectionEvent: 'VC Panel Discussion',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '39',
@@ -736,8 +789,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-[#000000] bg-subtle-grid',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Rajiv Patel', 'Sam Wilson']
+    connectionDate: '2023-07-22',
+    connectionEvent: 'Security Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '40',
@@ -755,8 +810,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-indigo-400 to-blue-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Aisha Johnson']
+    connectionDate: '2023-08-05',
+    connectionEvent: 'ML Summit',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '41',
@@ -773,8 +830,10 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-blue-500 to-cyan-500',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Marcus Henderson', 'Rajiv Patel']
+    connectionDate: '2023-09-28',
+    connectionEvent: 'SRE Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
   },
   {
     id: '42',
@@ -791,9 +850,15 @@ export const sampleSecondDegreeConnections: BusinessCard[] = [
       backgroundStyle: 'bg-gradient-to-r from-slate-500 to-gray-700',
       textColor: 'text-white'
     },
-    connectionDegree: 2 as 2,
-    mutualConnections: ['Elena Martinez', 'Sophia Williams']
-  },
+    connectionDate: '2023-10-15',
+    connectionEvent: 'Design Systems Conference',
+    connectionDegree: 1 as 1,
+    mutualConnections: []
+  }
+];
+
+// Update to keep just 10 second-degree connections
+export const sampleSecondDegreeConnections: BusinessCard[] = [
   {
     id: '43',
     name: 'Harrison Ford',
