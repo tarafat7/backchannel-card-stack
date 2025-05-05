@@ -46,19 +46,19 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
       style={{ color: card.design.textColor, ...cardStyle }}
       onClick={handleClick}
     >
-      {/* Badge for 2nd-degree connections */}
-      {isSecondDegree && (
-        <div className="absolute top-2 right-2 flex items-center bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full text-xs">
-          <User className="w-3 h-3 mr-1" />
-          <span>2° Connection</span>
+      {/* Connection count badge - moved to top right */}
+      {card.connectionCount !== undefined && (
+        <div className="absolute top-2 right-2 flex items-center bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full text-xs">
+          <UsersRound className="w-3 h-3 mr-1" />
+          <span>{card.connectionCount}</span>
         </div>
       )}
       
-      {/* Connection count badge */}
-      {card.connectionCount !== undefined && (
-        <div className="absolute bottom-2 right-2 flex items-center bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full text-xs">
-          <UsersRound className="w-3 h-3 mr-1" />
-          <span>{card.connectionCount}</span>
+      {/* Badge for 2nd-degree connections - moved below connection count */}
+      {isSecondDegree && (
+        <div className="absolute top-10 right-2 flex items-center bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full text-xs">
+          <User className="w-3 h-3 mr-1" />
+          <span>2° Connection</span>
         </div>
       )}
       
