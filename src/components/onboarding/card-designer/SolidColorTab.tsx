@@ -20,7 +20,9 @@ const SolidColorTab: React.FC<SolidColorTabProps> = ({
           {colorOptions.map((color, index) => (
             <button
               key={index}
-              className={`w-full aspect-square rounded-md transition-all hover:scale-105`}
+              className={`w-full aspect-square rounded-md transition-all hover:scale-105 ${
+                selectedBackground === color ? 'ring-2 ring-brand-green' : ''
+              }`}
               style={{ backgroundColor: color }}
               onClick={() => setSelectedBackground(color)}
               aria-label={`Color ${color}`}

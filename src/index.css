@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +14,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
     
-    --primary: 252 87% 67.5%;
+    --primary: 157 92% 54%;
     --primary-foreground: 0 0% 98%;
     
     --secondary: 240 3.7% 15.9%;

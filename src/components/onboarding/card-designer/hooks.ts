@@ -9,24 +9,24 @@ export const useCardDesignerState = (initialBackground: string) => {
   const [customImageFile, setCustomImageFile] = useState<File | null>(null);
   const [opacity, setOpacity] = useState(100);
 
-  // Predefined gradient options
+  // Predefined gradient options with new green options
   const gradientOptions = [
+    'linear-gradient(90deg, #1FF48E 0%, #0EA5E9 100%)',
+    'linear-gradient(135deg, #1FF48E 0%, #000000 100%)',
     'linear-gradient(90deg, hsla(277, 75%, 84%, 1) 0%, hsla(297, 50%, 51%, 1) 100%)',
     'linear-gradient(90deg, hsla(39, 100%, 77%, 1) 0%, hsla(22, 90%, 57%, 1) 100%)',
     'linear-gradient(90deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%)',
-    'linear-gradient(90deg, hsla(46, 73%, 75%, 1) 0%, hsla(176, 73%, 88%, 1) 100%)',
-    'linear-gradient(90deg, hsla(139, 70%, 75%, 1) 0%, hsla(63, 90%, 76%, 1) 100%)',
-    'linear-gradient(to right, #ee9ca7, #ffdde1)',
+    'linear-gradient(90deg, #1FF48E 0%, hsla(176, 73%, 88%, 1) 100%)',
+    'linear-gradient(90deg, hsla(139, 70%, 75%, 1) 0%, #1FF48E 100%)',
     'linear-gradient(to right, #243949 0%, #517fa4 100%)',
-    'linear-gradient(225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%)',
-    'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)'
+    'linear-gradient(225deg, #FFE29F 0%, #1FF48E 48%, #FF719A 100%)'
   ];
 
-  // Color palette options
+  // Color palette options including the new green
   const colorOptions = [
     '#222222', '#403E43', '#1A1A1A', '#0f0f10', '#5B61F3', '#2166EE',
     '#8B5CF6', '#D946EF', '#F97316', '#0EA5E9', '#27272a', 
-    '#9b87f5', '#7E69AB', '#1EAEDB', '#33C3F0'
+    '#1FF48E', '#7E69AB', '#1EAEDB', '#33C3F0'
   ];
 
   // Apply custom hex color

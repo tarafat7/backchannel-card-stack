@@ -26,8 +26,8 @@ const Onboarding = () => {
 
   // Enhanced background options including solid colors, gradients, and defaults
   const enhancedBackgroundOptions = [
-    '#222222', '#403E43', '#1A1A1A', '#0f0f10', '#5B61F3', '#2166EE',
-    'linear-gradient(90deg, hsla(277, 75%, 84%, 1) 0%, hsla(297, 50%, 51%, 1) 100%)',
+    '#1FF48E', '#222222', '#403E43', '#1A1A1A', '#0f0f10', '#5B61F3', 
+    'linear-gradient(90deg, #1FF48E 0%, #0EA5E9 100%)',
     'linear-gradient(90deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%)',
     'linear-gradient(to right, #243949 0%, #517fa4 100%)'
   ];
@@ -130,9 +130,11 @@ const Onboarding = () => {
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80 flex flex-col">
       <div className="px-6 py-8 flex-1">
         <div className="mb-10 flex justify-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
-            Backchannel
-          </h1>
+          <img 
+            src="/lovable-uploads/91107276-468a-48d2-ad49-dedb09a38fd1.png"
+            alt="Backchannel Logo"
+            className="h-8"
+          />
         </div>
         
         {renderStep()}

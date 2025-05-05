@@ -20,7 +20,7 @@ const GradientTab: React.FC<GradientTabProps> = ({
           {gradientOptions.map((gradient, index) => (
             <button
               key={index}
-              className={`w-full aspect-video rounded-md transition-all hover:scale-105 ${selectedGradient === gradient ? 'ring-2 ring-primary' : ''}`}
+              className={`w-full aspect-video rounded-md transition-all hover:scale-105 ${selectedGradient === gradient ? 'ring-2 ring-brand-green' : ''}`}
               style={{ background: gradient }}
               onClick={() => applyGradient(gradient)}
               aria-label={`Gradient ${index + 1}`}
