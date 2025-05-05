@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
-import { ChevronUp, ChevronDown, Timeline } from 'lucide-react';
+import { ChevronUp, ChevronDown, History } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import ProfessionalHistory from './ProfessionalHistory';
 
@@ -140,7 +139,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                       setShowTimelineIndex(index);
                     }}
                   >
-                    <Timeline className="w-3.5 h-3.5 text-primary" />
+                    <History className="w-3.5 h-3.5 text-primary" />
                     <span className="text-xs text-primary">History</span>
                   </button>
                 )}
