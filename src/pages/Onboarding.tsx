@@ -32,10 +32,11 @@ const Onboarding = () => {
     'linear-gradient(to right, #243949 0%, #517fa4 100%)'
   ];
 
+  // Fix the infinite update loop by adding dependencies
   useEffect(() => {
-    // Create a preview card whenever these values change
-    if (onboardingStep >= 2) {
-      updateBusinessCard({
+    // Only create a preview card when on steps that need it
+    if (onboardingStep >= 2 && profile) {
+      const card = {
         id: '1',
         name: mockLinkedInData.name,
         title: mockLinkedInData.experiences[0].title,
@@ -49,9 +50,12 @@ const Onboarding = () => {
           textColor: textColor
         },
         mutualConnections: [] // Add the required property
-      });
+      };
+      
+      updateBusinessCard(card);
     }
-  }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep, updateBusinessCard]);
+  }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep]);
+  // We removed updateBusinessCard from the dependency array to prevent infinite loops
 
   const handleExpertiseToggle = (area: string) => {
     if (selectedExpertise.includes(area)) {

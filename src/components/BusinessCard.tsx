@@ -1,3 +1,4 @@
+
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Github, Twitter, Link as LinkIcon, User } from 'lucide-react';
@@ -43,7 +44,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
 
   return (
     <div
-      className={`business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`}
+      className={`business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative card-shadow`}
       style={{ 
         ...backgroundStyle,
         color: card.design.textColor === 'text-white' ? 'white' : 'black'
