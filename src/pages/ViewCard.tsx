@@ -1,27 +1,25 @@
 
-import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MessageCircle, Share2, User, Users } from 'lucide-react';
-import { useAppContext, BusinessCard } from '../context/AppContext';
-import { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import FullBusinessCard from '@/components/cards/FullBusinessCard';
 import SharedConnections from '@/components/shared/SharedConnections';
 import CardActions from '@/components/cards/CardActions';
 import IntroRequestDialog from '@/components/dialogs/IntroRequestDialog';
 import ProfessionalHistory from '@/components/ProfessionalHistory';
-import { sampleConnections, sampleSecondDegreeConnections } from '@/data/connectionData';
+import { useViewCard } from '@/hooks/useViewCard';
+import MutualConnectionsList from '@/components/connections/MutualConnectionsList';
+import SecondDegreeConnectionBadge from '@/components/connections/SecondDegreeConnectionBadge';
 
 const ViewCard = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { connections } = useAppContext();
-  const [introDialogOpen, setIntroDialogOpen] = useState(false);
-  const [selectedMutualConnection, setSelectedMutualConnection] = useState<string | null>(null);
-  
-  // Get the card for this ID (combining sample data and real connections)
-  const allFirstDegreeConnections = [...connections, ...sampleConnections];
-  const allConnections = [...allFirstDegreeConnections, ...sampleSecondDegreeConnections];
-  const card = allConnections.find(c => c.id === id);
+  const {
+    card,
+    isDirectConnection,
+    introDialogOpen,
+    setIntroDialogOpen,
+    selectedMutualConnection,
+    handleRequestIntro,
+    goBack
+  } = useViewCard();
   
   if (!card) {
     return (
@@ -31,13 +29,6 @@ const ViewCard = () => {
     );
   }
   
-  const isDirectConnection = card.connectionDegree === 1;
-  
-  const handleRequestIntro = (mutualConnectionName: string) => {
-    setSelectedMutualConnection(mutualConnectionName);
-    setIntroDialogOpen(true);
-  };
-  
   return (
     <>
       <div className="min-h-screen bg-background flex flex-col">
@@ -46,21 +37,14 @@ const ViewCard = () => {
           <Button 
             variant="ghost" 
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={goBack}
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
         </header>
 
         {/* Connection degree badge */}
-        {!isDirectConnection && (
-          <div className="px-4 mb-2">
-            <div className="inline-flex items-center gap-1 text-xs font-medium bg-secondary/70 text-secondary-foreground px-2 py-1 rounded-full">
-              <Users className="w-3 h-3" />
-              <span>2nd Degree Connection</span>
-            </div>
-          </div>
-        )}
+        {!isDirectConnection && <SecondDegreeConnectionBadge />}
 
         <FullBusinessCard card={card} />
 
@@ -71,28 +55,10 @@ const ViewCard = () => {
         
         {/* Mutual Connections for 2nd degree */}
         {!isDirectConnection && card.mutualConnections && card.mutualConnections.length > 0 && (
-          <div className="px-4 py-2 mb-4">
-            <h3 className="text-sm font-medium mb-2">Mutual Connections</h3>
-            <div className="space-y-2">
-              {card.mutualConnections.map((connection, index) => (
-                <div key={index} className="p-3 rounded-lg bg-secondary/50 flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                      <User className="w-4 h-4" />
-                    </div>
-                    <span className="text-sm">{connection}</span>
-                  </div>
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    onClick={() => handleRequestIntro(connection)}
-                  >
-                    Ask for intro
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
+          <MutualConnectionsList 
+            connections={card.mutualConnections} 
+            onRequestIntro={handleRequestIntro} 
+          />
         )}
         
         {/* Connection Info for 1st degree */}
