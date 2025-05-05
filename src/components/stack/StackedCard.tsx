@@ -96,13 +96,13 @@ const StackedCard: React.FC<StackedCardProps> = ({
         onCardClick();
       }}
     >
-      <div className={`relative rounded-xl overflow-hidden ${isExpanded ? 'ring-2 ring-primary ring-opacity-50' : ''}`}>
+      <div className={`relative rounded-xl overflow-hidden ${isExpanded ? 'ring-1 ring-white/20' : ''}`}>
         <BusinessCard card={card} isPreview={isExpanded} />
         
         {showExpandHint && (
           <div className="absolute top-[-12px] left-0 right-0 flex justify-center">
-            <div className="bg-black/40 backdrop-blur-sm p-1 rounded-full">
-              <ChevronUp className="w-4 h-4 text-white" />
+            <div className="bg-black/70 backdrop-blur-sm p-1 rounded-full">
+              <ChevronUp className="w-3 h-3 text-white" />
             </div>
           </div>
         )}

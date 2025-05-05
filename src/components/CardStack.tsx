@@ -60,7 +60,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
         {expandedCardIndex !== null && (
           <button
             onClick={handleCollapseStack}
-            className="absolute top-4 right-4 z-50 bg-black/30 backdrop-blur-sm p-1 rounded-full"
+            className="absolute top-4 right-4 z-50 bg-black/50 backdrop-blur-sm p-1.5 rounded-full"
           >
             <ChevronUp className="w-4 h-4 text-white transform rotate-180" />
           </button>
@@ -69,8 +69,8 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
         <div className={`relative ${expandedCardIndex !== null ? 'h-full' : 'h-auto'} overflow-visible`}>
           {/* Card Count Overlay */}
           {expandedCardIndex === null && (
-            <div className="absolute bottom-8 w-full flex justify-center z-10 pointer-events-none">
-              <div className="text-white text-sm font-medium bg-black/40 backdrop-blur-sm py-1 px-3 rounded-full">
+            <div className="absolute bottom-[-40px] w-full flex justify-center z-10 pointer-events-none">
+              <div className="text-white/90 text-sm font-medium bg-black/30 backdrop-blur-md py-1.5 px-4 rounded-full">
                 {cards.length} {cards.length === 1 ? 'Card' : 'Cards'}
               </div>
             </div>
@@ -98,14 +98,6 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
               />
             );
           })}
-          
-          {expandedCardIndex === null && (
-            <div className="absolute bottom-[-12px] left-0 right-0 flex justify-center">
-              <div className="bg-black/40 backdrop-blur-sm p-1 rounded-full">
-                <ChevronUp className="w-4 h-4 text-white" />
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
