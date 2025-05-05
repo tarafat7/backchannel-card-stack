@@ -31,7 +31,7 @@ const ConnectionsView = () => {
         .slice(0, person.connectionCount || 5) // Take the number of connections they have
         .map(conn => ({
           ...conn,
-          connectionDegree: 2, // These are 2nd degree from the viewer's perspective
+          connectionDegree: 2 as 1 | 2, // Explicitly cast to 1 | 2 type
           mutualConnections: [person.name], // The person is the mutual connection
         }));
       
