@@ -25,6 +25,7 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
   // Initialize with sample connections if none exist
   useEffect(() => {
     if (connections.length === 0) {
+      console.log('Adding sample connections:', sampleConnections.length);
       // Only add each sample connection once
       sampleConnections.forEach(connection => {
         addConnection(connection);
@@ -35,6 +36,9 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
   // Make sure we don't duplicate connections when combining arrays
   // Use connections from context if available, otherwise use sample connections
   const firstDegreeConnections = connections.length > 0 ? connections : sampleConnections;
+  
+  console.log('First degree connections count:', firstDegreeConnections.length);
+  console.log('Context connections count:', connections.length);
   
   const handleCardClick = (id: string) => {
     navigate(`/card/${id}`);
@@ -48,6 +52,8 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
   const connectionsToFilter = activeFilter === 'All' 
     ? firstDegreeConnections 
     : [...firstDegreeConnections, ...sampleSecondDegreeConnections];
+  
+  console.log('Connections to filter:', connectionsToFilter.length);
 
   const filteredConnections = connectionsToFilter.filter((connection) => {
     if (searchQuery) {
@@ -93,6 +99,8 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
     
     return true;
   });
+  
+  console.log('Filtered connections count:', filteredConnections.length);
 
   return {
     filteredConnections,

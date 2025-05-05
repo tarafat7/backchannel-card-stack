@@ -26,6 +26,13 @@ const Home = () => {
   
   const filters = ['All', 'Updates', 'Hiring', 'Investing', 'Building'];
 
+  // Log the current state for debugging
+  useEffect(() => {
+    console.log('Total connections in Home:', totalConnections);
+    console.log('Filtered connections in Home:', filteredConnections.length);
+    console.log('Active filter:', activeFilter);
+  }, [totalConnections, filteredConnections, activeFilter]);
+
   // Check for new status updates when not on the Updates tab
   useEffect(() => {
     if (activeFilter !== 'Updates') {

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
 import { ChevronUp, ChevronDown, MessageCircle, Link } from 'lucide-react';
@@ -16,6 +16,10 @@ type CardStackProps = {
 const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
   const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
   const [showTimelineIndex, setShowTimelineIndex] = useState<number | null>(null);
+  
+  useEffect(() => {
+    console.log('Cards in CardStack:', cards.length);
+  }, [cards]);
   
   const handleCardClick = (index: number, id: string) => {
     if (expandedCardIndex === index) {
