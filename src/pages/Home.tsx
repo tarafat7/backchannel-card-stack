@@ -26,13 +26,6 @@ const Home = () => {
   
   const filters = ['All', 'Updates', 'Hiring', 'Investing', 'Building'];
 
-  // Log the current state for debugging
-  useEffect(() => {
-    console.log('Total connections in Home:', totalConnections);
-    console.log('Filtered connections in Home:', filteredConnections.length);
-    console.log('Active filter:', activeFilter);
-  }, [totalConnections, filteredConnections, activeFilter]);
-
   // Check for new status updates when not on the Updates tab
   useEffect(() => {
     if (activeFilter !== 'Updates') {
@@ -65,8 +58,8 @@ const Home = () => {
         resetUpdatesCount={resetUpdatesCount}
       />
       
-      {/* Connection count display - now showing total first-degree connections count */}
-      <ConnectionCounter totalConnections={totalConnections} />
+      {/* Connection count display - now showing filtered connections count */}
+      <ConnectionCounter totalConnections={filteredConnections.length} />
       
       <main className="flex-1 p-4 overflow-hidden">
         <HomeContent 

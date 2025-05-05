@@ -1,5 +1,5 @@
 
-import CardStack from '../card-stack/CardStack';
+import CardStack from '../CardStack';
 import ConnectionsGrid from './ConnectionsGrid';
 import NoConnectionsFound from './NoConnectionsFound';
 import { BusinessCard } from '@/context/AppContext';

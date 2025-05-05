@@ -25,7 +25,6 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
   // Initialize with sample connections if none exist
   useEffect(() => {
     if (connections.length === 0) {
-      console.log('Adding sample connections:', sampleConnections.length);
       // Only add each sample connection once
       sampleConnections.forEach(connection => {
         addConnection(connection);
@@ -37,25 +36,16 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
   // Use connections from context if available, otherwise use sample connections
   const firstDegreeConnections = connections.length > 0 ? connections : sampleConnections;
   
-  console.log('First degree connections count:', firstDegreeConnections.length);
-  console.log('Context connections count:', connections.length);
-  
   const handleCardClick = (id: string) => {
     navigate(`/card/${id}`);
   };
 
   const handleClearSearch = () => setSearchQuery('');
 
-  // Determine which connections to use based on the active filter
-  // For 'All' tab, only show first-degree connections
-  // For other tabs, we can include second-degree connections that match the criteria
-  const connectionsToFilter = activeFilter === 'All' 
-    ? firstDegreeConnections 
-    : [...firstDegreeConnections, ...sampleSecondDegreeConnections];
-  
-  console.log('Connections to filter:', connectionsToFilter.length);
+  // Combine first and second degree connections without duplication
+  const allConnections = [...firstDegreeConnections, ...sampleSecondDegreeConnections];
 
-  const filteredConnections = connectionsToFilter.filter((connection) => {
+  const filteredConnections = allConnections.filter((connection) => {
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       return (
@@ -68,8 +58,8 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
     }
     
     if (activeFilter === 'All') {
-      // Show only first-degree connections in the 'All' filter
-      return true;
+      // Only show 1st degree connections in the 'All' filter
+      return connection.connectionDegree === 1;
     }
     
     if (activeFilter === 'Updates') {
@@ -99,12 +89,10 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
     
     return true;
   });
-  
-  console.log('Filtered connections count:', filteredConnections.length);
 
   return {
     filteredConnections,
-    totalConnections: firstDegreeConnections.length,
+    totalConnections: firstDegreeConnections.length + sampleSecondDegreeConnections.length,
     searchQuery,
     setSearchQuery,
     viewMode,
