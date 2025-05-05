@@ -16,12 +16,12 @@ const ConnectionDiagram = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-primary origin-left animate-pulse-grow" />
       </div>
       
-      {/* Backchannel logo */}
-      <div className="flex items-center justify-center w-12 h-12 bg-background rounded-full p-1 border border-white/10">
+      {/* Backchannel logo with new image */}
+      <div className="flex items-center justify-center w-12 h-12 rounded-xl overflow-hidden border border-white/10">
         <img 
-          src="/lovable-uploads/3c36884a-39c7-4a9c-84c3-ee90f508d4a4.png" 
+          src="/lovable-uploads/740d2d31-3a90-48aa-a97b-bd31e98435d4.png" 
           alt="Backchannel Logo" 
-          className="w-full h-full object-contain" 
+          className="w-full h-full object-cover" 
         />
       </div>
     </div>
