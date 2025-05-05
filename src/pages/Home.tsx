@@ -13,6 +13,13 @@ const Home = () => {
   const [updatesCount, setUpdatesCount] = useState(0);
   const { profile } = useAppContext();
   
+  // Check if onboarding is incomplete and redirect
+  useEffect(() => {
+    if (!profile.card || profile.experiences.length === 0) {
+      navigate('/', { replace: true });
+    }
+  }, [profile, navigate]);
+  
   const {
     filteredConnections,
     totalConnections,
