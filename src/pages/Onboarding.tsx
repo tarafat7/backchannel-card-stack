@@ -2,17 +2,33 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { backgroundOptions, expertise, mockLinkedInData } from '../components/onboarding/constants';
+import { backgroundOptions, expertise } from '../components/onboarding/constants';
 
 // Onboarding step components
-import LinkedInImport from '../components/onboarding/LinkedInImport';
+import SplashScreen from '../components/onboarding/SplashScreen';
+import UserBasicInfo from '../components/onboarding/UserBasicInfo';
+import ExperienceInput from '../components/onboarding/ExperienceInput';
 import ExperienceSelection from '../components/onboarding/ExperienceSelection';
 import ProfilePhoto from '../components/onboarding/ProfilePhoto';
 import CardDesigner from '../components/onboarding/CardDesigner';
+import ContactInfo from '../components/onboarding/ContactInfo';
 
 const Onboarding = () => {
   const navigate = useNavigate();
   const { onboardingStep, setOnboardingStep, updateProfile, profile, updateBusinessCard } = useAppContext();
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    title: '',
+    company: '',
+    experiences: [
+      { title: '', company: '', years: '', description: '' },
+      { title: '', company: '', years: '', description: '' },
+      { title: '', company: '', years: '', description: '' }
+    ],
+    phoneNumber: '',
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+  });
   
   const [selectedExpertise, setSelectedExpertise] = useState<string[]>([]);
   const [selectedBackground, setSelectedBackground] = useState<string>(backgroundOptions[0]);
@@ -23,17 +39,16 @@ const Onboarding = () => {
     { type: 'GitHub', url: 'https://github.com' },
     { type: 'Portfolio', url: 'https://example.com' }
   ]);
-
-  // Fix for infinite loop - add proper dependency array
+  
+  // Update business card preview
   useEffect(() => {
-    // Create a preview card whenever these values change
-    if (onboardingStep >= 2) {
+    if (onboardingStep >= 3) {
       updateBusinessCard({
         id: '1',
-        name: mockLinkedInData.name,
-        title: mockLinkedInData.experiences[0].title,
-        company: mockLinkedInData.experiences[0].company,
-        avatar: mockLinkedInData.avatar,
+        name: formData.name,
+        title: formData.title,
+        company: formData.company,
+        avatar: formData.avatar,
         expertiseAreas: selectedExpertise,
         links,
         status,
@@ -41,11 +56,11 @@ const Onboarding = () => {
           backgroundStyle: selectedBackground,
           textColor: textColor
         },
-        mutualConnections: [], // Add the required property
-        connectionDegree: 1 // Add this to prevent type errors
+        mutualConnections: [],
+        connectionDegree: 1
       });
     }
-  }, [selectedExpertise, selectedBackground, textColor, status, links, onboardingStep]);
+  }, [formData, selectedExpertise, selectedBackground, textColor, status, links, onboardingStep]);
 
   const handleExpertiseToggle = (area: string) => {
     if (selectedExpertise.includes(area)) {
@@ -63,9 +78,26 @@ const Onboarding = () => {
     setLinks(newLinks);
   };
 
-  const handleImportComplete = (data: any) => {
-    updateProfile(data);
-    setOnboardingStep(1);
+  const handleBasicInfoComplete = (data: {name: string, title: string, company: string}) => {
+    setFormData(prev => ({ ...prev, ...data }));
+    setOnboardingStep(2);
+  };
+
+  const handleExperienceComplete = (experiences: Array<{title: string, company: string, years: string, description: string}>) => {
+    setFormData(prev => ({ ...prev, experiences }));
+    updateProfile({
+      experiences: experiences.map(exp => ({
+        title: exp.title,
+        company: exp.company,
+        years: exp.years
+      }))
+    });
+    setOnboardingStep(3);
+  };
+  
+  const handleContactInfoComplete = (phoneNumber: string) => {
+    setFormData(prev => ({ ...prev, phoneNumber }));
+    setOnboardingStep(4);
   };
 
   const handleComplete = () => {
@@ -75,30 +107,37 @@ const Onboarding = () => {
   const renderStep = () => {
     switch (onboardingStep) {
       case 0:
-        return (
-          <LinkedInImport onImportComplete={handleImportComplete} />
-        );
+        return <SplashScreen onContinue={() => setOnboardingStep(1)} />;
         
       case 1:
+        return <UserBasicInfo onContinue={handleBasicInfoComplete} />;
+        
+      case 2:
+        return <ExperienceInput onContinue={handleExperienceComplete} />;
+        
+      case 3:
+        return <ContactInfo onContinue={handleContactInfoComplete} />;
+        
+      case 4:
         return (
           <ExperienceSelection 
             experiences={profile.experiences}
             selectedExpertise={selectedExpertise}
             onExpertiseToggle={handleExpertiseToggle}
-            onContinue={() => setOnboardingStep(2)}
+            onContinue={() => setOnboardingStep(5)}
             expertise={expertise}
           />
         );
         
-      case 2:
+      case 5:
         return (
           <ProfilePhoto 
-            avatarUrl={mockLinkedInData.avatar}
-            onContinue={() => setOnboardingStep(3)}
+            avatarUrl={formData.avatar}
+            onContinue={() => setOnboardingStep(6)}
           />
         );
         
-      case 3:
+      case 6:
         return (
           <CardDesigner 
             card={profile.card}
@@ -123,9 +162,11 @@ const Onboarding = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80 flex flex-col">
       <div className="px-6 py-8 flex-1">
-        <div className="mb-10 flex justify-center">
-          <img src="/lovable-uploads/616f61db-76fc-4df2-b8ac-403e36a20ee4.png" alt="Backchannel Logo" className="h-32" />
-        </div>
+        {onboardingStep > 0 && (
+          <div className="mb-10 flex justify-center">
+            <img src="/lovable-uploads/616f61db-76fc-4df2-b8ac-403e36a20ee4.png" alt="Backchannel Logo" className="h-16" />
+          </div>
+        )}
         
         {renderStep()}
       </div>
