@@ -17,7 +17,7 @@ const ConnectionDiagram = () => {
       </div>
       
       {/* Backchannel logo */}
-      <div className="flex items-center justify-center w-8 h-8">
+      <div className="flex items-center justify-center w-5 h-5">
         <img 
           src="/lovable-uploads/07d994b2-fb5b-4579-ad95-97303ba44ebc.png" 
           alt="Backchannel Logo" 

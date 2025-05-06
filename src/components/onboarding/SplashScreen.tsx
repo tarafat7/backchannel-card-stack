@@ -30,7 +30,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onContinue }) => {
         <img 
           src="/lovable-uploads/07d994b2-fb5b-4579-ad95-97303ba44ebc.png" 
           alt="Backchannel Logo" 
-          className="h-48 mb-8"
+          className="h-24 mb-8 object-contain"
         />
         
         <motion.div
