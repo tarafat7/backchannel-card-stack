@@ -73,8 +73,14 @@ const ViewCard = () => {
     
     console.log(`Opening message URL: ${messageUrl}`);
     
-    // Use window.location.href for direct navigation
-    window.location.href = messageUrl;
+    try {
+      // Use window.open instead of window.location.href for better compatibility
+      window.open(messageUrl, '_blank');
+    } catch (error) {
+      console.error("Failed to open messaging app:", error);
+      // Fallback to direct location change if window.open fails
+      window.location.href = messageUrl;
+    }
   };
   
   return (

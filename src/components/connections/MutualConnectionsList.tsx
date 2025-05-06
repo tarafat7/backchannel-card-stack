@@ -39,6 +39,7 @@ const MutualConnectionsList = ({ connections, onRequestIntro, handleSendMessage 
               size="sm" 
               variant="outline"
               onClick={() => handleIntroClick(connection)}
+              type="button"
             >
               Ask for intro
             </Button>
