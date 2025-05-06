@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -55,8 +56,9 @@ const Onboarding = () => {
           backgroundStyle: selectedBackground,
           textColor: textColor
         },
+        connectionDegree: 1,
         mutualConnections: [],
-        connectionDegree: 1
+        phoneNumber: formData.phoneNumber
       });
     }
   }, [formData, selectedExpertise, selectedBackground, textColor, status, links, onboardingStep]);
@@ -88,7 +90,8 @@ const Onboarding = () => {
       experiences: experiences.map(exp => ({
         title: exp.title,
         company: exp.company,
-        years: exp.years
+        years: exp.years,
+        description: exp.description
       }))
     });
     setOnboardingStep(3);
@@ -97,6 +100,13 @@ const Onboarding = () => {
   const handleContactInfoComplete = (phoneNumber: string) => {
     setFormData(prev => ({ ...prev, phoneNumber }));
     setOnboardingStep(4);
+  };
+
+  const handleProfilePhotoComplete = (avatarUrl?: string) => {
+    if (avatarUrl) {
+      setFormData(prev => ({ ...prev, avatar: avatarUrl }));
+    }
+    setOnboardingStep(6);
   };
 
   const handleComplete = () => {
@@ -112,7 +122,13 @@ const Onboarding = () => {
         return <UserBasicInfo onContinue={handleBasicInfoComplete} />;
         
       case 2:
-        return <ExperienceInput onContinue={handleExperienceComplete} />;
+        return (
+          <ExperienceInput 
+            onContinue={handleExperienceComplete}
+            currentTitle={formData.title} 
+            currentCompany={formData.company}
+          />
+        );
         
       case 3:
         return <ContactInfo onContinue={handleContactInfoComplete} />;
@@ -132,7 +148,7 @@ const Onboarding = () => {
         return (
           <ProfilePhoto 
             avatarUrl={formData.avatar}
-            onContinue={() => setOnboardingStep(6)}
+            onContinue={handleProfilePhotoComplete}
           />
         );
         

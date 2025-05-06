@@ -80,6 +80,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ onContinue }) => {
             value={phoneNumber}
             onChange={handlePhoneChange}
             className="h-12 text-lg"
+            required
           />
           
           {error && (
@@ -94,20 +95,6 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ onContinue }) => {
         <Button type="submit" className="w-full h-12">
           Continue
         </Button>
-
-        <p className="text-center text-xs text-muted-foreground">
-          You can skip this step and add your phone number later
-        </p>
-        <div className="flex justify-center">
-          <Button 
-            type="button" 
-            variant="ghost" 
-            onClick={() => onContinue('')}
-            className="text-sm"
-          >
-            Skip for now
-          </Button>
-        </div>
       </form>
     </motion.div>
   );

@@ -1,28 +1,36 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from 'framer-motion';
 import { BriefcaseIcon } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Experience {
   title: string;
   company: string;
-  years: string;
+  startYear: string;
+  endYear: string;
   description: string;
 }
 
 interface ExperienceInputProps {
   onContinue: (experiences: Experience[]) => void;
+  currentTitle?: string;
+  currentCompany?: string;
 }
 
-const ExperienceInput: React.FC<ExperienceInputProps> = ({ onContinue }) => {
+const ExperienceInput: React.FC<ExperienceInputProps> = ({ onContinue, currentTitle = '', currentCompany = '' }) => {
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 50 }, (_, i) => (currentYear - i).toString());
+  
   const [experiences, setExperiences] = useState<Experience[]>([
-    { title: '', company: '', years: '', description: '' },
-    { title: '', company: '', years: '', description: '' },
-    { title: '', company: '', years: '', description: '' }
+    { title: currentTitle, company: currentCompany, startYear: currentYear.toString(), endYear: 'Present', description: '' },
+    { title: '', company: '', startYear: '', endYear: '', description: '' },
+    { title: '', company: '', startYear: '', endYear: '', description: '' }
   ]);
   const [error, setError] = useState('');
 
@@ -37,7 +45,7 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({ onContinue }) => {
     
     // Check if at least one experience is filled
     const hasOneExperience = experiences.some(exp => 
-      exp.title.trim() && exp.company.trim() && exp.years.trim()
+      exp.title.trim() && exp.company.trim() && exp.startYear
     );
     
     if (!hasOneExperience) {
@@ -47,10 +55,18 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({ onContinue }) => {
     
     // Filter out empty experiences
     const filledExperiences = experiences.filter(exp => 
-      exp.title.trim() && exp.company.trim() && exp.years.trim()
+      exp.title.trim() && exp.company.trim() && exp.startYear
     );
     
-    onContinue(filledExperiences);
+    // Format experiences for the parent component
+    const formattedExperiences = filledExperiences.map(exp => ({
+      ...exp,
+      years: exp.endYear === 'Present' 
+        ? `${exp.startYear} - Present` 
+        : `${exp.startYear} - ${exp.endYear}`
+    }));
+    
+    onContinue(formattedExperiences);
   };
 
   return (
@@ -101,15 +117,45 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({ onContinue }) => {
               />
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor={`years-${index}`}>Years</Label>
-              <Input 
-                id={`years-${index}`}
-                value={exp.years}
-                onChange={(e) => handleExperienceChange(index, 'years', e.target.value)}
-                placeholder="2020 - Present"
-                className="h-11"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label htmlFor={`startYear-${index}`}>Started</Label>
+                <Select 
+                  value={exp.startYear} 
+                  onValueChange={(value) => handleExperienceChange(index, 'startYear', value)}
+                >
+                  <SelectTrigger id={`startYear-${index}`} className="h-11">
+                    <SelectValue placeholder="Select year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <ScrollArea className="h-[200px]">
+                      {years.map((year) => (
+                        <SelectItem key={`start-${year}`} value={year}>{year}</SelectItem>
+                      ))}
+                    </ScrollArea>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor={`endYear-${index}`}>Ended</Label>
+                <Select 
+                  value={exp.endYear} 
+                  onValueChange={(value) => handleExperienceChange(index, 'endYear', value)}
+                >
+                  <SelectTrigger id={`endYear-${index}`} className="h-11">
+                    <SelectValue placeholder="Select year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Present">Present</SelectItem>
+                    <ScrollArea className="h-[200px]">
+                      {years.map((year) => (
+                        <SelectItem key={`end-${year}`} value={year}>{year}</SelectItem>
+                      ))}
+                    </ScrollArea>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             
             <div className="space-y-2">
