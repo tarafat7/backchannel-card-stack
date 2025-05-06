@@ -62,8 +62,8 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
             showHistory={showTimeline} 
           />
 
-          {/* Social links and action buttons at the bottom */}
-          <div className="bg-background/40 backdrop-blur-sm w-full px-4 py-2">
+          {/* Social links and action buttons at the bottom - integrated as a unified part of the card */}
+          <div className="bg-background/40 backdrop-blur-sm w-full px-4 py-2 rounded-b-xl">
             <div className="flex items-center justify-between">
               {/* Social links */}
               <div className="flex gap-1">
