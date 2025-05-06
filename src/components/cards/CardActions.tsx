@@ -18,15 +18,33 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       // Format phone number (remove any non-digits)
       const formattedPhone = phoneNumber.replace(/\D/g, '');
       
-      // Create an anchor element and trigger a click to open SMS
-      const link = document.createElement('a');
-      link.href = `sms:${formattedPhone}`;
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Different formats for different platforms
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const isMac = /Mac/i.test(navigator.userAgent);
       
-      console.log(`Attempting to open iMessage with phone: ${formattedPhone} via link click`);
+      let smsUrl;
+      if (isMobile) {
+        // Mobile devices - iOS and Android
+        smsUrl = `sms:${formattedPhone}`;
+      } else if (isMac) {
+        // macOS uses different URL scheme
+        smsUrl = `imessage://+${formattedPhone}`;
+      } else {
+        // Default fallback
+        smsUrl = `sms:${formattedPhone}`;
+      }
+      
+      console.log(`Device detection - isMobile: ${isMobile}, isMac: ${isMac}`);
+      console.log(`Attempting to open messaging app with URL: ${smsUrl}`);
+      
+      // Open the URL in a new window/tab
+      window.open(smsUrl, '_blank');
+      
+      // Show a toast as feedback that the action was initiated
+      toast({
+        title: "Opening messaging app",
+        description: `Attempting to send message to ${personName}`,
+      });
     } else {
       // Fallback if no phone number is available
       toast({
