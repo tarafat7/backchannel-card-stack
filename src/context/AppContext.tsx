@@ -69,15 +69,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addConnection = (connection: BusinessCard) => {
+    console.log("Adding connection with data:", connection);
+    
     // Ensure the connection has the connectionDegree and mutualConnections properties
     // Also make sure phoneNumber is included with a real phone number format
     const connectionWithDefaults = {
       ...connection,
       connectionDegree: connection.connectionDegree || 1,
       mutualConnections: connection.mutualConnections || [],
-      // Use a real format phone number that works with iMessage
+      // Use a real format phone number that works with iMessage - no dashes or parentheses
       phoneNumber: connection.phoneNumber || '4155551234' 
     };
+    
+    console.log("Connection with defaults:", connectionWithDefaults);
     setConnections(prev => [...prev, connectionWithDefaults]);
   };
 

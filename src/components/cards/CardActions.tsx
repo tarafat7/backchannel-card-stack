@@ -14,49 +14,59 @@ type CardActionsProps = {
 
 const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualConnectionName, phoneNumber }: CardActionsProps) => {
   const handleSendMessage = () => {
-    if (phoneNumber) {
-      // Format phone number (remove any non-digits)
-      const formattedPhone = phoneNumber.replace(/\D/g, '');
-      
-      console.log(`Opening message app for ${formattedPhone}`);
-      
-      // Check if running on macOS
-      const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
-      // Check if running on iOS
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      
-      console.log(`Platform detection - isMac: ${isMac}, isIOS: ${isIOS}`);
-      
-      // Create direct messaging URL - no toast notifications at all
-      let messageUrl;
-      
-      if (isMac) {
-        // macOS: Use imessage:// protocol which is specifically for Mac
-        messageUrl = `imessage://+${formattedPhone}`;
-      } else if (isIOS) {
-        // iOS: Use sms: with no query parameters
-        messageUrl = `sms:${formattedPhone}`;
-      } else {
-        // For Android and other platforms
-        messageUrl = `sms:${formattedPhone}?body=Hi ${personName}`;
-      }
-      
-      console.log(`Redirecting to: ${messageUrl}`);
-      
-      // Direct redirection - no window.open() which can trigger popups
-      window.location.href = messageUrl;
-      
-      // NO toast notifications at all - user asked to remove them
-      
-    } else {
+    // Add more detailed logging to debug the issue
+    console.log("SendMessage button clicked");
+    console.log("Phone number received:", phoneNumber);
+    
+    if (!phoneNumber) {
       console.error("No phone number available");
-      // Only show toast for actual error when no phone number exists
       toast({
         title: "No Phone Number Available",
         description: `No phone number available for ${personName}.`,
         variant: "destructive"
       });
+      return;
     }
+    
+    // Format phone number (remove any non-digits)
+    const formattedPhone = phoneNumber.replace(/\D/g, '');
+    console.log(`Formatted phone number: ${formattedPhone}`);
+    
+    // Check if running on macOS
+    const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
+    // Check if running on iOS
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    console.log(`Platform detection - isMac: ${isMac}, isIOS: ${isIOS}`);
+    
+    // Create direct messaging URL
+    let messageUrl;
+    
+    if (isMac) {
+      messageUrl = `imessage://+${formattedPhone}`;
+    } else if (isIOS) {
+      messageUrl = `sms:${formattedPhone}`;
+    } else {
+      messageUrl = `sms:${formattedPhone}?body=Hi ${personName}`;
+    }
+    
+    console.log(`Attempting to open: ${messageUrl}`);
+    
+    // Create an invisible anchor element and trigger a click
+    // This approach might work better than directly changing window.location
+    const a = document.createElement('a');
+    a.href = messageUrl;
+    a.target = '_blank'; // Try to open in a new tab/window
+    a.rel = 'noreferrer noopener';
+    
+    console.log("Created anchor element", a);
+    
+    // Append to body, click, and remove
+    document.body.appendChild(a);
+    console.log("Clicking anchor element");
+    a.click();
+    document.body.removeChild(a);
+    console.log("Anchor element removed");
   };
   
   return (
