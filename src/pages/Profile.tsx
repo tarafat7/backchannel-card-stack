@@ -10,6 +10,13 @@ import ExperienceSection from '../components/profile/ExperienceSection';
 import ExpertiseSection from '../components/profile/ExpertiseSection';
 import ProfileLinks from '../components/profile/ProfileLinks';
 
+interface Experience {
+  title: string;
+  company: string;
+  years: string;
+  description?: string;
+}
+
 const Profile = () => {
   const { profile, updateBusinessCard, updateProfile } = useAppContext();
 
@@ -27,7 +34,7 @@ const Profile = () => {
     }
   };
 
-  const handleExperienceSave = (experiences) => {
+  const handleExperienceSave = (experiences: Experience[]) => {
     updateProfile({ experiences });
   };
 

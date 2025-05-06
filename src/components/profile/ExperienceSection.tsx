@@ -8,6 +8,7 @@ interface Experience {
   title: string;
   company: string;
   years: string;
+  description?: string;
 }
 
 interface ExperienceSectionProps {
@@ -20,13 +21,38 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experiences, onEx
   const { toast } = useToast();
 
   const handleExperienceSave = (updatedExperiences: Experience[]) => {
-    onExperienceSave(updatedExperiences);
+    // Sort experiences by most recent first (assuming years format has "Present" or higher years are more recent)
+    const sortedExperiences = [...updatedExperiences].sort((a, b) => {
+      const aHasPresent = a.years.toLowerCase().includes('present');
+      const bHasPresent = b.years.toLowerCase().includes('present');
+      
+      if (aHasPresent && !bHasPresent) return -1;
+      if (!aHasPresent && bHasPresent) return 1;
+      
+      // If neither or both have "Present", just preserve their order
+      return 0;
+    });
+    
+    // Take only the most recent 3 experiences if there are more than 3
+    const limitedExperiences = sortedExperiences.length > 3 
+      ? sortedExperiences.slice(0, 3) 
+      : sortedExperiences;
+    
+    onExperienceSave(limitedExperiences);
     setIsEditing(false);
+    
     toast({
       title: "Experience updated",
-      description: "Your professional experience has been updated successfully."
+      description: sortedExperiences.length > 3 
+        ? "Your professional experience has been updated. Only showing 3 most recent positions." 
+        : "Your professional experience has been updated successfully."
     });
   };
+
+  // Ensure we only display the 3 most recent experiences
+  const displayExperiences = experiences && experiences.length > 3 
+    ? experiences.slice(0, 3) 
+    : experiences;
 
   return (
     <section className="mb-8">
@@ -49,12 +75,15 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experiences, onEx
         />
       ) : (
         <div className="space-y-3">
-          {experiences && experiences.length > 0 ? (
-            experiences.map((exp, index) => (
+          {displayExperiences && displayExperiences.length > 0 ? (
+            displayExperiences.map((exp, index) => (
               <div key={index} className="p-4 rounded-lg bg-secondary">
                 <h3 className="font-medium">{exp.title}</h3>
                 <p className="text-sm text-muted-foreground">{exp.company}</p>
                 <p className="text-xs text-muted-foreground">{exp.years}</p>
+                {exp.description && (
+                  <p className="text-sm mt-2 text-muted-foreground/90">{exp.description}</p>
+                )}
               </div>
             ))
           ) : (

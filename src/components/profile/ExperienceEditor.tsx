@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2 } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 
@@ -9,6 +10,7 @@ interface Experience {
   title: string;
   company: string;
   years: string;
+  description?: string;
 }
 
 interface ExperienceEditorProps {
@@ -16,6 +18,8 @@ interface ExperienceEditorProps {
   onSave: (experiences: Experience[]) => void;
   onCancel: () => void;
 }
+
+const MAX_DESCRIPTION_LENGTH = 100;
 
 const ExperienceEditor = ({ experiences, onSave, onCancel }: ExperienceEditorProps) => {
   const [editedExperiences, setEditedExperiences] = useState<Experience[]>(
@@ -92,6 +96,23 @@ const ExperienceEditor = ({ experiences, onSave, onCancel }: ExperienceEditorPro
             placeholder="Time Period (e.g. 2020 - Present)"
             className="bg-background"
           />
+          <div className="space-y-1">
+            <Textarea
+              value={exp.description || ''}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= MAX_DESCRIPTION_LENGTH) {
+                  handleExperienceChange(index, 'description', value);
+                }
+              }}
+              placeholder="Brief description (optional)"
+              className="bg-background resize-none"
+              maxLength={MAX_DESCRIPTION_LENGTH}
+            />
+            <div className="text-xs text-right text-muted-foreground">
+              {(exp.description?.length || 0)}/{MAX_DESCRIPTION_LENGTH}
+            </div>
+          </div>
           
           <Button
             variant="ghost"
