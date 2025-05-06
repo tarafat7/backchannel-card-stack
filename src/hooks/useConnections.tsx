@@ -63,9 +63,12 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
     }
     
     if (activeFilter === 'Updates') {
-      // Show connections with status updates (for this demo, we'll use those with "new" or "just" in the status)
-      return connection.status.toLowerCase().includes('new') || 
-             connection.status.toLowerCase().includes('just');
+      // Only show 1st-degree connections with status updates
+      return (
+        connection.connectionDegree === 1 && 
+        (connection.status.toLowerCase().includes('new') || 
+         connection.status.toLowerCase().includes('just'))
+      );
     }
     
     if (activeFilter === 'Hiring') {

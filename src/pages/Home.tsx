@@ -40,9 +40,11 @@ const Home = () => {
     if (activeFilter !== 'Updates') {
       // Find connections with new status updates
       const statusUpdateConnections = filteredConnections.filter(conn => 
-        conn.status.includes('New') || 
-        conn.status.includes('Just') ||
-        conn.status.toLowerCase().includes('updated')
+        conn.connectionDegree === 1 && (
+          conn.status.includes('New') || 
+          conn.status.includes('Just') ||
+          conn.status.toLowerCase().includes('updated')
+        )
       );
       
       setUpdatesCount(statusUpdateConnections.length);
@@ -72,7 +74,7 @@ const Home = () => {
       
       <main className="flex-1 p-4 overflow-hidden">
         <HomeContent 
-          viewMode={activeFilter === 'Updates' ? 'list' : viewMode}
+          viewMode={viewMode}
           filteredConnections={filteredConnections}
           searchQuery={searchQuery}
           onCardClick={handleCardClick}
