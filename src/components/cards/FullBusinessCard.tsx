@@ -38,6 +38,13 @@ const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
           </div>
         </div>
         
+        {/* Connection event - where we met */}
+        {card.connectionEvent && (
+          <div className="px-3 py-1.5 bg-primary/20 rounded-lg text-sm mt-4 mb-2">
+            <span className="font-medium">Where we met:</span> {card.connectionEvent}
+          </div>
+        )}
+        
         {card.status && (
           <div className="px-3 py-1.5 bg-black/10 rounded-lg text-sm mt-4 w-fit">
             {card.status}
