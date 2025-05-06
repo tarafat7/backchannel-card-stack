@@ -12,46 +12,49 @@ interface ProfilePhotoProps {
 const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ avatarUrl, onContinue }) => {
   const [previewUrl, setPreviewUrl] = useState<string>(avatarUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB
-        toast({
-          title: "File too large",
-          description: "Please select an image smaller than 5MB",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: "Invalid file type",
-          description: "Please select an image file",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const handleTakePhotoClick = () => {
+    if (cameraInputRef.current) {
+      cameraInputRef.current.click();
     }
   };
 
-  const handleLinkedInClick = () => {
-    // In a real app, this would initiate OAuth with LinkedIn
-    toast({
-      title: "LinkedIn integration",
-      description: "This would connect to LinkedIn in a production environment"
-    });
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processSelectedFile(file);
+    }
+  };
+
+  const processSelectedFile = (file: File) => {
+    if (file.size > 5 * 1024 * 1024) { // 5MB
+      toast({
+        title: "File too large",
+        description: "Please select an image smaller than 5MB",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please select an image file",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleContinue = () => {
@@ -83,6 +86,15 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ avatarUrl, onContinue }) =>
           className="hidden" 
         />
         
+        <input
+          type="file"
+          ref={cameraInputRef}
+          onChange={handleFileChange}
+          accept="image/*"
+          capture="user"
+          className="hidden"
+        />
+        
         <div className="flex gap-2 flex-wrap justify-center">
           <Button 
             variant="outline" 
@@ -96,20 +108,11 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ avatarUrl, onContinue }) =>
           <Button 
             variant="outline" 
             size="sm" 
-            onClick={handleLinkedInClick}
+            onClick={handleTakePhotoClick}
             className="flex items-center gap-1 bg-secondary/50 backdrop-blur-sm border border-white/10"
           >
             <Camera className="w-4 h-4" />
             Take Photo
-          </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={handleLinkedInClick}
-            className="flex items-center gap-1 bg-secondary/50 backdrop-blur-sm border border-white/10"
-          >
-            <ArrowRight className="w-4 h-4" />
-            Use LinkedIn photo
           </Button>
         </div>
       </div>
