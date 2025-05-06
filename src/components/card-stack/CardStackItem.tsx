@@ -24,6 +24,7 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
   index,
   isExpanded,
   showTimeline,
+  expandedCardIndex,
   zIndex,
   translateY,
   opacity,
@@ -40,6 +41,9 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
 
   // Check if the card has connection event information
   const hasConnectionEvent = card.connectionDegree === 1 && Boolean(card.connectionEvent);
+
+  // Determine if this card should be blurred (when it's behind an expanded card)
+  const shouldBlur = expandedCardIndex !== null && index !== expandedCardIndex && index > expandedCardIndex;
   
   return (
     <div
@@ -53,7 +57,7 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
     >
       <div className="relative">
         <div 
-          className="wallet-card-shadow cursor-pointer"
+          className={`wallet-card-shadow cursor-pointer ${shouldBlur ? 'backdrop-blur-sm filter blur-sm' : ''}`}
           onClick={onCardClick}
         >
           <BusinessCard 
