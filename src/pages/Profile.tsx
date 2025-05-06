@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ const Profile = () => {
   const [cardEditorOpen, setCardEditorOpen] = useState(false);
   const [isEditingExperience, setIsEditingExperience] = useState(false);
   const [isEditingExpertise, setIsEditingExpertise] = useState(false);
+  const [showWorkHistory, setShowWorkHistory] = useState(true);
   const { toast } = useToast();
 
   const handleStatusUpdate = () => {
@@ -76,6 +78,10 @@ const Profile = () => {
     });
   };
 
+  const toggleWorkHistory = () => {
+    setShowWorkHistory(!showWorkHistory);
+  };
+
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header - removed the padding-top (p-4) and replaced with px-4 py-2 */}
@@ -88,9 +94,19 @@ const Profile = () => {
       {/* Content */}
       <main className="p-4">
         <section className="mb-8">
-          <h2 className="text-sm font-medium text-muted-foreground mb-4">Your Business Card</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-sm font-medium text-muted-foreground">Your Business Card</h2>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={toggleWorkHistory}
+            >
+              {showWorkHistory ? "Hide Work History" : "Show Work History"}
+            </Button>
+          </div>
+
           {profile.card ? (
-            <BusinessCard card={profile.card} isPreview={true} />
+            <BusinessCard card={profile.card} isPreview={true} showHistory={showWorkHistory} />
           ) : (
             <div className="h-56 rounded-xl bg-secondary flex items-center justify-center">
               <p className="text-muted-foreground">Complete onboarding to create your card</p>

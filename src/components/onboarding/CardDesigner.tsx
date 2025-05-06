@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +37,7 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
 }) => {
   const [customHexColor, setCustomHexColor] = useState<string>('#333333');
   const [isUsingCustomColor, setIsUsingCustomColor] = useState<boolean>(false);
+  const [showWorkHistory, setShowWorkHistory] = useState<boolean>(false);
 
   // Handle custom hex color input
   const handleHexColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +80,20 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
       
       <div className="mb-8">
         {card && (
-          <BusinessCard card={card} isPreview={true} />
+          <>
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-sm font-medium text-muted-foreground">Card Preview</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowWorkHistory(!showWorkHistory)}
+                className="text-xs"
+              >
+                {showWorkHistory ? "Hide Work History" : "Show Work History"}
+              </Button>
+            </div>
+            <BusinessCard card={card} isPreview={true} showHistory={showWorkHistory} />
+          </>
         )}
       </div>
       
