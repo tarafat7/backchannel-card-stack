@@ -35,10 +35,10 @@ const ViewCard = () => {
     : undefined;
     
   // Debug log to check phone number and card details
-  console.log("Card details:", { 
+  console.log("Card details in ViewCard:", { 
     id: card.id, 
     name: card.name, 
-    phoneNumber: card.phoneNumber,
+    phoneNumber: card.phoneNumber || "No phone number available",
     isDirectConnection
   });
   

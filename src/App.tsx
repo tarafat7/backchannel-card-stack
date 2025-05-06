@@ -65,6 +65,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AppProvider>
       <TooltipProvider>
+        {/* Keep toast providers for other parts of the app but don't use them in our refactored components */}
         <Toaster />
         <Sonner />
         <BrowserRouter>

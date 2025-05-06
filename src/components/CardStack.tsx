@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
 import { ChevronUp, ChevronDown, MessageCircle, Link } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { ScrollArea } from './ui/scroll-area';
@@ -32,20 +31,39 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     setShowTimelineIndex(null);
   };
 
-  const handleSendMessage = (e: React.MouseEvent, name: string) => {
+  const handleSendMessage = (e: React.MouseEvent, name: string, phoneNumber?: string) => {
     e.stopPropagation(); // Prevent card collapse
-    toast({
-      title: "Message Sent",
-      description: `Your message has been sent to ${name}`,
-    });
+    
+    console.log("Sending message to:", name);
+    console.log("Phone number:", phoneNumber);
+    
+    if (!phoneNumber) {
+      console.error("No phone number available for", name);
+      return;
+    }
+    
+    const formattedPhone = phoneNumber.replace(/\D/g, '');
+    
+    // Platform detection
+    const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    let messageUrl;
+    if (isMac) {
+      messageUrl = `imessage://+${formattedPhone}`;
+    } else if (isIOS) {
+      messageUrl = `sms:${formattedPhone}`;
+    } else {
+      messageUrl = `sms:${formattedPhone}`;
+    }
+    
+    console.log(`Opening message URL: ${messageUrl}`);
+    window.location.href = messageUrl;
   };
 
   const handleRequestIntro = (e: React.MouseEvent, name: string, mutualConnection?: string) => {
     e.stopPropagation(); // Prevent card collapse
-    toast({
-      title: "Introduction Requested",
-      description: `Your introduction request to ${mutualConnection || "a mutual connection"} has been sent!`,
-    });
+    console.log(`Introduction requested to ${mutualConnection || "a mutual connection"} for ${name}`);
   };
 
   return (
@@ -134,7 +152,7 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                             ) : (
                               <button
                                 className="absolute bottom-3 right-3 bg-primary/90 hover:bg-primary px-2 py-1 rounded-md shadow-lg z-20 flex items-center gap-1 text-white text-xs"
-                                onClick={(e) => handleSendMessage(e, card.name)}
+                                onClick={(e) => handleSendMessage(e, card.name, card.phoneNumber)}
                               >
                                 Send message to {card.name.split(' ')[0]}
                                 <MessageCircle className="w-3.5 h-3.5 text-white ml-1" />

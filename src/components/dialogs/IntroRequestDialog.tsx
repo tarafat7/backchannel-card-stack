@@ -12,7 +12,7 @@ type IntroRequestDialogProps = {
 
 const IntroRequestDialog = ({ open, onOpenChange, personName, mutualConnection }: IntroRequestDialogProps) => {
   const handleSendIntroRequest = () => {
-    console.log(`Introduction requested to ${mutualConnection} for ${personName}`);
+    console.log(`Introduction request sent to ${mutualConnection} for ${personName}`);
     onOpenChange(false);
   };
   

@@ -40,25 +40,13 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
     } else if (isIOS) {
       messageUrl = `sms:${formattedPhone}`;
     } else {
-      messageUrl = `sms:${formattedPhone}?body=Hi ${personName}`;
+      messageUrl = `sms:${formattedPhone}`;
     }
     
-    console.log(`Attempting to open: ${messageUrl}`);
+    console.log(`Opening message URL: ${messageUrl}`);
     
-    // Create an invisible anchor element and trigger a click
-    const a = document.createElement('a');
-    a.href = messageUrl;
-    a.target = '_blank'; // Try to open in a new tab/window
-    a.rel = 'noreferrer noopener';
-    
-    console.log("Created anchor element", a);
-    
-    // Append to body, click, and remove
-    document.body.appendChild(a);
-    console.log("Clicking anchor element");
-    a.click();
-    document.body.removeChild(a);
-    console.log("Anchor element removed");
+    // Use window.location.href for direct navigation
+    window.location.href = messageUrl;
   };
   
   return (
