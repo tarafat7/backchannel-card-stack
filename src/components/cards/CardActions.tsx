@@ -2,7 +2,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { MessageCircle, ExternalLink, Share2 } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
 
 type CardActionsProps = {
   isDirectConnection: boolean;
@@ -14,17 +13,11 @@ type CardActionsProps = {
 
 const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualConnectionName, phoneNumber }: CardActionsProps) => {
   const handleSendMessage = () => {
-    // Add more detailed logging to debug the issue
     console.log("SendMessage button clicked");
     console.log("Phone number received:", phoneNumber);
     
     if (!phoneNumber) {
       console.error("No phone number available");
-      toast({
-        title: "No Phone Number Available",
-        description: `No phone number available for ${personName}.`,
-        variant: "destructive"
-      });
       return;
     }
     
@@ -53,7 +46,6 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
     console.log(`Attempting to open: ${messageUrl}`);
     
     // Create an invisible anchor element and trigger a click
-    // This approach might work better than directly changing window.location
     const a = document.createElement('a');
     a.href = messageUrl;
     a.target = '_blank'; // Try to open in a new tab/window

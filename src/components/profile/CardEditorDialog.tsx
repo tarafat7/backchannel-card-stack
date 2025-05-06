@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import { BusinessCard as BusinessCardType } from '@/context/AppContext';
 import BackgroundSelector from './card-editor/BackgroundSelector';
 import TextColorSelector from './card-editor/TextColorSelector';
@@ -19,8 +18,6 @@ interface CardEditorDialogProps {
 const MAX_STATUS_LENGTH = 100;
 
 const CardEditorDialog = ({ card, onSave }: CardEditorDialogProps) => {
-  const { toast } = useToast();
-  
   // Initialize state with card values or defaults
   const [selectedBackground, setSelectedBackground] = useState<string>(card?.design.backgroundStyle || 'bg-gradient-card-1');
   const [textColor, setTextColor] = useState<string>(card?.design.textColor || 'text-white');
@@ -51,10 +48,7 @@ const CardEditorDialog = ({ card, onSave }: CardEditorDialogProps) => {
       }
     };
     onSave(updatedCard);
-    toast({
-      title: "Card updated",
-      description: "Your business card has been updated successfully.",
-    });
+    console.log("Card updated successfully");
   };
 
   return (

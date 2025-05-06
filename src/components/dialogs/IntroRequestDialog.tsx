@@ -2,7 +2,6 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from "@/components/ui/button";
-import { toast } from '@/hooks/use-toast';
 
 type IntroRequestDialogProps = {
   open: boolean;
@@ -13,11 +12,7 @@ type IntroRequestDialogProps = {
 
 const IntroRequestDialog = ({ open, onOpenChange, personName, mutualConnection }: IntroRequestDialogProps) => {
   const handleSendIntroRequest = () => {
-    toast({
-      title: "Introduction Requested",
-      description: `Your introduction request has been sent to ${mutualConnection}!`,
-    });
-    
+    console.log(`Introduction requested to ${mutualConnection} for ${personName}`);
     onOpenChange(false);
   };
   

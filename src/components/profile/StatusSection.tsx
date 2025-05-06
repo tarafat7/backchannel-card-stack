@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from '@/components/ui/use-toast';
 
 interface StatusSectionProps {
   status: string;
@@ -14,15 +13,11 @@ const MAX_STATUS_LENGTH = 100;
 const StatusSection: React.FC<StatusSectionProps> = ({ status, onStatusUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [statusText, setStatusText] = useState(status || "");
-  const { toast } = useToast();
 
   const handleStatusUpdate = () => {
     onStatusUpdate(statusText);
     setIsEditing(false);
-    toast({
-      title: "Status updated",
-      description: "Your status has been updated successfully."
-    });
+    console.log("Status updated successfully");
   };
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import ExpertiseEditor from './ExpertiseEditor';
-import { useToast } from '@/components/ui/use-toast';
 
 interface ExpertiseSectionProps {
   expertiseAreas: string[];
@@ -16,15 +15,11 @@ const ExpertiseSection: React.FC<ExpertiseSectionProps> = ({
   updateCard = true
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { toast } = useToast();
 
   const handleExpertiseSave = (updatedExpertise: string[]) => {
     onExpertiseSave(updatedExpertise);
     setIsEditing(false);
-    toast({
-      title: "Expertise updated",
-      description: "Your areas of expertise have been updated successfully."
-    });
+    console.log("Expertise updated successfully");
   };
 
   return (

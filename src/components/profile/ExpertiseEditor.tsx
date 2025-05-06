@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { expertise } from '../onboarding/constants';
 
 interface ExpertiseEditorProps {
@@ -14,7 +13,6 @@ interface ExpertiseEditorProps {
 const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEditorProps) => {
   const [editedExpertise, setEditedExpertise] = useState<string[]>([...selectedExpertise]);
   const [customExpertise, setCustomExpertise] = useState<string>("");
-  const { toast } = useToast();
   
   const handleExpertiseToggle = (area: string) => {
     if (editedExpertise.includes(area)) {
@@ -23,10 +21,7 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
       if (editedExpertise.length < 5) {
         setEditedExpertise([...editedExpertise, area]);
       } else {
-        toast({
-          title: "Maximum reached",
-          description: "You can select up to 5 areas of expertise.",
-        });
+        console.log("Maximum reached: You can select up to 5 areas of expertise.");
       }
     }
   };
@@ -39,28 +34,17 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
     }
     
     if (trimmedExpertise.length > 20) {
-      toast({
-        title: "Text too long",
-        description: "Expertise name must be 20 characters or less.",
-        variant: "destructive"
-      });
+      console.log("Text too long: Expertise name must be 20 characters or less.");
       return;
     }
     
     if (editedExpertise.includes(trimmedExpertise)) {
-      toast({
-        title: "Already added",
-        description: "This expertise area is already in your list.",
-        variant: "destructive"
-      });
+      console.log("Already added: This expertise area is already in your list.");
       return;
     }
     
     if (editedExpertise.length >= 5) {
-      toast({
-        title: "Maximum reached",
-        description: "You can select up to 5 areas of expertise.",
-      });
+      console.log("Maximum reached: You can select up to 5 areas of expertise.");
       return;
     }
     
@@ -77,11 +61,7 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
 
   const handleSave = () => {
     if (editedExpertise.length === 0) {
-      toast({
-        title: "Selection required",
-        description: "Please select at least one area of expertise.",
-        variant: "destructive"
-      });
+      console.log("Selection required: Please select at least one area of expertise.");
       return;
     }
     

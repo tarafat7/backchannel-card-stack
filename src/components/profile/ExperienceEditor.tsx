@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2 } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast";
 
 interface Experience {
   title: string;
@@ -27,7 +26,6 @@ const ExperienceEditor = ({ experiences, onSave, onCancel }: ExperienceEditorPro
       ? [...experiences] 
       : [{ title: '', company: '', years: '' }]
   );
-  const { toast } = useToast();
 
   const handleExperienceChange = (index: number, field: keyof Experience, value: string) => {
     const newExperiences = [...editedExperiences];
@@ -48,11 +46,7 @@ const ExperienceEditor = ({ experiences, onSave, onCancel }: ExperienceEditorPro
       newExperiences.splice(index, 1);
       setEditedExperiences(newExperiences);
     } else {
-      toast({
-        title: "Cannot remove",
-        description: "You must have at least one experience entry.",
-        variant: "destructive"
-      });
+      console.log("Cannot remove: You must have at least one experience entry.");
     }
   };
 
@@ -63,11 +57,7 @@ const ExperienceEditor = ({ experiences, onSave, onCancel }: ExperienceEditorPro
     );
 
     if (!isValid) {
-      toast({
-        title: "Incomplete information",
-        description: "Please fill in all fields for each experience.",
-        variant: "destructive"
-      });
+      console.log("Incomplete information: Please fill in all fields for each experience.");
       return;
     }
 

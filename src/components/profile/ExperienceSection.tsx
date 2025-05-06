@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import ExperienceEditor from './ExperienceEditor';
-import { useToast } from '@/components/ui/use-toast';
 
 interface Experience {
   title: string;
@@ -18,7 +17,6 @@ interface ExperienceSectionProps {
 
 const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experiences, onExperienceSave }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { toast } = useToast();
 
   const handleExperienceSave = (updatedExperiences: Experience[]) => {
     // Sort experiences by most recent first (assuming years format has "Present" or higher years are more recent)
@@ -41,12 +39,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experiences, onEx
     onExperienceSave(limitedExperiences);
     setIsEditing(false);
     
-    toast({
-      title: "Experience updated",
-      description: sortedExperiences.length > 3 
-        ? "Your professional experience has been updated. Only showing 3 most recent positions." 
-        : "Your professional experience has been updated successfully."
-    });
+    console.log(sortedExperiences.length > 3 
+      ? "Experience updated: Only showing 3 most recent positions." 
+      : "Experience updated successfully.");
   };
 
   // Ensure we only display the 3 most recent experiences
