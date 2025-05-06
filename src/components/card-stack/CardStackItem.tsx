@@ -3,7 +3,6 @@ import React from 'react';
 import { BusinessCard as BusinessCardType } from '../../context/AppContext';
 import BusinessCard from '../BusinessCard';
 import { ChevronDown, ChevronUp, MessageCircle, Link } from 'lucide-react';
-import { Button } from '../ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 type CardStackItemProps = {
@@ -41,18 +40,19 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
   
   if (expandedCardIndex === null) {
     // When no card is expanded, create a stacked effect showing the top of each card
-    translateY = index * 45; // Stack cards with visible top portions
+    // We want cards to stack from bottom to top, so reverse the stacking position
+    translateY = -index * 45; // Negative values move cards upward
   } else {
     if (index === expandedCardIndex) {
       // This is the expanded card, show it at the top
       translateY = 0;
     } else if (index < expandedCardIndex) {
-      // Cards that should be above the expanded card (hidden off-screen)
-      translateY = -500;
-      opacity = 0;
+      // Cards that should be above the expanded card
+      translateY = -250 - ((expandedCardIndex - index) * 45);
     } else {
       // Cards that should be below the expanded card, showing their tops
-      translateY = 250 + ((index - expandedCardIndex) * 45);
+      translateY = 500;
+      opacity = 0;
     }
   }
 
@@ -71,7 +71,9 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
         transform: `translateY(${translateY}px)`,
         zIndex: zIndex,
         opacity: opacity,
-        width: "100%"
+        width: "100%",
+        bottom: expandedCardIndex === null ? `${index * 45}px` : "auto", // Position from bottom when stacked
+        top: expandedCardIndex !== null ? "0" : "auto" // Position from top when expanded
       }}
     >
       <div className="relative">
@@ -134,9 +136,9 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
         )}
         
         {expandedCardIndex === null && isTopCard && (
-          <div className="absolute -bottom-4 left-0 right-0 flex justify-center">
+          <div className="absolute -top-4 left-0 right-0 flex justify-center">
             <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
-              <ChevronUp className="w-4 h-4 text-primary" />
+              <ChevronDown className="w-4 h-4 text-primary" />
             </div>
           </div>
         )}
