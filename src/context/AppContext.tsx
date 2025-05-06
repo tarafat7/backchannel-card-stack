@@ -30,6 +30,7 @@ export type UserProfile = {
     title: string;
     company: string;
     years: string;
+    description?: string;
   }[];
   expertiseAreas: string[];
   card: BusinessCard | null;

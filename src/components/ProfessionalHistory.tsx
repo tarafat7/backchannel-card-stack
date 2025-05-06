@@ -4,16 +4,32 @@ import { useAppContext } from '../context/AppContext';
 import professionalHistoryData from '@/data/professionalHistoryData';
 import EmptyHistory from './history/EmptyHistory';
 import HistoryTimeline from './history/HistoryTimeline';
+import { HistoryItem } from '@/data/professionalHistoryData';
 
 type ProfessionalHistoryProps = {
   id: string;
 };
 
 const ProfessionalHistory: React.FC<ProfessionalHistoryProps> = ({ id }) => {
-  const { connections } = useAppContext();
-
-  // Check if history exists for this ID
-  const history = professionalHistoryData[id] || [];
+  const { profile } = useAppContext();
+  
+  // Check if this is the current user's profile (via card id)
+  const isCurrentUser = profile.card && profile.card.id === id;
+  
+  let history: HistoryItem[] = [];
+  
+  if (isCurrentUser && profile.experiences && profile.experiences.length > 0) {
+    // Map profile experiences to history items format
+    history = profile.experiences.map(exp => ({
+      position: exp.title,
+      company: exp.company,
+      duration: exp.years,
+      description: exp.description
+    }));
+  } else {
+    // Use the sample professional history data for other users
+    history = professionalHistoryData[id] || [];
+  }
   
   // If no history found, show empty state
   if (history.length === 0) {
