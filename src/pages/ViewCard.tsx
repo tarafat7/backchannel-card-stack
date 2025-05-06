@@ -43,7 +43,7 @@ const ViewCard = () => {
   });
   
   const handleSendMessage = (name: string, phoneNumber?: string) => {
-    console.log(`Sending message to mutual connection: ${name}`);
+    console.log(`Sending message to: ${name}`);
     console.log(`Phone number: ${phoneNumber || "4155551234"}`);
     
     // Use a default phone number if none is provided

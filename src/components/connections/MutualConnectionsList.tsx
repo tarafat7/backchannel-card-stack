@@ -12,9 +12,7 @@ type MutualConnectionsListProps = {
 const MutualConnectionsList = ({ connections, onRequestIntro, handleSendMessage }: MutualConnectionsListProps) => {
   if (!connections || connections.length === 0) return null;
 
-  const handleIntroClick = (event: React.MouseEvent, connection: string) => {
-    event.preventDefault();
-    
+  const handleIntroClick = (connection: string) => {
     if (handleSendMessage) {
       // If we have a message handler, use it to send a message directly
       handleSendMessage(connection, "4155551234"); // Use default phone number for mutual connections
@@ -40,7 +38,7 @@ const MutualConnectionsList = ({ connections, onRequestIntro, handleSendMessage 
             <Button 
               size="sm" 
               variant="outline"
-              onClick={(e) => handleIntroClick(e, connection)}
+              onClick={() => handleIntroClick(connection)}
             >
               Ask for intro
             </Button>
