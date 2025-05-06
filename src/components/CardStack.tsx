@@ -136,6 +136,13 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                       showHistory={showTimeline} 
                     />
 
+                    {/* Display "Where we met" for direct connections when card is expanded */}
+                    {isExpanded && card.connectionDegree === 1 && card.connectionEvent && (
+                      <div className="px-3 py-1.5 bg-primary/20 rounded-lg text-sm mt-3 mb-1 mx-3">
+                        <span className="font-medium">Where we met:</span> {card.connectionEvent}
+                      </div>
+                    )}
+
                     {/* Action button - different for 1st and 2nd degree connections */}
                     {isExpanded && (
                       <TooltipProvider>
