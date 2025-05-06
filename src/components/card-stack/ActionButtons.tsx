@@ -41,7 +41,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
                     className="p-1 h-8 w-8 rounded-full"
                     onClick={(e) => e.stopPropagation()} // Prevent card collapse
                   >
-                    <Info className="h-4 w-4 text-white" />
+                    <Info className="h-4 w-4 text-primary" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent side="top" className="w-72">

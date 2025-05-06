@@ -42,7 +42,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
 
   return (
     <div
-      className={`business-card ${backgroundStyle} ${isPreview ? 'w-full' : 'w-full'} ${showHistory ? 'h-auto' : ''} relative rounded-t-xl`}
+      className={`business-card ${backgroundStyle} ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`}
       style={{ color: card.design.textColor, ...cardStyle }}
       onClick={handleClick}
     >
