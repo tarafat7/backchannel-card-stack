@@ -64,12 +64,14 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
 
           {/* Action buttons container at the bottom */}
           {isExpanded && (
-            <ActionButtons 
-              card={card} 
-              isSecondDegree={isSecondDegree} 
-              mutualConnectionName={mutualConnectionName} 
-              hasConnectionEvent={hasConnectionEvent}
-            />
+            <div className="bg-background/40 backdrop-blur-sm w-full">
+              <ActionButtons 
+                card={card} 
+                isSecondDegree={isSecondDegree} 
+                mutualConnectionName={mutualConnectionName} 
+                hasConnectionEvent={hasConnectionEvent}
+              />
+            </div>
           )}
         </div>
         

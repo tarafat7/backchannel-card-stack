@@ -84,7 +84,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
           </div>
         )}
         
-        <div className="mt-2">
+        <div className="mt-auto">
           {card.expertiseAreas && card.expertiseAreas.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-2">
               {card.expertiseAreas.slice(0, isPreview ? 5 : 2).map((area, index) => (
