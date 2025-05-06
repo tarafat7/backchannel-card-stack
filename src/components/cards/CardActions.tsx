@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { MessageCircle, ExternalLink } from 'lucide-react';
+import { MessageCircle, ExternalLink, Share2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 type CardActionsProps = {
@@ -18,33 +18,55 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       // Format phone number (remove any non-digits)
       const formattedPhone = phoneNumber.replace(/\D/g, '');
       
-      // Different formats for different platforms
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      const isMac = /Mac/i.test(navigator.userAgent);
+      // Create message-specific links for different platforms
+      let messageUrl;
       
-      let smsUrl;
-      if (isMobile) {
-        // Mobile devices - iOS and Android
-        smsUrl = `sms:${formattedPhone}`;
-      } else if (isMac) {
-        // macOS uses different URL scheme
-        smsUrl = `imessage://+${formattedPhone}`;
+      // Check if iOS (includes both iPhone and Mac)
+      const isAppleDevice = /iPhone|iPad|iPod|Mac/i.test(navigator.userAgent);
+      
+      if (isAppleDevice) {
+        // For iOS and macOS, use native URL schemes
+        // Add "body" parameter which is supported on iOS
+        messageUrl = `sms:${formattedPhone}&body=Hi ${personName}, I wanted to reach out`;
       } else {
-        // Default fallback
-        smsUrl = `sms:${formattedPhone}`;
+        // For Android and other platforms
+        messageUrl = `sms:${formattedPhone}?body=Hi ${personName}, I wanted to reach out`;
       }
       
-      console.log(`Device detection - isMobile: ${isMobile}, isMac: ${isMac}`);
-      console.log(`Attempting to open messaging app with URL: ${smsUrl}`);
+      console.log(`Platform detection - isAppleDevice: ${isAppleDevice}`);
+      console.log(`Generated message URL: ${messageUrl}`);
       
-      // Open the URL in a new window/tab
-      window.open(smsUrl, '_blank');
-      
-      // Show a toast as feedback that the action was initiated
-      toast({
-        title: "Opening messaging app",
-        description: `Attempting to send message to ${personName}`,
-      });
+      try {
+        // Try to open the URL directly in a new tab/window - this works better on mobile
+        const newWindow = window.open(messageUrl, '_blank');
+        
+        // If opening the window failed or was blocked
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+          // Create and click a link as fallback (works better in some browsers)
+          const link = document.createElement('a');
+          link.href = messageUrl;
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noreferrer noopener');
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          console.log("Using link click fallback method");
+        }
+        
+        // Show success toast regardless - the user may need to grant permissions
+        toast({
+          title: "Opening messaging app",
+          description: `Your messaging app should open shortly to contact ${personName}`,
+        });
+      } catch (error) {
+        console.error("Error opening messaging app:", error);
+        // Fallback for when both methods fail
+        toast({
+          title: "Could not open messaging app",
+          description: `Try manually messaging ${personName} at ${phoneNumber}`,
+          variant: "destructive"
+        });
+      }
     } else {
       // Fallback if no phone number is available
       toast({
@@ -77,6 +99,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       
       <Button variant="outline" className="w-full">
         Share Card
+        <Share2 className="w-4 h-4 ml-2" />
       </Button>
     </div>
   );

@@ -69,10 +69,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const addConnection = (connection: BusinessCard) => {
     // Ensure the connection has the connectionDegree and mutualConnections properties
+    // Also make sure phoneNumber is included if not already present
     const connectionWithDefaults = {
       ...connection,
       connectionDegree: connection.connectionDegree || 1,
-      mutualConnections: connection.mutualConnections || []
+      mutualConnections: connection.mutualConnections || [],
+      phoneNumber: connection.phoneNumber || '555-123-4567' // Default phone number if none provided
     };
     setConnections(prev => [...prev, connectionWithDefaults]);
   };
