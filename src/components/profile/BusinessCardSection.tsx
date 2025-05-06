@@ -5,6 +5,7 @@ import { Edit2 } from 'lucide-react';
 import BusinessCard from '../BusinessCard';
 import CardEditorDialog from './CardEditorDialog';
 import { BusinessCard as BusinessCardType } from '@/context/AppContext';
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 interface BusinessCardSectionProps {
   card: BusinessCardType | null;
@@ -12,7 +13,6 @@ interface BusinessCardSectionProps {
 }
 
 const BusinessCardSection: React.FC<BusinessCardSectionProps> = ({ card, onCardUpdate }) => {
-  const [cardEditorOpen, setCardEditorOpen] = useState(false);
   const [showWorkHistory, setShowWorkHistory] = useState(true);
 
   const toggleWorkHistory = () => {
@@ -40,22 +40,24 @@ const BusinessCardSection: React.FC<BusinessCardSectionProps> = ({ card, onCardU
         </div>
       )}
       
-      <Button 
-        variant="outline" 
-        className="w-full mt-3"
-        onClick={() => setCardEditorOpen(true)}
-      >
-        Edit Card Design
-        <Edit2 className="w-4 h-4 ml-2" />
-      </Button>
-      
       {card && (
-        <CardEditorDialog
-          open={cardEditorOpen}
-          onOpenChange={setCardEditorOpen}
-          card={card}
-          onSave={onCardUpdate}
-        />
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="w-full mt-3"
+            >
+              Edit Card Design
+              <Edit2 className="w-4 h-4 ml-2" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+            <CardEditorDialog 
+              card={card} 
+              onSave={onCardUpdate} 
+            />
+          </DialogContent>
+        </Dialog>
       )}
     </section>
   );
