@@ -18,16 +18,15 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       // Format phone number (remove any non-digits)
       const formattedPhone = phoneNumber.replace(/\D/g, '');
       
-      // Use window.open instead of window.location.href for better compatibility
-      window.open(`sms:${formattedPhone}`, '_blank');
+      // Create an anchor element and trigger a click to open SMS
+      const link = document.createElement('a');
+      link.href = `sms:${formattedPhone}`;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       
-      // Show a toast to inform the user the action was triggered
-      toast({
-        title: "Opening iMessage",
-        description: `Opening iMessage to text ${personName}`,
-      });
-      
-      console.log(`Attempting to open iMessage with phone: ${formattedPhone}`);
+      console.log(`Attempting to open iMessage with phone: ${formattedPhone} via link click`);
     } else {
       // Fallback if no phone number is available
       toast({
