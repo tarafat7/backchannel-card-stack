@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type CardDesign = {
@@ -26,13 +25,16 @@ export type BusinessCard = {
   phoneNumber?: string; // Phone number for sending messages
 }
 
+// Updated Experience type definition to be consistent across the app
+export type Experience = {
+  title: string;
+  company: string;
+  years: string;
+  description?: string;
+}
+
 export type UserProfile = {
-  experiences: {
-    title: string;
-    company: string;
-    years: string;
-    description?: string;
-  }[];
+  experiences: Experience[];
   expertiseAreas: string[];
   card: BusinessCard | null;
 }

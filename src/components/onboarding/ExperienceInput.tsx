@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,12 +8,15 @@ import { BriefcaseIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+// Updated interface to match the expected structure in Onboarding.tsx
 interface Experience {
   title: string;
   company: string;
-  startYear: string;
-  endYear: string;
+  years: string;
   description: string;
+  // Keep these for internal component use
+  startYear?: string;
+  endYear?: string;
 }
 
 interface ExperienceInputProps {
@@ -28,15 +30,48 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({ onContinue, currentTi
   const years = Array.from({ length: 50 }, (_, i) => (currentYear - i).toString());
   
   const [experiences, setExperiences] = useState<Experience[]>([
-    { title: currentTitle, company: currentCompany, startYear: currentYear.toString(), endYear: 'Present', description: '' },
-    { title: '', company: '', startYear: '', endYear: '', description: '' },
-    { title: '', company: '', startYear: '', endYear: '', description: '' }
+    { 
+      title: currentTitle, 
+      company: currentCompany, 
+      startYear: currentYear.toString(), 
+      endYear: 'Present', 
+      description: '',
+      years: `${currentYear.toString()} - Present` 
+    },
+    { title: '', company: '', startYear: '', endYear: '', description: '', years: '' },
+    { title: '', company: '', startYear: '', endYear: '', description: '', years: '' }
   ]);
   const [error, setError] = useState('');
+
+  // Update years field whenever startYear or endYear changes
+  const updateYearsField = (index: number, startYear: string, endYear: string) => {
+    const updatedExperiences = [...experiences];
+    const yearsValue = endYear === 'Present' 
+      ? `${startYear} - Present` 
+      : (startYear && endYear) ? `${startYear} - ${endYear}` : '';
+    
+    updatedExperiences[index] = { 
+      ...updatedExperiences[index], 
+      years: yearsValue
+    };
+    
+    setExperiences(updatedExperiences);
+  };
 
   const handleExperienceChange = (index: number, field: keyof Experience, value: string) => {
     const updatedExperiences = [...experiences];
     updatedExperiences[index] = { ...updatedExperiences[index], [field]: value };
+    
+    // Update the years field if startYear or endYear was changed
+    if (field === 'startYear' || field === 'endYear') {
+      const exp = updatedExperiences[index];
+      updateYearsField(
+        index, 
+        field === 'startYear' ? value : exp.startYear || '', 
+        field === 'endYear' ? value : exp.endYear || ''
+      );
+    }
+    
     setExperiences(updatedExperiences);
   };
 
@@ -58,12 +93,14 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({ onContinue, currentTi
       exp.title.trim() && exp.company.trim() && exp.startYear
     );
     
-    // Format experiences for the parent component
+    // Make sure all experiences have the years field properly set
     const formattedExperiences = filledExperiences.map(exp => ({
-      ...exp,
-      years: exp.endYear === 'Present' 
+      title: exp.title,
+      company: exp.company,
+      years: exp.years || (exp.endYear === 'Present' 
         ? `${exp.startYear} - Present` 
-        : `${exp.startYear} - ${exp.endYear}`
+        : `${exp.startYear} - ${exp.endYear}`),
+      description: exp.description
     }));
     
     onContinue(formattedExperiences);

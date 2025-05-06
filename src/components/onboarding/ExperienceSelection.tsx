@@ -1,13 +1,7 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from 'lucide-react';
-
-interface Experience {
-  title: string;
-  company: string;
-  years: string;
-}
+import { Experience } from '@/context/AppContext';
 
 interface ExperienceSelectionProps {
   experiences: Experience[];

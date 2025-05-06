@@ -1,14 +1,7 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import ExperienceEditor from './ExperienceEditor';
-
-interface Experience {
-  title: string;
-  company: string;
-  years: string;
-  description?: string;
-}
+import { Experience } from '@/context/AppContext';
 
 interface ExperienceSectionProps {
   experiences: Experience[];
