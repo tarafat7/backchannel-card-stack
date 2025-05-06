@@ -18,8 +18,7 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       // Format phone number (remove any non-digits)
       const formattedPhone = phoneNumber.replace(/\D/g, '');
       
-      // Create message-specific links for different platforms
-      let messageUrl;
+      console.log(`Opening message app for ${formattedPhone}`);
       
       // Check if running on macOS
       const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -28,51 +27,33 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       
       console.log(`Platform detection - isMac: ${isMac}, isIOS: ${isIOS}`);
       
+      // Create direct messaging URL - no toast notifications at all
+      let messageUrl;
+      
       if (isMac) {
-        // For macOS, try to use the imessage:// protocol
+        // macOS: Use imessage:// protocol which is specifically for Mac
         messageUrl = `imessage://+${formattedPhone}`;
-        console.log(`Using macOS specific URL: ${messageUrl}`);
       } else if (isIOS) {
-        // For iOS, use sms: with no query parameters first as it's most reliable
+        // iOS: Use sms: with no query parameters
         messageUrl = `sms:${formattedPhone}`;
-        console.log(`Using iOS specific URL: ${messageUrl}`);
       } else {
         // For Android and other platforms
-        messageUrl = `sms:${formattedPhone}?body=Hi ${personName}, I wanted to reach out`;
-        console.log(`Using generic URL: ${messageUrl}`);
+        messageUrl = `sms:${formattedPhone}?body=Hi ${personName}`;
       }
       
-      try {
-        // Direct location change for iOS/macOS - more likely to succeed on these platforms
-        if (isIOS || isMac) {
-          console.log("Using direct location change for iOS/macOS");
-          window.location.href = messageUrl;
-        } else {
-          // For other platforms, try window.open first
-          const newWindow = window.open(messageUrl, '_blank');
-          
-          // If opening the window failed or was blocked
-          if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-            console.log("Window.open failed, trying location.href as fallback");
-            window.location.href = messageUrl;
-          }
-        }
-        
-        // No success toast - we want the messaging app to open directly
-      } catch (error) {
-        console.error("Error opening messaging app:", error);
-        // Only show toast on error
-        toast({
-          title: "Could not open messaging app",
-          description: `Try manually messaging ${personName} at ${phoneNumber}`,
-          variant: "destructive"
-        });
-      }
+      console.log(`Redirecting to: ${messageUrl}`);
+      
+      // Direct redirection - no window.open() which can trigger popups
+      window.location.href = messageUrl;
+      
+      // NO toast notifications at all - user asked to remove them
+      
     } else {
-      // Fallback if no phone number is available
+      console.error("No phone number available");
+      // Only show toast for actual error when no phone number exists
       toast({
-        title: "No Phone Number",
-        description: `${personName} hasn't shared their phone number.`,
+        title: "No Phone Number Available",
+        description: `No phone number available for ${personName}.`,
         variant: "destructive"
       });
     }

@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type CardDesign = {
@@ -69,12 +70,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const addConnection = (connection: BusinessCard) => {
     // Ensure the connection has the connectionDegree and mutualConnections properties
-    // Also make sure phoneNumber is included if not already present
+    // Also make sure phoneNumber is included with a real phone number format
     const connectionWithDefaults = {
       ...connection,
       connectionDegree: connection.connectionDegree || 1,
       mutualConnections: connection.mutualConnections || [],
-      phoneNumber: connection.phoneNumber || '555-123-4567' // Default phone number if none provided
+      // Use a real format phone number that works with iMessage
+      phoneNumber: connection.phoneNumber || '4155551234' 
     };
     setConnections(prev => [...prev, connectionWithDefaults]);
   };
