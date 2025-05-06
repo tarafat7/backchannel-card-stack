@@ -9,7 +9,7 @@ type CardActionsProps = {
   onRequestIntro: () => void;
   personName: string;
   mutualConnectionName?: string;
-  phoneNumber?: string; // Add phone number prop
+  phoneNumber?: string;
 };
 
 const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualConnectionName, phoneNumber }: CardActionsProps) => {
@@ -18,8 +18,16 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       // Format phone number (remove any non-digits)
       const formattedPhone = phoneNumber.replace(/\D/g, '');
       
-      // Open iMessage with the formatted phone number
-      window.location.href = `sms:${formattedPhone}`;
+      // Use window.open instead of window.location.href for better compatibility
+      window.open(`sms:${formattedPhone}`, '_blank');
+      
+      // Show a toast to inform the user the action was triggered
+      toast({
+        title: "Opening iMessage",
+        description: `Opening iMessage to text ${personName}`,
+      });
+      
+      console.log(`Attempting to open iMessage with phone: ${formattedPhone}`);
     } else {
       // Fallback if no phone number is available
       toast({

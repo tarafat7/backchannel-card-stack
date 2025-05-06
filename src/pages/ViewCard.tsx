@@ -33,6 +33,9 @@ const ViewCard = () => {
   const firstMutualConnection = card.mutualConnections && card.mutualConnections.length > 0 
     ? card.mutualConnections[0] 
     : undefined;
+    
+  // Debug log to check if phone number is being passed
+  console.log("Card phone number:", card.phoneNumber);
   
   return (
     <>
