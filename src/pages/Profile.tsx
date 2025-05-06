@@ -5,7 +5,6 @@ import { useToast } from '@/components/ui/use-toast';
 import BottomNav from '../components/BottomNav';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import BusinessCardSection from '../components/profile/BusinessCardSection';
-import StatusSection from '../components/profile/StatusSection';
 import ExperienceSection from '../components/profile/ExperienceSection';
 import ExpertiseSection from '../components/profile/ExpertiseSection';
 import ProfileLinks from '../components/profile/ProfileLinks';
@@ -24,18 +23,16 @@ const Profile = () => {
     updateBusinessCard(updatedCard);
   };
 
-  const handleStatusUpdate = (status: string) => {
+  const handleExperienceSave = (experiences: Experience[]) => {
+    updateProfile({ experiences });
+    
+    // If card exists, update the expertise areas there too
     if (profile.card) {
       const updatedCard = {
-        ...profile.card,
-        status
+        ...profile.card
       };
       updateBusinessCard(updatedCard);
     }
-  };
-
-  const handleExperienceSave = (experiences: Experience[]) => {
-    updateProfile({ experiences });
   };
 
   const handleExpertiseSave = (expertiseAreas) => {
@@ -59,11 +56,10 @@ const Profile = () => {
         <BusinessCardSection 
           card={profile.card} 
           onCardUpdate={handleCardUpdate} 
-        />
-        
-        <StatusSection 
-          status={profile.card?.status || ""} 
-          onStatusUpdate={handleStatusUpdate} 
+          experiences={profile.experiences}
+          expertiseAreas={profile.expertiseAreas}
+          onExperienceSave={handleExperienceSave}
+          onExpertiseSave={handleExpertiseSave}
         />
         
         <ExperienceSection 
