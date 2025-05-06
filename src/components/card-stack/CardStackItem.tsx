@@ -39,7 +39,7 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
     : null;
 
   // Check if the card has connection event information
-  const hasConnectionEvent = card.connectionDegree === 1 && card.connectionEvent;
+  const hasConnectionEvent = card.connectionDegree === 1 && Boolean(card.connectionEvent);
   
   return (
     <div
