@@ -79,6 +79,7 @@ const ViewCard = () => {
         onRequestIntro={() => setIntroDialogOpen(true)}
         personName={card.name}
         mutualConnectionName={firstMutualConnection}
+        phoneNumber={card.phoneNumber}
       />
       
       <IntroRequestDialog 

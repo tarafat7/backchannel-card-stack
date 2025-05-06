@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type CardDesign = {
@@ -23,6 +22,7 @@ export type BusinessCard = {
   connectionEvent?: string;
   connectionDegree?: 1 | 2;
   mutualConnections: string[]; // Names of mutual connections
+  phoneNumber?: string; // Phone number for sending messages
 }
 
 export type UserProfile = {

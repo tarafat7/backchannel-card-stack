@@ -5,12 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from 'framer-motion';
 import { PhoneIcon } from 'lucide-react';
+import { useAppContext } from '@/context/AppContext';
 
 interface ContactInfoProps {
   onContinue: (phoneNumber: string) => void;
 }
 
 const ContactInfo: React.FC<ContactInfoProps> = ({ onContinue }) => {
+  const { profile, updateBusinessCard } = useAppContext();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
 
@@ -39,6 +41,14 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ onContinue }) => {
     if (digitsOnly.length < 10) {
       setError('Please enter a valid phone number');
       return;
+    }
+    
+    // Update the user's business card with the phone number if it exists
+    if (profile.card) {
+      updateBusinessCard({
+        ...profile.card,
+        phoneNumber: phoneNumber
+      });
     }
     
     onContinue(phoneNumber);

@@ -9,14 +9,25 @@ type CardActionsProps = {
   onRequestIntro: () => void;
   personName: string;
   mutualConnectionName?: string;
+  phoneNumber?: string; // Add phone number prop
 };
 
-const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualConnectionName }: CardActionsProps) => {
+const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualConnectionName, phoneNumber }: CardActionsProps) => {
   const handleSendMessage = () => {
-    toast({
-      title: "Message Sent",
-      description: `Your message has been sent to ${personName}`,
-    });
+    if (phoneNumber) {
+      // Format phone number (remove any non-digits)
+      const formattedPhone = phoneNumber.replace(/\D/g, '');
+      
+      // Open iMessage with the formatted phone number
+      window.location.href = `sms:${formattedPhone}`;
+    } else {
+      // Fallback if no phone number is available
+      toast({
+        title: "No Phone Number",
+        description: `${personName} hasn't shared their phone number.`,
+        variant: "destructive"
+      });
+    }
   };
   
   return (
