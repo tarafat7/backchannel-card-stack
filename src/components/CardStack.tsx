@@ -2,10 +2,11 @@
 import React, { useState } from 'react';
 import { BusinessCard as BusinessCardType } from '../context/AppContext';
 import BusinessCard from './BusinessCard';
-import { ChevronUp, ChevronDown, MessageCircle, Link } from 'lucide-react';
+import { ChevronUp, ChevronDown, MessageCircle, Link, Info } from 'lucide-react';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { ScrollArea } from './ui/scroll-area';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
 type CardStackProps = {
   cards: BusinessCardType[];
@@ -113,6 +114,9 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
             const mutualConnectionName = card.mutualConnections && card.mutualConnections.length > 0 
               ? card.mutualConnections[0] 
               : null;
+
+            // Check if the card has connection event information
+            const hasConnectionEvent = card.connectionDegree === 1 && card.connectionEvent;
             
             return (
               <div
@@ -136,41 +140,65 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                       showHistory={showTimeline} 
                     />
 
-                    {/* Display "Where we met" for direct connections when card is expanded */}
-                    {isExpanded && card.connectionDegree === 1 && card.connectionEvent && (
-                      <div className="px-3 py-1.5 bg-primary/20 rounded-lg text-sm mt-3 mb-1 mx-3">
-                        <span className="font-medium">Where we met:</span> {card.connectionEvent}
-                      </div>
-                    )}
-
-                    {/* Action button - different for 1st and 2nd degree connections */}
+                    {/* Action buttons container at the bottom */}
                     {isExpanded && (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            {isSecondDegree && mutualConnectionName ? (
-                              <button
-                                className="absolute bottom-3 right-3 bg-primary/90 hover:bg-primary px-2 py-1 rounded-md shadow-lg z-20 flex items-center gap-1 text-white text-xs"
-                                onClick={(e) => handleRequestIntro(e, card.name, mutualConnectionName)}
-                              >
-                                Ask {mutualConnectionName.split(' ')[0]} for intro
-                                <Link className="w-3.5 h-3.5 text-white" />
-                              </button>
-                            ) : (
-                              <button
-                                className="absolute bottom-3 right-3 bg-primary/90 hover:bg-primary px-2 py-1 rounded-md shadow-lg z-20 flex items-center gap-1 text-white text-xs"
-                                onClick={(e) => handleSendMessage(e, card.name, card.phoneNumber)}
-                              >
-                                Send message to {card.name.split(' ')[0]}
-                                <MessageCircle className="w-3.5 h-3.5 text-white ml-1" />
-                              </button>
-                            )}
-                          </TooltipTrigger>
-                          <TooltipContent side="top">
-                            {isSecondDegree ? "Request introduction" : `Message ${card.name.split(' ')[0]}`}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <div className="flex justify-between items-center px-3 py-2">
+                        {/* Info button with popover - only show for cards with connection event */}
+                        {hasConnectionEvent && (
+                          <TooltipProvider>
+                            <Popover>
+                              <TooltipTrigger asChild>
+                                <PopoverTrigger asChild>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="p-1 h-8 w-8 rounded-full"
+                                    onClick={(e) => e.stopPropagation()} // Prevent card collapse
+                                  >
+                                    <Info className="h-4 w-4 text-primary" />
+                                  </Button>
+                                </PopoverTrigger>
+                              </TooltipTrigger>
+                              <TooltipContent side="top">Connection Info</TooltipContent>
+                              
+                              <PopoverContent side="top" className="w-72">
+                                <div className="space-y-2">
+                                  <h4 className="font-medium text-sm">Where we met</h4>
+                                  <p className="text-sm text-muted-foreground">{card.connectionEvent}</p>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </TooltipProvider>
+                        )}
+                        
+                        {/* Action button - different for 1st and 2nd degree connections */}
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              {isSecondDegree && mutualConnectionName ? (
+                                <button
+                                  className="bg-primary/90 hover:bg-primary px-2 py-1 rounded-md shadow-lg z-20 flex items-center gap-1 text-white text-xs ml-auto"
+                                  onClick={(e) => handleRequestIntro(e, card.name, mutualConnectionName)}
+                                >
+                                  Ask {mutualConnectionName.split(' ')[0]} for intro
+                                  <Link className="w-3.5 h-3.5 text-white" />
+                                </button>
+                              ) : (
+                                <button
+                                  className="bg-primary/90 hover:bg-primary px-2 py-1 rounded-md shadow-lg z-20 flex items-center gap-1 text-white text-xs ml-auto"
+                                  onClick={(e) => handleSendMessage(e, card.name, card.phoneNumber)}
+                                >
+                                  Send message to {card.name.split(' ')[0]}
+                                  <MessageCircle className="w-3.5 h-3.5 text-white ml-1" />
+                                </button>
+                              )}
+                            </TooltipTrigger>
+                            <TooltipContent side="top">
+                              {isSecondDegree ? "Request introduction" : `Message ${card.name.split(' ')[0]}`}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
                     )}
                   </div>
                   
