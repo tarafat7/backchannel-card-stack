@@ -2,6 +2,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from "@/components/ui/button";
+import { MessageCircle } from 'lucide-react';
 
 type IntroRequestDialogProps = {
   open: boolean;
@@ -14,6 +15,40 @@ const IntroRequestDialog = ({ open, onOpenChange, personName, mutualConnection }
   const handleSendIntroRequest = () => {
     console.log(`Introduction request sent to ${mutualConnection} for ${personName}`);
     onOpenChange(false);
+  };
+  
+  const handleMessageMutualConnection = () => {
+    console.log(`Opening message to mutual connection: ${mutualConnection}`);
+    
+    // Use a default phone number
+    const phoneNumber = "4155551234";
+    
+    // Format phone number (remove any non-digits)
+    const formattedPhone = phoneNumber.replace(/\D/g, '');
+    
+    // Check if running on macOS
+    const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
+    // Check if running on iOS
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    // Create direct messaging URL
+    let messageUrl;
+    
+    if (isMac) {
+      messageUrl = `imessage://+${formattedPhone}`;
+    } else if (isIOS) {
+      messageUrl = `sms:${formattedPhone}`;
+    } else {
+      messageUrl = `sms:${formattedPhone}`;
+    }
+    
+    console.log(`Opening message URL: ${messageUrl}`);
+    
+    // Close the dialog first
+    onOpenChange(false);
+    
+    // Use window.location.href for direct navigation
+    window.location.href = messageUrl;
   };
   
   return (
@@ -49,6 +84,13 @@ const IntroRequestDialog = ({ open, onOpenChange, personName, mutualConnection }
             onClick={() => onOpenChange(false)}
           >
             Cancel
+          </Button>
+          <Button 
+            variant="secondary"
+            onClick={handleMessageMutualConnection}
+          >
+            Message {mutualConnection} Directly
+            <MessageCircle className="w-4 h-4 ml-2" />
           </Button>
           <Button 
             onClick={handleSendIntroRequest}

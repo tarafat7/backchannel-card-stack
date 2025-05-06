@@ -6,10 +6,24 @@ import { User } from 'lucide-react';
 type MutualConnectionsListProps = {
   connections: string[];
   onRequestIntro: (connectionName: string) => void;
+  handleSendMessage?: (name: string, phoneNumber?: string) => void;
 };
 
-const MutualConnectionsList = ({ connections, onRequestIntro }: MutualConnectionsListProps) => {
+const MutualConnectionsList = ({ connections, onRequestIntro, handleSendMessage }: MutualConnectionsListProps) => {
   if (!connections || connections.length === 0) return null;
+
+  const handleIntroClick = (event: React.MouseEvent, connection: string) => {
+    event.preventDefault();
+    
+    if (handleSendMessage) {
+      // If we have a message handler, use it to send a message directly
+      handleSendMessage(connection, "4155551234"); // Use default phone number for mutual connections
+      console.log(`Opening message to mutual connection: ${connection}`);
+    } else {
+      // Fall back to the dialog approach
+      onRequestIntro(connection);
+    }
+  };
 
   return (
     <div className="px-4 py-2 mb-4">
@@ -26,7 +40,7 @@ const MutualConnectionsList = ({ connections, onRequestIntro }: MutualConnection
             <Button 
               size="sm" 
               variant="outline"
-              onClick={() => onRequestIntro(connection)}
+              onClick={(e) => handleIntroClick(e, connection)}
             >
               Ask for intro
             </Button>

@@ -42,6 +42,41 @@ const ViewCard = () => {
     isDirectConnection
   });
   
+  const handleSendMessage = (name: string, phoneNumber?: string) => {
+    console.log(`Sending message to mutual connection: ${name}`);
+    console.log(`Phone number: ${phoneNumber || "4155551234"}`);
+    
+    // Use a default phone number if none is provided
+    const numberToUse = phoneNumber || "4155551234";
+    
+    // Format phone number (remove any non-digits)
+    const formattedPhone = numberToUse.replace(/\D/g, '');
+    console.log(`Formatted phone number: ${formattedPhone}`);
+    
+    // Check if running on macOS
+    const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
+    // Check if running on iOS
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    console.log(`Platform detection - isMac: ${isMac}, isIOS: ${isIOS}`);
+    
+    // Create direct messaging URL
+    let messageUrl;
+    
+    if (isMac) {
+      messageUrl = `imessage://+${formattedPhone}`;
+    } else if (isIOS) {
+      messageUrl = `sms:${formattedPhone}`;
+    } else {
+      messageUrl = `sms:${formattedPhone}`;
+    }
+    
+    console.log(`Opening message URL: ${messageUrl}`);
+    
+    // Use window.location.href for direct navigation
+    window.location.href = messageUrl;
+  };
+  
   return (
     <>
       <div className="min-h-screen bg-background flex flex-col pb-20">
@@ -70,7 +105,8 @@ const ViewCard = () => {
         {!isDirectConnection && card.mutualConnections && card.mutualConnections.length > 0 && (
           <MutualConnectionsList 
             connections={card.mutualConnections} 
-            onRequestIntro={handleRequestIntro} 
+            onRequestIntro={handleRequestIntro}
+            handleSendMessage={handleSendMessage}
           />
         )}
         
