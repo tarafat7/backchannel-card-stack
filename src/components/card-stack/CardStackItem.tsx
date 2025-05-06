@@ -15,6 +15,8 @@ type CardStackItemProps = {
   handleSendMessage: (e: React.MouseEvent, name: string, phoneNumber?: string) => void;
   handleRequestIntro: (e: React.MouseEvent, name: string, mutualConnection?: string) => void;
   isTopCard: boolean;
+  totalCards: number;
+  currentPosition: number;
 };
 
 const CardStackItem: React.FC<CardStackItemProps> = ({
@@ -26,33 +28,36 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
   handleCollapseStack,
   handleSendMessage,
   handleRequestIntro,
-  isTopCard
+  isTopCard,
+  totalCards,
+  currentPosition
 }) => {
   const isExpanded = expandedCardIndex === index;
   const showTimeline = showTimelineIndex === index;
-  const zIndex = expandedCardIndex === null 
-    ? 100 - index  // In collapsed state, first card has highest z-index
-    : (index === expandedCardIndex ? 10 : (index < expandedCardIndex ? 1 : 5 - (index - expandedCardIndex)));
+  const zIndex = 100 - currentPosition; // Higher positions (near bottom visually) get higher z-index
   
   // Calculate position based on state
   let translateY = 0;
   let opacity = 1;
   
   if (expandedCardIndex === null) {
-    // When no card is expanded, create a stacked effect showing the top of each card
-    // We want cards to stack from bottom to top, so reverse the stacking position
-    translateY = -index * 45; // Negative values move cards upward
+    // When no card is expanded, create the stacked effect from bottom to top
+    // Each card is positioned from the bottom of the container
+    // currentPosition is the distance from the bottom (higher number = closer to bottom)
+    translateY = (currentPosition - 1) * 60; // Stack cards with visible headers (60px per card)
   } else {
     if (index === expandedCardIndex) {
       // This is the expanded card, show it at the top
       translateY = 0;
     } else if (index < expandedCardIndex) {
-      // Cards that should be above the expanded card
-      translateY = -250 - ((expandedCardIndex - index) * 45);
-    } else {
-      // Cards that should be below the expanded card, showing their tops
-      translateY = 500;
+      // Cards that should be below the expanded card (closer to top of screen)
+      // Hide these cards by moving them up off-screen
+      translateY = -500;
       opacity = 0;
+    } else {
+      // Cards that should be above the expanded card (closer to bottom of screen)
+      // These cards should be stacked below the expanded card
+      translateY = 300 + ((index - expandedCardIndex) * 60);
     }
   }
 
@@ -72,13 +77,15 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
         zIndex: zIndex,
         opacity: opacity,
         width: "100%",
-        bottom: expandedCardIndex === null ? `${index * 45}px` : "auto", // Position from bottom when stacked
-        top: expandedCardIndex !== null ? "0" : "auto" // Position from top when expanded
+        bottom: "0", // Position all cards from the bottom
+        height: expandedCardIndex === null ? "80px" : (isExpanded ? "auto" : "80px"), // Only show header when collapsed
+        overflow: "hidden",
+        borderRadius: expandedCardIndex === null ? "0.75rem 0.75rem 0 0" : "0.75rem", // Round only top corners when stacked
       }}
     >
-      <div className="relative">
+      <div className="relative h-full">
         <div 
-          className="wallet-card-shadow cursor-pointer"
+          className="wallet-card-shadow cursor-pointer h-full"
           onClick={() => handleCardClick(index, card.id)}
         >
           <BusinessCard 
@@ -138,7 +145,7 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
         {expandedCardIndex === null && isTopCard && (
           <div className="absolute -top-4 left-0 right-0 flex justify-center">
             <div className="bg-primary/20 backdrop-blur-sm p-1 rounded-full">
-              <ChevronDown className="w-4 h-4 text-primary" />
+              <ChevronUp className="w-4 h-4 text-primary" />
             </div>
           </div>
         )}

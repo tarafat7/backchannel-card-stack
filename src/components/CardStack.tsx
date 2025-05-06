@@ -21,16 +21,13 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
     handleRequestIntro
   } = useCardStack();
   
-  // Create a reversed copy of the cards array for display
-  const displayCards = [...cards].reverse();
-  
   return (
     <div className="relative w-full max-w-md mx-auto mt-4">
       <ScrollArea className="h-[80vh] rounded-md" style={{ scrollBehavior: 'smooth' }}>
         {/* Main card stack */}
-        {displayCards.length > 0 ? (
+        {cards.length > 0 ? (
           <div className="relative min-h-[500px] pt-4 pb-8">
-            {displayCards.map((card, index) => (
+            {cards.map((card, index) => (
               <CardStackItem
                 key={`card-${card.id}-${index}`}
                 card={card}
@@ -41,7 +38,9 @@ const CardStack: React.FC<CardStackProps> = ({ cards, onCardClick }) => {
                 handleCollapseStack={handleCollapseStack}
                 handleSendMessage={handleSendMessage}
                 handleRequestIntro={handleRequestIntro}
-                isTopCard={index === displayCards.length - 1} // Update top card logic for reversed order
+                isTopCard={index === 0}
+                totalCards={cards.length}
+                currentPosition={cards.length - index}
               />
             ))}
           </div>
