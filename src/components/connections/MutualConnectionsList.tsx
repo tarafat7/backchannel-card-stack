@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { User } from 'lucide-react';
+import { User, MessageCircle } from 'lucide-react';
 
 type MutualConnectionsListProps = {
   connections: string[];
@@ -12,7 +12,13 @@ type MutualConnectionsListProps = {
 const MutualConnectionsList = ({ connections, onRequestIntro, handleSendMessage }: MutualConnectionsListProps) => {
   if (!connections || connections.length === 0) return null;
 
-  const handleIntroClick = (connection: string) => {
+  const handleIntroClick = (connection: string, event: React.MouseEvent) => {
+    // Prevent event propagation
+    event.preventDefault();
+    event.stopPropagation();
+    
+    console.log("Button clicked for connection:", connection);
+    
     if (handleSendMessage) {
       // If we have a message handler, use it to send a message directly
       handleSendMessage(connection, "4155551234"); // Use default phone number for mutual connections
@@ -38,10 +44,12 @@ const MutualConnectionsList = ({ connections, onRequestIntro, handleSendMessage 
             <Button 
               size="sm" 
               variant="outline"
-              onClick={() => handleIntroClick(connection)}
+              onClick={(e) => handleIntroClick(connection, e)}
               type="button"
+              className="flex items-center gap-1"
             >
               Ask for intro
+              <MessageCircle className="w-4 h-4" />
             </Button>
           </div>
         ))}

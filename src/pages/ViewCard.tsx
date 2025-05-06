@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageCircle } from 'lucide-react';
 import FullBusinessCard from '@/components/cards/FullBusinessCard';
 import SharedConnections from '@/components/shared/SharedConnections';
 import CardActions from '@/components/cards/CardActions';
@@ -9,6 +9,7 @@ import ProfessionalHistory from '@/components/ProfessionalHistory';
 import { useViewCard } from '@/hooks/useViewCard';
 import MutualConnectionsList from '@/components/connections/MutualConnectionsList';
 import SecondDegreeConnectionBadge from '@/components/connections/SecondDegreeConnectionBadge';
+import { toast } from "@/hooks/use-toast";
 
 const ViewCard = () => {
   const {
@@ -33,14 +34,6 @@ const ViewCard = () => {
   const firstMutualConnection = card.mutualConnections && card.mutualConnections.length > 0 
     ? card.mutualConnections[0] 
     : undefined;
-    
-  // Debug log to check phone number and card details
-  console.log("Card details in ViewCard:", { 
-    id: card.id, 
-    name: card.name, 
-    phoneNumber: card.phoneNumber || "No phone number available",
-    isDirectConnection
-  });
   
   const handleSendMessage = (name: string, phoneNumber?: string) => {
     console.log(`Sending message to: ${name}`);
@@ -74,12 +67,25 @@ const ViewCard = () => {
     console.log(`Opening message URL: ${messageUrl}`);
     
     try {
-      // Use window.open instead of window.location.href for better compatibility
-      window.open(messageUrl, '_blank');
+      // Open in new tab for better compatibility
+      const newWindow = window.open(messageUrl, '_blank');
+      
+      // If we couldn't open a new window, fallback to direct location change
+      if (!newWindow) {
+        window.location.href = messageUrl;
+      }
+
+      toast({
+        title: "Opening messaging app",
+        description: `Messaging ${name}`
+      });
     } catch (error) {
       console.error("Failed to open messaging app:", error);
-      // Fallback to direct location change if window.open fails
-      window.location.href = messageUrl;
+      toast({
+        title: "Couldn't open messaging app",
+        description: "Please check your device settings",
+        variant: "destructive"
+      });
     }
   };
   
@@ -92,6 +98,7 @@ const ViewCard = () => {
             variant="ghost" 
             size="icon"
             onClick={goBack}
+            type="button"
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
