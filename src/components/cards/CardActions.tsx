@@ -21,46 +21,47 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       // Create message-specific links for different platforms
       let messageUrl;
       
-      // Check if iOS (includes both iPhone and Mac)
-      const isAppleDevice = /iPhone|iPad|iPod|Mac/i.test(navigator.userAgent);
+      // Check if running on macOS
+      const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
+      // Check if running on iOS
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
       
-      if (isAppleDevice) {
-        // For iOS and macOS, use native URL schemes
-        // Add "body" parameter which is supported on iOS
-        messageUrl = `sms:${formattedPhone}&body=Hi ${personName}, I wanted to reach out`;
+      console.log(`Platform detection - isMac: ${isMac}, isIOS: ${isIOS}`);
+      
+      if (isMac) {
+        // For macOS, try to use the imessage:// protocol
+        messageUrl = `imessage://+${formattedPhone}`;
+        console.log(`Using macOS specific URL: ${messageUrl}`);
+      } else if (isIOS) {
+        // For iOS, use sms: with no query parameters first as it's most reliable
+        messageUrl = `sms:${formattedPhone}`;
+        console.log(`Using iOS specific URL: ${messageUrl}`);
       } else {
         // For Android and other platforms
         messageUrl = `sms:${formattedPhone}?body=Hi ${personName}, I wanted to reach out`;
+        console.log(`Using generic URL: ${messageUrl}`);
       }
       
-      console.log(`Platform detection - isAppleDevice: ${isAppleDevice}`);
-      console.log(`Generated message URL: ${messageUrl}`);
-      
       try {
-        // Try to open the URL directly in a new tab/window - this works better on mobile
-        const newWindow = window.open(messageUrl, '_blank');
-        
-        // If opening the window failed or was blocked
-        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-          // Create and click a link as fallback (works better in some browsers)
-          const link = document.createElement('a');
-          link.href = messageUrl;
-          link.setAttribute('target', '_blank');
-          link.setAttribute('rel', 'noreferrer noopener');
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          console.log("Using link click fallback method");
+        // Direct location change for iOS/macOS - more likely to succeed on these platforms
+        if (isIOS || isMac) {
+          console.log("Using direct location change for iOS/macOS");
+          window.location.href = messageUrl;
+        } else {
+          // For other platforms, try window.open first
+          const newWindow = window.open(messageUrl, '_blank');
+          
+          // If opening the window failed or was blocked
+          if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+            console.log("Window.open failed, trying location.href as fallback");
+            window.location.href = messageUrl;
+          }
         }
         
-        // Show success toast regardless - the user may need to grant permissions
-        toast({
-          title: "Opening messaging app",
-          description: `Your messaging app should open shortly to contact ${personName}`,
-        });
+        // No success toast - we want the messaging app to open directly
       } catch (error) {
         console.error("Error opening messaging app:", error);
-        // Fallback for when both methods fail
+        // Only show toast on error
         toast({
           title: "Could not open messaging app",
           description: `Try manually messaging ${personName} at ${phoneNumber}`,
