@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
@@ -163,6 +162,7 @@ const Onboarding = () => {
             status={status}
             setStatus={setStatus}
             links={links}
+            setLinks={setLinks}
             handleLinkChange={handleLinkChange}
             onComplete={handleComplete}
             backgroundOptions={backgroundOptions}

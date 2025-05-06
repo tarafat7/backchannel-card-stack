@@ -14,6 +14,10 @@ type CardLinksProps = {
 const CardLinks = ({ links }: CardLinksProps) => {
   if (!links || links.length === 0) return null;
   
+  // Filter out links with empty URLs
+  const validLinks = links.filter(link => link.url);
+  if (validLinks.length === 0) return null;
+  
   const getSocialIcon = (type: string) => {
     switch (type.toLowerCase()) {
       case 'twitter':
@@ -29,7 +33,7 @@ const CardLinks = ({ links }: CardLinksProps) => {
     <div className="mt-6">
       <h3 className="text-sm opacity-80 mb-2">Links</h3>
       <div className="flex gap-2">
-        {links.map((link, index) => (
+        {validLinks.map((link, index) => (
           <a 
             key={index}
             href={link.url}
