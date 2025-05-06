@@ -97,28 +97,6 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
               )}
             </div>
           )}
-
-          {card.links && card.links.length > 0 && (
-            <div className="flex gap-1">
-              {card.links.slice(0, 3).map((link, index) => (
-                <a 
-                  key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="social-icon-button"
-                >
-                  {getSocialIcon(link.type)}
-                </a>
-              ))}
-              {card.links.length > 3 && (
-                <div className="social-icon-button">
-                  <span className="text-xs font-semibold">+{card.links.length - 3}</span>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </div>
     </div>

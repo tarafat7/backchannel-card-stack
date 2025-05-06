@@ -2,7 +2,7 @@
 import React from 'react';
 import { BusinessCard as BusinessCardType } from '../../context/AppContext';
 import BusinessCard from '../BusinessCard';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Twitter, Github, Link as LinkIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import ActionButtons from './ActionButtons';
 
@@ -62,9 +62,37 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
             showHistory={showTimeline} 
           />
 
-          {/* Action buttons container at the bottom */}
-          {isExpanded && (
-            <div className="bg-background/40 backdrop-blur-sm w-full">
+          {/* Social links and action buttons at the bottom */}
+          <div className="bg-background/40 backdrop-blur-sm w-full px-4 py-2">
+            <div className="flex items-center justify-between">
+              {/* Social links */}
+              <div className="flex gap-1">
+                {card.links && card.links.length > 0 && card.links.slice(0, 3).map((link, index) => (
+                  <a 
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="social-icon-button"
+                  >
+                    {link.type === 'twitter' ? (
+                      <Twitter className="w-4 h-4" />
+                    ) : link.type === 'github' ? (
+                      <Github className="w-4 h-4" />
+                    ) : (
+                      <LinkIcon className="w-4 h-4" />
+                    )}
+                  </a>
+                ))}
+                {card.links && card.links.length > 3 && (
+                  <div className="social-icon-button">
+                    <span className="text-xs font-semibold">+{card.links.length - 3}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Action buttons */}
               <ActionButtons 
                 card={card} 
                 isSecondDegree={isSecondDegree} 
@@ -72,7 +100,7 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
                 hasConnectionEvent={hasConnectionEvent}
               />
             </div>
-          )}
+          </div>
         </div>
         
         {isExpanded && (
