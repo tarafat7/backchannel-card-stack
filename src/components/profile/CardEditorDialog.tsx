@@ -2,13 +2,13 @@
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import BusinessCard from '../BusinessCard';
 import { BusinessCard as BusinessCardType } from '@/context/AppContext';
-import BackgroundSelector from './BackgroundSelector';
-import TextColorSelector from './TextColorSelector';
-import CardLinks from './CardLinks';
+import BackgroundSelector from './card-editor/BackgroundSelector';
+import TextColorSelector from './card-editor/TextColorSelector';
+import CardLinks from './card-editor/CardLinks';
+import StatusInput from './card-editor/StatusInput';
+import CardPreview from './card-editor/CardPreview';
 
 interface CardEditorDialogProps {
   open: boolean;
@@ -27,6 +27,7 @@ const CardEditorDialog = ({ open, onOpenChange, card, onSave }: CardEditorDialog
   const [textColor, setTextColor] = useState<string>(card?.design.textColor || 'text-white');
   const [status, setStatus] = useState<string>(card?.status || '');
   const [links, setLinks] = useState(card?.links || [{ type: 'Twitter', url: 'https://twitter.com' }]);
+  const [showHistory, setShowHistory] = useState<boolean>(false);
   
   // Create a preview card with the current settings
   const previewCard = card ? {
@@ -38,13 +39,6 @@ const CardEditorDialog = ({ open, onOpenChange, card, onSave }: CardEditorDialog
       textColor
     }
   } : null;
-  
-  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value.length <= MAX_STATUS_LENGTH) {
-      setStatus(value);
-    }
-  };
   
   // Handle save
   const handleSave = () => {
@@ -77,11 +71,18 @@ const CardEditorDialog = ({ open, onOpenChange, card, onSave }: CardEditorDialog
         </DialogHeader>
         
         <div className="space-y-6 mt-4">
-          <div className="flex justify-center">
-            {previewCard && (
-              <BusinessCard card={previewCard} isPreview={true} />
-            )}
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-medium">Preview</h3>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setShowHistory(!showHistory)}
+            >
+              {showHistory ? "Hide Work History" : "Show Work History"}
+            </Button>
           </div>
+          
+          {previewCard && <CardPreview card={previewCard} showHistory={showHistory} />}
           
           <BackgroundSelector 
             selectedBackground={selectedBackground}
@@ -93,19 +94,11 @@ const CardEditorDialog = ({ open, onOpenChange, card, onSave }: CardEditorDialog
             onTextColorChange={setTextColor}
           />
           
-          <div>
-            <label className="text-sm font-medium mb-2 block">Status</label>
-            <Input 
-              value={status}
-              onChange={handleStatusChange}
-              placeholder="What are you up to now?"
-              className="bg-secondary/50 backdrop-blur-sm border border-white/10"
-              maxLength={MAX_STATUS_LENGTH}
-            />
-            <div className="text-xs text-muted-foreground mt-1">
-              {status.length}/{MAX_STATUS_LENGTH} characters
-            </div>
-          </div>
+          <StatusInput 
+            status={status}
+            onStatusChange={setStatus}
+            maxLength={MAX_STATUS_LENGTH}
+          />
           
           <CardLinks 
             links={links}

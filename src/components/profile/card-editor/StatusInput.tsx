@@ -1,0 +1,36 @@
+
+import React from 'react';
+import { Input } from "@/components/ui/input";
+
+interface StatusInputProps {
+  status: string;
+  onStatusChange: (status: string) => void;
+  maxLength: number;
+}
+
+const StatusInput: React.FC<StatusInputProps> = ({ status, onStatusChange, maxLength }) => {
+  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= maxLength) {
+      onStatusChange(value);
+    }
+  };
+
+  return (
+    <div>
+      <label className="text-sm font-medium mb-2 block">Status</label>
+      <Input 
+        value={status}
+        onChange={handleStatusChange}
+        placeholder="What are you up to now?"
+        className="bg-secondary/50 backdrop-blur-sm border border-white/10"
+        maxLength={maxLength}
+      />
+      <div className="text-xs text-muted-foreground mt-1">
+        {status.length}/{maxLength} characters
+      </div>
+    </div>
+  );
+};
+
+export default StatusInput;
