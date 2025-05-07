@@ -18,11 +18,11 @@ const StatusInput: React.FC<StatusInputProps> = ({ status, onStatusChange, maxLe
 
   return (
     <div>
-      <label className="text-sm font-medium mb-2 block">Status</label>
+      <label className="text-sm font-medium mb-2 block">What do you need right now?</label>
       <Input 
         value={status}
         onChange={handleStatusChange}
-        placeholder="What are you up to now?"
+        placeholder="E.g., Looking for a product designer..."
         className="bg-secondary/50 backdrop-blur-sm border border-white/10"
         maxLength={maxLength}
       />

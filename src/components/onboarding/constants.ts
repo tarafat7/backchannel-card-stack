@@ -1,3 +1,4 @@
+
 // Mock LinkedIn data for demo
 export const mockLinkedInData = {
   name: "Alex Morgan",
@@ -47,19 +48,24 @@ export const backgroundOptions = [
 ];
 
 export const expertise = [
-  "Startup advice", 
-  "Angel investing", 
-  "Hiring engineers",
-  "Product feedback",
-  "Pitch deck review",
-  "User research",
+  "Product", 
+  "Design", 
+  "Engineering",
+  "Brand",
   "Fundraising",
-  "Technical mentorship",
-  "Design feedback",
-  "Industry introductions",
-  "VC connections",
-  "Marketing strategy",
-  "Sales coaching",
-  "Career advice",
-  "Contract review"
+  "Hiring",
+  "Growth",
+  "Strategy",
+  "Marketing",
+  "Sales",
+  "Operations",
+  "Partnerships",
+  "Investing",
+  "Advising",
+  "Founding",
+  "Research",
+  "Creative",
+  "Community",
+  "Finance",
+  "Legal"
 ];

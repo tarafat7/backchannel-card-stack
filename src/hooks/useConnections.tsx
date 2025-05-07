@@ -53,7 +53,9 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
         connection.title.toLowerCase().includes(query) ||
         connection.company.toLowerCase().includes(query) ||
         connection.expertiseAreas.some(area => area.toLowerCase().includes(query)) ||
-        connection.status.toLowerCase().includes(query)
+        connection.status.toLowerCase().includes(query) ||
+        // Now we include the connection event (where we met) in search
+        (connection.connectionEvent && connection.connectionEvent.toLowerCase().includes(query))
       );
     }
     

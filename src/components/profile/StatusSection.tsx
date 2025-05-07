@@ -30,7 +30,7 @@ const StatusSection: React.FC<StatusSectionProps> = ({ status, onStatusUpdate })
   return (
     <section className="mb-8">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-sm font-medium text-muted-foreground">Status Update</h2>
+        <h2 className="text-sm font-medium text-muted-foreground">What do you need right now?</h2>
         {!isEditing && (
           <Button 
             variant="ghost" 
@@ -47,7 +47,7 @@ const StatusSection: React.FC<StatusSectionProps> = ({ status, onStatusUpdate })
           <Textarea 
             value={statusText}
             onChange={handleStatusChange}
-            placeholder="What are you up to now?"
+            placeholder="E.g., Looking for a product designer..."
             className="bg-secondary border-none resize-none"
             maxLength={MAX_STATUS_LENGTH}
           />
