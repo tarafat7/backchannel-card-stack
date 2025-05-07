@@ -46,14 +46,6 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
       style={{ color: card.design.textColor, ...cardStyle }}
       onClick={handleClick}
     >
-      {/* Badge for 2nd-degree connections */}
-      {isSecondDegree && (
-        <div className="absolute top-2 right-2 flex items-center bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full text-xs">
-          <User className="w-3 h-3 mr-1" />
-          <span>2° Connection</span>
-        </div>
-      )}
-      
       <div className="relative h-full p-4 flex flex-col justify-between overflow-hidden">
         <div className="flex items-start gap-3">
           <div className="w-14 h-14 rounded-full bg-black/20 overflow-hidden border border-white/20">
@@ -66,7 +58,14 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
             )}
           </div>
           <div className="flex-1 overflow-hidden">
-            <h3 className="font-semibold text-sm truncate">{card.name}</h3>
+            <div className="flex items-center">
+              <h3 className="font-semibold text-sm truncate">{card.name}</h3>
+              {isSecondDegree && (
+                <span className="ml-1 text-xs px-1.5 py-0.5 bg-black/30 rounded-full">
+                  2º
+                </span>
+              )}
+            </div>
             <p className="text-xs opacity-90 truncate">{card.title}</p>
             <p className="text-xs opacity-70 truncate">{card.company}</p>
           </div>

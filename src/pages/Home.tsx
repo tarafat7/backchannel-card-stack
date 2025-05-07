@@ -25,8 +25,6 @@ const Home = () => {
     totalConnections,
     searchQuery,
     setSearchQuery,
-    viewMode,
-    setViewMode,
     activeFilter,
     setActiveFilter,
     handleCardClick,
@@ -60,8 +58,6 @@ const Home = () => {
       <HomeHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
         filters={filters}
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
@@ -74,7 +70,6 @@ const Home = () => {
       
       <main className="flex-1 p-4 overflow-hidden">
         <HomeContent 
-          viewMode={viewMode}
           filteredConnections={filteredConnections}
           searchQuery={searchQuery}
           onCardClick={handleCardClick}

@@ -2,14 +2,11 @@
 import { useState } from 'react';
 import SearchBar from './SearchBar';
 import FilterBar from './FilterBar';
-import ViewModeToggle from './ViewModeToggle';
 import { Badge } from "@/components/ui/badge";
 
 type HomeHeaderProps = {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  viewMode: 'stack' | 'list';
-  setViewMode: (mode: 'stack' | 'list') => void;
   filters: string[];
   activeFilter: string;
   setActiveFilter: (filter: string) => void;
@@ -20,8 +17,6 @@ type HomeHeaderProps = {
 const HomeHeader = ({
   searchQuery,
   setSearchQuery,
-  viewMode,
-  setViewMode,
   filters,
   activeFilter,
   setActiveFilter,
@@ -37,16 +32,10 @@ const HomeHeader = ({
 
   return (
     <header className="sticky top-0 z-10 bg-background pt-4 px-4 pb-2">
-      <div className="flex items-center gap-2">
-        <div className="flex-grow">
-          <SearchBar 
-            value={searchQuery}
-            onChange={setSearchQuery}
-          />
-        </div>
-        <ViewModeToggle 
-          viewMode={viewMode}
-          onChange={setViewMode}
+      <div className="w-full">
+        <SearchBar 
+          value={searchQuery}
+          onChange={setSearchQuery}
         />
       </div>
       

@@ -1,16 +1,11 @@
 
 import CardStack from '../CardStack';
-import ConnectionsGrid from './ConnectionsGrid';
 import NoConnectionsFound from './NoConnectionsFound';
 import { BusinessCard, useAppContext } from '@/context/AppContext';
-import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-type ViewMode = 'stack' | 'list';
-
 type HomeContentProps = {
-  viewMode: ViewMode;
   filteredConnections: BusinessCard[];
   searchQuery: string;
   onCardClick: (id: string) => void;
@@ -18,7 +13,6 @@ type HomeContentProps = {
 };
 
 const HomeContent = ({ 
-  viewMode, 
   filteredConnections, 
   searchQuery, 
   onCardClick, 
@@ -57,23 +51,13 @@ const HomeContent = ({
     );
   }
 
-  if (viewMode === 'stack') {
-    return (
-      <div className="h-full flex-grow overflow-hidden">
-        <CardStack 
-          cards={filteredConnections}
-          onCardClick={onCardClick}
-        />
-      </div>
-    );
-  }
-
   return (
-    <ConnectionsGrid 
-      connections={filteredConnections} 
-      viewMode="list"
-      onCardClick={onCardClick}
-    />
+    <div className="h-full flex-grow overflow-hidden">
+      <CardStack 
+        cards={filteredConnections}
+        onCardClick={onCardClick}
+      />
+    </div>
   );
 };
 

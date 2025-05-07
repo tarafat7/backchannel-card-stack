@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { BusinessCard, useAppContext } from '@/context/AppContext';
 import { sampleConnections, sampleSecondDegreeConnections } from '@/data/connectionData';
@@ -8,8 +7,6 @@ type UseConnectionsResult = {
   totalConnections: number;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  viewMode: 'stack' | 'list';
-  setViewMode: (mode: 'stack' | 'list') => void;
   activeFilter: string;
   setActiveFilter: (filter: string) => void;
   handleCardClick: (id: string) => void;
@@ -19,7 +16,6 @@ type UseConnectionsResult = {
 export const useConnections = (navigate: (path: string) => void): UseConnectionsResult => {
   const { connections, addConnection } = useAppContext();
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<'stack' | 'list'>('stack');
   const [activeFilter, setActiveFilter] = useState('All');
 
   // Initialize with sample connections if none exist
@@ -100,8 +96,6 @@ export const useConnections = (navigate: (path: string) => void): UseConnections
     totalConnections: firstDegreeConnections.length + sampleSecondDegreeConnections.length,
     searchQuery,
     setSearchQuery,
-    viewMode,
-    setViewMode,
     activeFilter,
     setActiveFilter,
     handleCardClick,
