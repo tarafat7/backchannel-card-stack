@@ -77,9 +77,9 @@ const ExperienceSelection: React.FC<ExperienceSelectionProps> = ({
             onChange={(e) => setCustomExpertise(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="E.g., Podcast booking, Public speaking"
-            className="flex-1"
+            className="flex-1 text-xs placeholder:text-xs"
           />
-          <Button onClick={handleAddCustomExpertise} type="button">
+          <Button onClick={handleAddCustomExpertise} type="button" size="default">
             Add
           </Button>
         </div>

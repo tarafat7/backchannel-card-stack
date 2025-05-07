@@ -1,4 +1,3 @@
-
 // Expertise areas available for selection
 export const expertise = [
   "AI",
@@ -19,7 +18,6 @@ export const expertise = [
   "Operations",
   "Partnerships",
   "Product",
-  "Research",
   "Sales",
   "Strategy"
 ];

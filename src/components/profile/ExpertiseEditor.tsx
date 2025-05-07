@@ -94,9 +94,9 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
             onKeyDown={handleKeyDown}
             placeholder="E.g., Podcast booking, Public speaking"
             maxLength={25}
-            className="flex-1"
+            className="flex-1 text-xs placeholder:text-xs"
           />
-          <Button type="button" onClick={handleAddCustomExpertise}>
+          <Button type="button" onClick={handleAddCustomExpertise} size="default">
             Add
           </Button>
         </div>
