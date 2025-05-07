@@ -11,10 +11,12 @@ import ExperienceSelection from '../components/onboarding/ExperienceSelection';
 import ProfilePhoto from '../components/onboarding/ProfilePhoto';
 import CardDesigner from '../components/onboarding/CardDesigner';
 import ContactInfo from '../components/onboarding/ContactInfo';
+import OnboardingComplete from '../components/onboarding/OnboardingComplete';
 
 const Onboarding = () => {
   const navigate = useNavigate();
   const { onboardingStep, setOnboardingStep, updateProfile, profile, updateBusinessCard } = useAppContext();
+  const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -109,7 +111,11 @@ const Onboarding = () => {
   };
 
   const handleComplete = () => {
-    navigate('/home');
+    setShowCompletionAnimation(true);
+  };
+  
+  const handleAnimationComplete = () => {
+    setShowCompletionAnimation(false);
   };
 
   const renderStep = () => {
@@ -185,6 +191,10 @@ const Onboarding = () => {
         
         {renderStep()}
       </div>
+      
+      {showCompletionAnimation && (
+        <OnboardingComplete onAnimationComplete={handleAnimationComplete} />
+      )}
     </div>
   );
 };

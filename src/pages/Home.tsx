@@ -1,5 +1,4 @@
-
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import HomeHeader from '../components/home/HomeHeader';
 import HomeContent from '../components/home/HomeContent';
@@ -7,18 +6,24 @@ import ConnectionCounter from '../components/home/ConnectionCounter';
 import { useConnections } from '../hooks/useConnections';
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
+import { motion } from 'framer-motion';
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [updatesCount, setUpdatesCount] = useState(0);
   const { profile } = useAppContext();
+  const [isAnimating, setIsAnimating] = useState(false);
   
-  // Check if onboarding is incomplete and redirect
+  // Check if coming from onboarding
   useEffect(() => {
-    if (!profile.card || profile.experiences.length === 0) {
-      navigate('/', { replace: true });
+    const fromOnboarding = location.state?.fromOnboarding;
+    if (fromOnboarding) {
+      setIsAnimating(true);
+      // Reset the location state after using it
+      window.history.replaceState({}, document.title);
     }
-  }, [profile, navigate]);
+  }, [location]);
   
   const {
     filteredConnections,
@@ -54,7 +59,12 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <motion.div 
+      className="min-h-screen bg-background flex flex-col"
+      initial={isAnimating ? { opacity: 0 } : false}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <HomeHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -78,7 +88,7 @@ const Home = () => {
       </main>
       
       <BottomNav />
-    </div>
+    </motion.div>
   );
 };
 
