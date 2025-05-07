@@ -13,10 +13,16 @@ const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
   // Get background style from card design
   const backgroundStyle = card.design.backgroundStyle;
   
-  // Apply the background directly if it's a custom hex value
-  const cardStyle = backgroundStyle.startsWith('bg-[') 
-    ? { backgroundColor: backgroundStyle.slice(4, -1) }
-    : {};
+  // Prepare inline style based on background style
+  const cardStyle: React.CSSProperties = {};
+  
+  // If it has a custom color
+  if (backgroundStyle.includes('bg-[')) {
+    const colorMatch = backgroundStyle.match(/bg-\[(.*?)\]/);
+    if (colorMatch && colorMatch[1]) {
+      cardStyle.backgroundColor = colorMatch[1];
+    }
+  }
   
   return (
     <div className={`m-4 p-6 rounded-xl shadow-lg ${backgroundStyle}`} style={cardStyle}>

@@ -32,10 +32,16 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
   // Get background style from card design
   const backgroundStyle = card.design.backgroundStyle;
   
-  // Apply the background directly if it's a custom hex value
-  const cardStyle = backgroundStyle.startsWith('bg-[') 
-    ? { backgroundColor: backgroundStyle.slice(4, -1) }
-    : {};
+  // Prepare inline style based on background style
+  const cardStyle: React.CSSProperties = {};
+  
+  // If it has a custom color
+  if (backgroundStyle.includes('bg-[')) {
+    const colorMatch = backgroundStyle.match(/bg-\[(.*?)\]/);
+    if (colorMatch && colorMatch[1]) {
+      cardStyle.backgroundColor = colorMatch[1];
+    }
+  }
 
   // Determine if this is a 2nd-degree connection
   const isSecondDegree = card.connectionDegree === 2;
