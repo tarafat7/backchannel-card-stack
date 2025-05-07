@@ -185,7 +185,7 @@ const Onboarding = () => {
       <div className="px-6 py-8 flex-1">
         {onboardingStep > 0 && (
           <div className="mb-10 flex justify-center">
-            <img src="/lovable-uploads/f2bd2289-bd05-40eb-a075-a0a8cd0a7331.png" alt="Backchannel Logo" className="h-16" />
+            <img src="/lovable-uploads/d772b7e2-428b-409e-9649-30f8c448ab15.png" alt="Backchannel Logo" className="h-16" />
           </div>
         )}
         
