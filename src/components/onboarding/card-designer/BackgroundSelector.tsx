@@ -21,18 +21,7 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
   // Group background options
   const gradients = backgroundOptions.filter(bg => bg.includes('gradient'));
   const solidColors = backgroundOptions.filter(bg => bg.includes('bg-[') && !bg.includes('pattern'));
-  
-  // Define pattern backgrounds (with actual patterns)
-  const patterns = [
-    "bg-[pattern-grid-white/10]",
-    "bg-[pattern-dots-white/10]",
-    "bg-[pattern-topography-white/10]",
-    "bg-[pattern-circuit-white/5]",
-    "bg-[pattern-hexagons-white/8]",
-    "bg-[pattern-waves-white/10]",
-    "bg-[pattern-diagonal-lines-white/8]",
-    "bg-[pattern-zigzag-white/10]"
-  ];
+  const patterns = backgroundOptions.filter(bg => bg.includes('pattern'));
 
   // Handle custom hex color input
   const handleHexColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {

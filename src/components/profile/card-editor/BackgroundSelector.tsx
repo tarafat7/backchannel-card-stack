@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Palette } from 'lucide-react';
-import { backgroundOptions } from '../../onboarding/constants';
+import { backgroundOptions, patternBackgrounds, solidColorBackgrounds } from '../../onboarding/constants';
 
 interface BackgroundSelectorProps {
   selectedBackground: string;
@@ -19,8 +19,8 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
   
   // Group background options
   const gradients = backgroundOptions.filter(bg => bg.includes('gradient'));
-  const solidColors = backgroundOptions.filter(bg => bg.includes('bg-[') && !bg.includes('pattern'));
-  const patterns = backgroundOptions.filter(bg => bg.includes('pattern'));
+  const solidColors = solidColorBackgrounds;
+  const patterns = patternBackgrounds;
 
   // Handle custom hex color input
   const handleHexColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
