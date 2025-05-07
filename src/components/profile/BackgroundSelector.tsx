@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ColorPicker } from 'lucide-react';
+import { Palette } from 'lucide-react';
 import { backgroundOptions } from '../onboarding/constants';
 
 interface BackgroundSelectorProps {
@@ -56,7 +56,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
         
         <div className="pt-2 border-t border-border mt-3">
           <div className="flex gap-2 items-center">
-            <ColorPicker className="w-5 h-5 text-muted-foreground" />
+            <Palette className="w-5 h-5 text-muted-foreground" />
             <Input 
               type="text"
               value={customHexColor}
@@ -92,7 +92,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
         
         <div className="pt-2 border-t border-border mt-3">
           <div className="flex gap-2 items-center">
-            <ColorPicker className="w-5 h-5 text-muted-foreground" />
+            <Palette className="w-5 h-5 text-muted-foreground" />
             <Input 
               type="text"
               value={customHexColor}
@@ -128,7 +128,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
         
         <div className="pt-2 border-t border-border mt-3">
           <div className="flex gap-2 items-center">
-            <ColorPicker className="w-5 h-5 text-muted-foreground" />
+            <Palette className="w-5 h-5 text-muted-foreground" />
             <Input 
               type="text"
               value={customHexColor}
