@@ -58,24 +58,15 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       )}
       
       {/* Action button - different for 1st and 2nd degree connections */}
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            {isSecondDegree && mutualConnectionName ? (
-              <IntroButton 
-                name={card.name} 
-                mutualConnection={mutualConnectionName} 
-                onRequestIntro={handleRequestIntro} 
-              />
-            ) : (
-              <MessageButton name={card.name} phoneNumber={card.phoneNumber} />
-            )}
-          </TooltipTrigger>
-          <TooltipContent side="top">
-            {isSecondDegree ? "Request introduction" : `Message ${card.name.split(' ')[0]}`}
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      {isSecondDegree && mutualConnectionName ? (
+        <IntroButton 
+          name={card.name} 
+          mutualConnection={mutualConnectionName} 
+          onRequestIntro={handleRequestIntro} 
+        />
+      ) : (
+        <MessageButton name={card.name} phoneNumber={card.phoneNumber} />
+      )}
     </div>
   );
 };
