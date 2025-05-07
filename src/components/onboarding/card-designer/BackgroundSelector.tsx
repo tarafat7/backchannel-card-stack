@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Palette, ColorPicker } from 'lucide-react';
 
 interface BackgroundSelectorProps {
   selectedBackground: string;
@@ -16,105 +17,159 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
   backgroundOptions,
 }) => {
   const [customHexColor, setCustomHexColor] = useState<string>('#333333');
-  const [isUsingCustomColor, setIsUsingCustomColor] = useState<boolean>(false);
+  
+  // Group background options
+  const gradients = backgroundOptions.filter(bg => bg.includes('gradient'));
+  const solidColors = backgroundOptions.filter(bg => bg.includes('bg-[') && !bg.includes('pattern'));
+  
+  // Define pattern backgrounds (with actual patterns)
+  const patterns = [
+    "bg-[pattern-grid-white/10]",
+    "bg-[pattern-dots-white/10]",
+    "bg-[pattern-topography-white/10]",
+    "bg-[pattern-circuit-white/5]",
+    "bg-[pattern-hexagons-white/8]",
+    "bg-[pattern-waves-white/10]",
+    "bg-[pattern-diagonal-lines-white/8]",
+    "bg-[pattern-zigzag-white/10]"
+  ];
 
   // Handle custom hex color input
   const handleHexColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCustomHexColor(value);
-    
-    // Only update background if using custom color
-    if (isUsingCustomColor) {
-      setSelectedBackground(`bg-[${value}]`);
-    }
   };
 
   // Handle applying the custom color
   const applyCustomColor = () => {
-    setIsUsingCustomColor(true);
     setSelectedBackground(`bg-[${customHexColor}]`);
   };
 
   // Handle selecting a preset background
   const selectPresetBackground = (bg: string) => {
-    setIsUsingCustomColor(false);
     setSelectedBackground(bg);
   };
 
-  // Group background options
-  const gradients = backgroundOptions.filter(bg => bg.includes('gradient'));
-  const solidColors = backgroundOptions.filter(bg => bg.includes('bg-[') && !bg.includes('pattern'));
-  const patterns = backgroundOptions.filter(bg => bg.includes('pattern'));
-
   return (
-    <Tabs defaultValue="gradients" className="w-full">
-      <TabsList className="grid grid-cols-4 mb-4">
-        <TabsTrigger value="gradients">Gradients</TabsTrigger>
-        <TabsTrigger value="colors">Colors</TabsTrigger>
-        <TabsTrigger value="patterns">Patterns</TabsTrigger>
-        <TabsTrigger value="custom">Custom</TabsTrigger>
-      </TabsList>
+    <div className="space-y-4">
+      <h3 className="text-sm font-medium">Background Style</h3>
       
-      <TabsContent value="gradients" className="space-y-4">
-        <div className="grid grid-cols-4 gap-2">
-          {gradients.map((bg, index) => (
-            <button
-              key={index}
-              className={`w-full aspect-square rounded-md ${bg} ${selectedBackground === bg ? 'ring-2 ring-primary' : ''}`}
-              onClick={() => selectPresetBackground(bg)}
-            />
-          ))}
-        </div>
-      </TabsContent>
-      
-      <TabsContent value="colors" className="space-y-4">
-        <div className="grid grid-cols-4 gap-2">
-          {solidColors.map((bg, index) => (
-            <button
-              key={index}
-              className={`w-full aspect-square rounded-md ${bg} ${selectedBackground === bg ? 'ring-2 ring-primary' : ''}`}
-              onClick={() => selectPresetBackground(bg)}
-            />
-          ))}
-        </div>
-      </TabsContent>
-      
-      <TabsContent value="patterns" className="space-y-4">
-        <div className="grid grid-cols-4 gap-2">
-          {patterns.map((bg, index) => (
-            <button
-              key={index}
-              className={`w-full aspect-square rounded-md ${bg} ${selectedBackground === bg ? 'ring-2 ring-primary' : ''}`}
-              onClick={() => selectPresetBackground(bg)}
-            />
-          ))}
-        </div>
-      </TabsContent>
-      
-      <TabsContent value="custom" className="space-y-4">
-        <div className="flex gap-2 items-center">
-          <Input 
-            type="text"
-            value={customHexColor}
-            onChange={handleHexColorChange}
-            placeholder="#000000"
-            className="bg-secondary/50 backdrop-blur-sm border border-white/10"
-          />
-          <div 
-            className="w-10 h-10 rounded-md" 
-            style={{ backgroundColor: customHexColor }}
-          />
-          <Button 
-            onClick={applyCustomColor}
-            variant="secondary"
-            size="sm"
-          >
-            Apply
-          </Button>
-        </div>
-        <p className="text-xs text-muted-foreground">Enter a hex color code (e.g., #FF5733)</p>
-      </TabsContent>
-    </Tabs>
+      <Tabs defaultValue="gradients" className="w-full">
+        <TabsList className="grid grid-cols-3 mb-4">
+          <TabsTrigger value="gradients">Gradients</TabsTrigger>
+          <TabsTrigger value="colors">Colors</TabsTrigger>
+          <TabsTrigger value="patterns">Patterns</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="gradients" className="space-y-4">
+          <div className="grid grid-cols-4 gap-2">
+            {gradients.map((bg, index) => (
+              <button
+                key={index}
+                className={`w-full aspect-square rounded-md ${bg} ${selectedBackground === bg ? 'ring-2 ring-primary' : ''}`}
+                onClick={() => selectPresetBackground(bg)}
+              />
+            ))}
+          </div>
+          
+          <div className="pt-2 border-t border-border mt-3">
+            <div className="flex gap-2 items-center">
+              <ColorPicker className="w-5 h-5 text-muted-foreground" />
+              <Input 
+                type="text"
+                value={customHexColor}
+                onChange={handleHexColorChange}
+                placeholder="#000000"
+                className="bg-secondary/50 backdrop-blur-sm border border-white/10"
+              />
+              <div 
+                className="w-8 h-8 rounded-md" 
+                style={{ backgroundColor: customHexColor }}
+              />
+              <Button 
+                onClick={applyCustomColor}
+                variant="secondary"
+                size="sm"
+              >
+                Apply
+              </Button>
+            </div>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="colors" className="space-y-4">
+          <div className="grid grid-cols-4 gap-2">
+            {solidColors.map((bg, index) => (
+              <button
+                key={index}
+                className={`w-full aspect-square rounded-md ${bg} ${selectedBackground === bg ? 'ring-2 ring-primary' : ''}`}
+                onClick={() => selectPresetBackground(bg)}
+              />
+            ))}
+          </div>
+          
+          <div className="pt-2 border-t border-border mt-3">
+            <div className="flex gap-2 items-center">
+              <ColorPicker className="w-5 h-5 text-muted-foreground" />
+              <Input 
+                type="text"
+                value={customHexColor}
+                onChange={handleHexColorChange}
+                placeholder="#000000"
+                className="bg-secondary/50 backdrop-blur-sm border border-white/10"
+              />
+              <div 
+                className="w-8 h-8 rounded-md" 
+                style={{ backgroundColor: customHexColor }}
+              />
+              <Button 
+                onClick={applyCustomColor}
+                variant="secondary"
+                size="sm"
+              >
+                Apply
+              </Button>
+            </div>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="patterns" className="space-y-4">
+          <div className="grid grid-cols-4 gap-2">
+            {patterns.map((bg, index) => (
+              <button
+                key={index}
+                className={`w-full aspect-square rounded-md ${bg} ${selectedBackground === bg ? 'ring-2 ring-primary' : ''}`}
+                onClick={() => selectPresetBackground(bg)}
+              />
+            ))}
+          </div>
+          
+          <div className="pt-2 border-t border-border mt-3">
+            <div className="flex gap-2 items-center">
+              <ColorPicker className="w-5 h-5 text-muted-foreground" />
+              <Input 
+                type="text"
+                value={customHexColor}
+                onChange={handleHexColorChange}
+                placeholder="#000000"
+                className="bg-secondary/50 backdrop-blur-sm border border-white/10"
+              />
+              <div 
+                className="w-8 h-8 rounded-md" 
+                style={{ backgroundColor: customHexColor }}
+              />
+              <Button 
+                onClick={applyCustomColor}
+                variant="secondary"
+                size="sm"
+              >
+                Apply
+              </Button>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 

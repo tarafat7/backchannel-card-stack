@@ -21,7 +21,12 @@ export const backgroundOptions = [
   "bg-[#1e1e1e]",
   "bg-[#18181b]",
   "bg-[#27272a]",
+  "bg-[pattern-grid-white/10]",
+  "bg-[pattern-dots-white/10]",
   "bg-[pattern-topography-white/10]",
   "bg-[pattern-circuit-white/5]",
-  "bg-[pattern-dots-white/10]"
+  "bg-[pattern-hexagons-white/8]",
+  "bg-[pattern-waves-white/10]",
+  "bg-[pattern-diagonal-lines-white/8]",
+  "bg-[pattern-zigzag-white/10]"
 ];
