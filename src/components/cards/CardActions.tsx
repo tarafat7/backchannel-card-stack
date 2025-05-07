@@ -20,7 +20,12 @@ const CardActions = ({
   mutualConnectionName,
   phoneNumber
 }: CardActionsProps) => {
-  const handleSendMessage = () => {
+  const handleSendMessage = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
     console.log(`Sending message to: ${personName}`);
     
     // Format phone number (remove any non-digits)
@@ -81,6 +86,57 @@ const CardActions = ({
   };
   
   const mutualInitials = mutualConnectionName ? getInitials(mutualConnectionName) : "??";
+  
+  const handleIntroRequest = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // For mutual connections, we'll send a message directly
+    if (!isDirectConnection && mutualConnectionName) {
+      // Format phone number (remove any non-digits) - use a default
+      const formattedPhone = "4155551234".replace(/\D/g, '');
+      
+      // Check platform
+      const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      
+      // Create direct messaging URL
+      let messageUrl;
+      
+      if (isMac) {
+        messageUrl = `imessage://+${formattedPhone}`;
+      } else if (isIOS) {
+        messageUrl = `sms:${formattedPhone}`;
+      } else {
+        messageUrl = `sms:${formattedPhone}`;
+      }
+      
+      try {
+        // Open in new tab for better compatibility
+        const newWindow = window.open(messageUrl, '_blank');
+        
+        // If we couldn't open a new window, fallback to direct location change
+        if (!newWindow) {
+          window.location.href = messageUrl;
+        }
+        
+        toast({
+          title: "Opening messaging app",
+          description: `Asking ${mutualFirstName} to introduce you to ${personName}`
+        });
+      } catch (error) {
+        console.error("Failed to open messaging app:", error);
+        toast({
+          title: "Couldn't open messaging app",
+          description: "Please check your device settings",
+          variant: "destructive"
+        });
+      }
+    }
+    
+    // Also open the intro dialog
+    onRequestIntro();
+  };
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-4 py-3 flex items-center justify-between z-30">
@@ -94,10 +150,7 @@ const CardActions = ({
         </Button>
       ) : (
         <Button 
-          onClick={(e) => {
-            e.stopPropagation();
-            onRequestIntro();
-          }}
+          onClick={handleIntroRequest}
           className="w-full flex items-center gap-2 pointer-events-auto"
         >
           <div className="flex items-center gap-2">

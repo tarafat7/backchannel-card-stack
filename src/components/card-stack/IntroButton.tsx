@@ -1,6 +1,7 @@
 
 import React, { forwardRef } from 'react';
 import { Link } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 type IntroButtonProps = {
   name: string;
@@ -18,6 +19,7 @@ const IntroButton = forwardRef<HTMLButtonElement, IntroButtonProps>(({
       ref={ref}
       className="bg-primary/90 hover:bg-primary px-2 py-1 rounded-md shadow-lg z-20 flex items-center gap-1 text-white text-xs ml-auto"
       onClick={(e) => {
+        e.preventDefault(); // Prevent default behavior
         e.stopPropagation(); // Prevent event bubbling
         onRequestIntro(e, name, mutualConnection);
       }}

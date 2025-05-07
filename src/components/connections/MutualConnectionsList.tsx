@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { User, MessageCircle } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 type MutualConnectionsListProps = {
   connections: string[];
@@ -24,7 +25,47 @@ const MutualConnectionsList = ({ connections, onRequestIntro, handleSendMessage 
       handleSendMessage(connection, "4155551234"); // Use default phone number for mutual connections
       console.log(`Opening message to mutual connection: ${connection}`);
     } else {
-      // Fall back to the dialog approach
+      // Format phone number (remove any non-digits) - use a default for mutual connections
+      const formattedPhone = "4155551234".replace(/\D/g, '');
+      
+      // Check platform
+      const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      
+      // Create direct messaging URL
+      let messageUrl;
+      
+      if (isMac) {
+        messageUrl = `imessage://+${formattedPhone}`;
+      } else if (isIOS) {
+        messageUrl = `sms:${formattedPhone}`;
+      } else {
+        messageUrl = `sms:${formattedPhone}`;
+      }
+      
+      try {
+        // Open in new tab for better compatibility
+        const newWindow = window.open(messageUrl, '_blank');
+        
+        // If we couldn't open a new window, fallback to direct location change
+        if (!newWindow) {
+          window.location.href = messageUrl;
+        }
+        
+        toast({
+          title: "Opening messaging app",
+          description: `Messaging ${connection}`
+        });
+      } catch (error) {
+        console.error("Failed to open messaging app:", error);
+        toast({
+          title: "Couldn't open messaging app",
+          description: "Please check your device settings",
+          variant: "destructive"
+        });
+      }
+      
+      // Fall back to the dialog approach if needed
       onRequestIntro(connection);
     }
   };
