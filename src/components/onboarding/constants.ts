@@ -1,10 +1,27 @@
 
 // Expertise areas available for selection
 export const expertise = [
-  "UX Design", "Product Strategy", "Frontend Dev", "Backend Dev",
-  "Marketing", "Sales", "Fundraising", "Recruiting",
-  "Management", "Operations", "Finance", "Legal",
-  "Data Science", "AI/ML", "Blockchain", "Mobile Dev"
+  "AI",
+  "Advising",
+  "Brand",
+  "Community",
+  "Creative",
+  "Design",
+  "Engineering",
+  "Finance",
+  "Founding",
+  "Fundraising",
+  "Growth",
+  "Hiring",
+  "Investing",
+  "Legal",
+  "Marketing",
+  "Operations",
+  "Partnerships",
+  "Product",
+  "Research",
+  "Sales",
+  "Strategy"
 ];
 
 // Background options for card design
