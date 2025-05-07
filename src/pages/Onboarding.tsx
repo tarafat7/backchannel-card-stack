@@ -13,8 +13,8 @@ const OnboardingLayout: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80 flex flex-col">
       <div className="px-6 py-8 flex-1">
         {onboardingStep > 0 && (
-          <div className="mb-10 flex justify-center">
-            <OnboardingLogo />
+          <div className="mb-8 flex justify-center">
+            <OnboardingLogo className="h-12" />
           </div>
         )}
         

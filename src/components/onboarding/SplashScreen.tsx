@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
+import OnboardingLogo from './OnboardingLogo';
 
 interface SplashScreenProps {
   onContinue: () => void;
@@ -27,11 +28,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onContinue }) => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="flex flex-col items-center"
       >
-        <img 
-          src="/lovable-uploads/4e8d032e-bc09-406c-9efb-5c51d5f9484c.png" 
-          alt="Backchannel Logo"
-          className="h-24 mb-8"
-        />
+        <OnboardingLogo className="h-16 mb-8" />
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
