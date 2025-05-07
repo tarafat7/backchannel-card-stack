@@ -1,10 +1,10 @@
 
 import React from 'react';
 
-// Using the updated Backchannel logo 
-const OnboardingLogo: React.FC<{ className?: string }> = ({ className = "h-14" }) => (
+// Using the Backchannel logo 
+const OnboardingLogo: React.FC<{ className?: string }> = ({ className = "h-12" }) => (
   <img 
-    src="/lovable-uploads/b2b642ce-8191-4ca4-b680-140d710f2fe1.png" 
+    src="/lovable-uploads/4e8d032e-bc09-406c-9efb-5c51d5f9484c.png" 
     alt="Backchannel Logo" 
     className={className}
   />
