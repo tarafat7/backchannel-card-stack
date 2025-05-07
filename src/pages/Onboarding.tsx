@@ -1,17 +1,36 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { backgroundOptions, expertise } from '../components/onboarding/constants';
 
-// Onboarding step components
-import SplashScreen from '../components/onboarding/SplashScreen';
-import UserBasicInfo from '../components/onboarding/UserBasicInfo';
-import ExperienceInput from '../components/onboarding/ExperienceInput';
-import ExperienceSelection from '../components/onboarding/ExperienceSelection';
-import ProfilePhoto from '../components/onboarding/ProfilePhoto';
-import CardDesigner from '../components/onboarding/CardDesigner';
-import ContactInfo from '../components/onboarding/ContactInfo';
-import OnboardingComplete from '../components/onboarding/OnboardingComplete';
+// Logo SVG component for faster loading
+const LogoSvg = () => (
+  <svg 
+    width="64" 
+    height="64" 
+    viewBox="0 0 256 256" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-16"
+  >
+    <path d="M128 32C74.98 32 32 74.98 32 128C32 181.02 74.98 224 128 224C181.02 224 224 181.02 224 128C224 74.98 181.02 32 128 32ZM128 56C168.35 56 200 87.65 200 128C200 168.35 168.35 200 128 200C87.65 200 56 168.35 56 128C56 87.65 87.65 56 128 56Z" fill="currentColor"/>
+    <path d="M128 80C102.65 80 82 100.65 82 126C82 151.35 102.65 172 128 172C153.35 172 174 151.35 174 126C174 100.65 153.35 80 128 80Z" fill="currentColor"/>
+  </svg>
+);
+
+// Component loader with fallback
+const LoadingFallback = () => <div className="flex justify-center items-center py-12">Loading...</div>;
+
+// Lazy load onboarding step components
+const SplashScreen = lazy(() => import('../components/onboarding/SplashScreen'));
+const UserBasicInfo = lazy(() => import('../components/onboarding/UserBasicInfo'));
+const ExperienceInput = lazy(() => import('../components/onboarding/ExperienceInput'));
+const ExperienceSelection = lazy(() => import('../components/onboarding/ExperienceSelection'));
+const ProfilePhoto = lazy(() => import('../components/onboarding/ProfilePhoto'));
+const CardDesigner = lazy(() => import('../components/onboarding/CardDesigner'));
+const ContactInfo = lazy(() => import('../components/onboarding/ContactInfo'));
+const OnboardingComplete = lazy(() => import('../components/onboarding/OnboardingComplete'));
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -121,58 +140,78 @@ const Onboarding = () => {
   const renderStep = () => {
     switch (onboardingStep) {
       case 0:
-        return <SplashScreen onContinue={() => setOnboardingStep(1)} />;
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <SplashScreen onContinue={() => setOnboardingStep(1)} />
+          </Suspense>
+        );
         
       case 1:
-        return <UserBasicInfo onContinue={handleBasicInfoComplete} />;
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <UserBasicInfo onContinue={handleBasicInfoComplete} />
+          </Suspense>
+        );
         
       case 2:
         return (
-          <ExperienceInput 
-            onContinue={handleExperienceComplete}
-            currentTitle={formData.title} 
-            currentCompany={formData.company}
-          />
+          <Suspense fallback={<LoadingFallback />}>
+            <ExperienceInput 
+              onContinue={handleExperienceComplete}
+              currentTitle={formData.title} 
+              currentCompany={formData.company}
+            />
+          </Suspense>
         );
         
       case 3:
-        return <ContactInfo onContinue={handleContactInfoComplete} />;
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ContactInfo onContinue={handleContactInfoComplete} />
+          </Suspense>
+        );
         
       case 4:
         return (
-          <ExperienceSelection 
-            experiences={profile.experiences}
-            selectedExpertise={selectedExpertise}
-            onExpertiseToggle={handleExpertiseToggle}
-            onContinue={() => setOnboardingStep(5)}
-            expertise={expertise}
-          />
+          <Suspense fallback={<LoadingFallback />}>
+            <ExperienceSelection 
+              experiences={profile.experiences}
+              selectedExpertise={selectedExpertise}
+              onExpertiseToggle={handleExpertiseToggle}
+              onContinue={() => setOnboardingStep(5)}
+              expertise={expertise}
+            />
+          </Suspense>
         );
         
       case 5:
         return (
-          <ProfilePhoto 
-            avatarUrl={formData.avatar}
-            onContinue={handleProfilePhotoComplete}
-          />
+          <Suspense fallback={<LoadingFallback />}>
+            <ProfilePhoto 
+              avatarUrl={formData.avatar}
+              onContinue={handleProfilePhotoComplete}
+            />
+          </Suspense>
         );
         
       case 6:
         return (
-          <CardDesigner 
-            card={profile.card}
-            selectedBackground={selectedBackground}
-            setSelectedBackground={setSelectedBackground}
-            textColor={textColor}
-            setTextColor={setTextColor}
-            status={status}
-            setStatus={setStatus}
-            links={links}
-            setLinks={setLinks}
-            handleLinkChange={handleLinkChange}
-            onComplete={handleComplete}
-            backgroundOptions={backgroundOptions}
-          />
+          <Suspense fallback={<LoadingFallback />}>
+            <CardDesigner 
+              card={profile.card}
+              selectedBackground={selectedBackground}
+              setSelectedBackground={setSelectedBackground}
+              textColor={textColor}
+              setTextColor={setTextColor}
+              status={status}
+              setStatus={setStatus}
+              links={links}
+              setLinks={setLinks}
+              handleLinkChange={handleLinkChange}
+              onComplete={handleComplete}
+              backgroundOptions={backgroundOptions}
+            />
+          </Suspense>
         );
         
       default:
@@ -185,7 +224,7 @@ const Onboarding = () => {
       <div className="px-6 py-8 flex-1">
         {onboardingStep > 0 && (
           <div className="mb-10 flex justify-center">
-            <img src="/lovable-uploads/d772b7e2-428b-409e-9649-30f8c448ab15.png" alt="Backchannel Logo" className="h-16" />
+            <LogoSvg />
           </div>
         )}
         
@@ -193,7 +232,9 @@ const Onboarding = () => {
       </div>
       
       {showCompletionAnimation && (
-        <OnboardingComplete onAnimationComplete={handleAnimationComplete} />
+        <Suspense fallback={<LoadingFallback />}>
+          <OnboardingComplete onAnimationComplete={handleAnimationComplete} />
+        </Suspense>
       )}
     </div>
   );
