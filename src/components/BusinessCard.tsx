@@ -78,8 +78,9 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
           </div>
         )}
         
+        {/* Show professional history right after status */}
         {showHistory && (
-          <div className="mt-3 mb-2">
+          <div className="mt-2">
             <ProfessionalHistory id={card.id} />
           </div>
         )}
