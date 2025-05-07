@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MessageCircle, Link, Avatar as AvatarIcon } from 'lucide-react';
+import { MessageCircle, Link } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import { toast } from '@/hooks/use-toast';
