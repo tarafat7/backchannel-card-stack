@@ -19,7 +19,7 @@ const ConnectionDiagram = () => {
       {/* Backchannel logo */}
       <div className="flex items-center justify-center w-5 h-5">
         <img 
-          src="/lovable-uploads/e8bad592-e3f2-49e8-b6d9-753744e84551.png" 
+          src="/lovable-uploads/f2bd2289-bd05-40eb-a075-a0a8cd0a7331.png" 
           alt="Backchannel Logo" 
           className="w-full h-full object-contain" 
         />
