@@ -28,7 +28,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onContinue }) => {
         className="flex flex-col items-center"
       >
         <img 
-          src="/lovable-uploads/backchannel-logo.png" 
+          src="/lovable-uploads/4e8d032e-bc09-406c-9efb-5c51d5f9484c.png" 
           alt="Backchannel Logo"
           className="h-24 mb-8"
         />
