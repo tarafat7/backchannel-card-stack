@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -12,10 +11,7 @@ interface BackgroundSelectorProps {
   onBackgroundChange: (background: string) => void;
 }
 
-const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({ 
-  selectedBackground, 
-  onBackgroundChange 
-}) => {
+const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: BackgroundSelectorProps) => {
   const [customHexColor, setCustomHexColor] = useState<string>('#333333');
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
   
@@ -37,7 +33,8 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
 
   // Handle applying the custom color
   const applyCustomColor = () => {
-    onBackgroundChange(`bg-[${customHexColor}]`);
+    const bgValue = customHexColor.startsWith('#') ? customHexColor : `#${customHexColor}`;
+    onBackgroundChange(`bg-[${bgValue}]`);
     setShowColorPicker(false);
   };
 

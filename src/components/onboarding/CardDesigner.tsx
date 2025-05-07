@@ -70,6 +70,12 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
     onComplete();
   };
 
+  // Function to handle background change
+  const handleBackgroundChange = (bg: string) => {
+    console.log("Setting background to:", bg);
+    setSelectedBackground(bg);
+  };
+
   return (
     <div className="animate-fade-in">
       <h2 className="text-2xl font-semibold mb-6">Design your card</h2>
@@ -83,7 +89,7 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
       <div className="space-y-6">
         <BackgroundSelector 
           selectedBackground={selectedBackground}
-          setSelectedBackground={setSelectedBackground}
+          setSelectedBackground={handleBackgroundChange}
           backgroundOptions={backgroundOptions}
         />
         

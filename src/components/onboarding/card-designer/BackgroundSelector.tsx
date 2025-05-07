@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -39,7 +38,8 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
 
   // Handle applying the custom color
   const applyCustomColor = () => {
-    setSelectedBackground(`bg-[${customHexColor}]`);
+    const bgValue = customHexColor.startsWith('#') ? customHexColor : `#${customHexColor}`;
+    setSelectedBackground(`bg-[${bgValue}]`);
     setShowColorPicker(false);
   };
 
