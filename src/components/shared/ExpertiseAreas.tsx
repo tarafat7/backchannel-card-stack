@@ -10,7 +10,7 @@ const ExpertiseAreas = ({ areas }: ExpertiseAreasProps) => {
   
   return (
     <div className="mt-6">
-      <h3 className="text-sm opacity-80 mb-2">Areas of Expertise</h3>
+      <h3 className="text-sm opacity-80 mb-2">How I can be helpful</h3>
       <div className="flex flex-wrap gap-2">
         {areas.map((area, index) => (
           <span key={index} className="chip">

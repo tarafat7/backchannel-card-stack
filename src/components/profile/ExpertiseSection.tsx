@@ -25,7 +25,7 @@ const ExpertiseSection: React.FC<ExpertiseSectionProps> = ({
   return (
     <section className="mb-8">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-sm font-medium text-muted-foreground">Your Expertise</h2>
+        <h2 className="text-sm font-medium text-muted-foreground">How you can be helpful</h2>
         <Button 
           variant="ghost" 
           size="sm" 
@@ -50,7 +50,7 @@ const ExpertiseSection: React.FC<ExpertiseSectionProps> = ({
               </span>
             ))
           ) : (
-            <p className="text-sm text-muted-foreground">No expertise areas selected</p>
+            <p className="text-sm text-muted-foreground">No offerings selected yet</p>
           )}
         </div>
       )}

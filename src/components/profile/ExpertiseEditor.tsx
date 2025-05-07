@@ -33,8 +33,8 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
       return;
     }
     
-    if (trimmedExpertise.length > 20) {
-      console.log("Text too long: Expertise name must be 20 characters or less.");
+    if (trimmedExpertise.length > 25) {
+      console.log("Text too long: Expertise name must be 25 characters or less.");
       return;
     }
     
@@ -61,7 +61,7 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
 
   const handleSave = () => {
     if (editedExpertise.length === 0) {
-      console.log("Selection required: Please select at least one area of expertise.");
+      console.log("Selection required: Please select at least one way you can be helpful.");
       return;
     }
     
@@ -70,7 +70,7 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">Select up to 5 areas of expertise:</p>
+      <p className="text-sm text-muted-foreground">Select up to 5 ways you can be helpful:</p>
       
       <div className="flex flex-wrap gap-2 mb-4">
         {expertise.map((area) => (
@@ -86,14 +86,14 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
       </div>
       
       <div className="space-y-2">
-        <p className="text-sm text-muted-foreground">Or add your own expertise (max 20 characters):</p>
+        <p className="text-sm text-muted-foreground">Or add your own (max 25 characters):</p>
         <div className="flex gap-2">
           <Input
             value={customExpertise}
             onChange={(e) => setCustomExpertise(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Custom expertise"
-            maxLength={20}
+            placeholder="E.g., Podcast booking, Public speaking"
+            maxLength={25}
             className="flex-1"
           />
           <Button type="button" onClick={handleAddCustomExpertise}>
@@ -101,12 +101,12 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
           </Button>
         </div>
         <div className="text-xs text-muted-foreground">
-          {customExpertise.length}/20 characters
+          {customExpertise.length}/25 characters
         </div>
       </div>
       
       <div className="mt-4">
-        <p className="text-sm font-medium mb-2">Your selected expertise:</p>
+        <p className="text-sm font-medium mb-2">Your selected offerings:</p>
         <div className="flex flex-wrap gap-2 mb-4">
           {editedExpertise.map((area, index) => (
             <div key={index} className="chip chip-selected flex items-center gap-1">
@@ -120,7 +120,7 @@ const ExpertiseEditor = ({ selectedExpertise, onSave, onCancel }: ExpertiseEdito
             </div>
           ))}
           {editedExpertise.length === 0 && (
-            <p className="text-sm text-muted-foreground italic">No expertise selected</p>
+            <p className="text-sm text-muted-foreground italic">No selections yet</p>
           )}
         </div>
       </div>
