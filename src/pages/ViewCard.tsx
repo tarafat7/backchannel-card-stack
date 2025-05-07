@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MessageCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import FullBusinessCard from '@/components/cards/FullBusinessCard';
 import SharedConnections from '@/components/shared/SharedConnections';
 import CardActions from '@/components/cards/CardActions';
