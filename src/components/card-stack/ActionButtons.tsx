@@ -27,7 +27,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
       {/* Info button with popover - only show for cards with connection event */}
       {hasConnectionEvent && (
         <TooltipProvider>

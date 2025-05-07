@@ -94,8 +94,11 @@ const CardActions = ({
         </Button>
       ) : (
         <Button 
-          onClick={onRequestIntro}
-          className="w-full flex items-center gap-2"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRequestIntro();
+          }}
+          className="w-full flex items-center gap-2 pointer-events-auto"
         >
           <div className="flex items-center gap-2">
             <Avatar className="h-6 w-6 border border-primary-foreground">

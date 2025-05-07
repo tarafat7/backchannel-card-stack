@@ -46,7 +46,7 @@ const MutualConnectionsList = ({ connections, onRequestIntro, handleSendMessage 
               variant="outline"
               onClick={(e) => handleIntroClick(connection, e)}
               type="button"
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 pointer-events-auto"
             >
               Ask for intro
               <MessageCircle className="w-4 h-4" />
