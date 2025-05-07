@@ -1,3 +1,4 @@
+
 import React, { lazy, Suspense } from 'react';
 import { useOnboarding } from '../../context/OnboardingContext';
 import { useAppContext } from '../../context/AppContext';
@@ -29,6 +30,7 @@ const OnboardingStepManager: React.FC = () => {
     status,
     setStatus,
     links,
+    setLinks,
     handleLinkChange,
     showCompletionAnimation,
     setShowCompletionAnimation,
@@ -144,7 +146,7 @@ const OnboardingStepManager: React.FC = () => {
               status={status}
               setStatus={setStatus}
               links={links}
-              setLinks={links}
+              setLinks={setLinks}
               handleLinkChange={handleLinkChange}
               onComplete={handleComplete}
               backgroundOptions={backgroundOptions}
