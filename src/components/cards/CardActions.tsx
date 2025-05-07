@@ -1,7 +1,9 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { MessageCircle, ExternalLink, Share2 } from 'lucide-react';
+import { MessageCircle, Link, Avatar as AvatarIcon } from 'lucide-react';
+import { Button } from '../ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
+import { toast } from '@/hooks/use-toast';
 
 type CardActionsProps = {
   isDirectConnection: boolean;
@@ -11,26 +13,23 @@ type CardActionsProps = {
   phoneNumber?: string;
 };
 
-const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualConnectionName, phoneNumber }: CardActionsProps) => {
+const CardActions = ({ 
+  isDirectConnection, 
+  onRequestIntro, 
+  personName,
+  mutualConnectionName,
+  phoneNumber
+}: CardActionsProps) => {
   const handleSendMessage = () => {
-    console.log("SendMessage button clicked");
-    console.log("Phone number received:", phoneNumber);
-    
-    if (!phoneNumber) {
-      console.error("No phone number available");
-      return;
-    }
+    console.log(`Sending message to: ${personName}`);
     
     // Format phone number (remove any non-digits)
-    const formattedPhone = phoneNumber.replace(/\D/g, '');
-    console.log(`Formatted phone number: ${formattedPhone}`);
+    const formattedPhone = (phoneNumber || "4155551234").replace(/\D/g, '');
     
     // Check if running on macOS
     const isMac = /Mac/i.test(navigator.userAgent) && !/iPhone|iPad|iPod/i.test(navigator.userAgent);
     // Check if running on iOS
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    
-    console.log(`Platform detection - isMac: ${isMac}, isIOS: ${isIOS}`);
     
     // Create direct messaging URL
     let messageUrl;
@@ -43,36 +42,72 @@ const CardActions = ({ isDirectConnection, onRequestIntro, personName, mutualCon
       messageUrl = `sms:${formattedPhone}`;
     }
     
-    console.log(`Opening message URL: ${messageUrl}`);
-    
-    // Use window.location.href for direct navigation
-    window.location.href = messageUrl;
+    try {
+      // Open in new tab for better compatibility
+      const newWindow = window.open(messageUrl, '_blank');
+      
+      // If we couldn't open a new window, fallback to direct location change
+      if (!newWindow) {
+        window.location.href = messageUrl;
+      }
+
+      toast({
+        title: "Opening messaging app",
+        description: `Messaging ${personName}`
+      });
+    } catch (error) {
+      console.error("Failed to open messaging app:", error);
+      toast({
+        title: "Couldn't open messaging app",
+        description: "Please check your device settings",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Get first name of mutual connection to display
+  const mutualFirstName = mutualConnectionName 
+    ? mutualConnectionName.split(' ')[0] 
+    : "someone";
+
+  // Get initials for avatar fallback
+  const getInitials = (name: string) => {
+    if (!name) return "??";
+    return name.split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
   };
   
+  const mutualInitials = mutualConnectionName ? getInitials(mutualConnectionName) : "??";
+
   return (
-    <div className="sticky bottom-0 px-4 py-3 bg-background/80 backdrop-blur-sm mt-4 z-10">
+    <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-4 py-3 flex items-center justify-between z-30">
       {isDirectConnection ? (
         <Button 
-          className="w-full mb-3"
           onClick={handleSendMessage}
+          className="w-full"
         >
-          Send message to {personName}
-          <MessageCircle className="w-4 h-4 ml-2" />
+          <MessageCircle className="w-5 h-5 mr-2" />
+          Message {personName.split(' ')[0]}
         </Button>
       ) : (
         <Button 
-          className="w-full mb-3"
           onClick={onRequestIntro}
+          className="w-full flex items-center gap-2"
         >
-          {mutualConnectionName ? `Ask ${mutualConnectionName} for an intro` : "Request Intro"}
-          <ExternalLink className="w-4 h-4 ml-2" />
+          <div className="flex items-center gap-2">
+            <Avatar className="h-6 w-6 border border-primary-foreground">
+              <AvatarFallback className="text-xs bg-primary text-primary-foreground">
+                {mutualInitials}
+              </AvatarFallback>
+            </Avatar>
+            <span>Ask {mutualFirstName} for intro</span>
+          </div>
+          <Link className="w-4 h-4" />
         </Button>
       )}
-      
-      <Button variant="outline" className="w-full">
-        Share Card
-        <Share2 className="w-4 h-4 ml-2" />
-      </Button>
     </div>
   );
 };
