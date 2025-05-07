@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { backgroundOptions, patternBackgrounds, solidColorBackgrounds } from '../../onboarding/constants';
 import BackgroundTabContent from './BackgroundTabContent';
@@ -10,6 +10,24 @@ interface BackgroundSelectorProps {
 
 const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: BackgroundSelectorProps) => {
   const [customHexColor, setCustomHexColor] = useState<string>('#333333');
+  const [currentPattern, setCurrentPattern] = useState<string | null>(null);
+  
+  // Extract the current color and pattern on mount and when selectedBackground changes
+  useEffect(() => {
+    // Extract color if exists
+    const colorMatch = selectedBackground.match(/bg-\[(.*?)\]/);
+    if (colorMatch && colorMatch[1]) {
+      setCustomHexColor(colorMatch[1]);
+    }
+    
+    // Extract pattern if exists
+    const patternClass = selectedBackground.split(' ').find(cls => cls.includes('pattern'));
+    if (patternClass) {
+      setCurrentPattern(patternClass);
+    } else {
+      setCurrentPattern(null);
+    }
+  }, [selectedBackground]);
   
   // Group background options
   const gradients = backgroundOptions.filter(bg => bg.includes('gradient'));
@@ -18,42 +36,38 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
 
   // Handle applying the custom color
   const applyCustomColor = () => {
-    // Create the proper background value - either just the color or color with pattern
+    // Create the proper background value with both color and pattern if applicable
     const bgValue = customHexColor.startsWith('#') ? customHexColor : `#${customHexColor}`;
     
-    // Check if we're in the patterns tab and currently have a pattern selected
-    if (selectedBackground.includes('pattern')) {
-      // Extract the pattern class regardless of whether it already has a custom color
-      const patternClass = selectedBackground.split(' ').find(cls => cls.includes('pattern'));
-      
-      if (patternClass) {
-        onBackgroundChange(`bg-[${bgValue}] ${patternClass}`);
-      } else {
-        onBackgroundChange(`bg-[${bgValue}]`);
-      }
+    if (currentPattern) {
+      onBackgroundChange(`bg-[${bgValue}] ${currentPattern}`);
     } else {
-      // Just apply the color without any pattern
       onBackgroundChange(`bg-[${bgValue}]`);
     }
   };
 
   // Handle selecting a preset background
   const selectPresetBackground = (bg: string) => {
-    // If we're selecting a pattern and we already have a custom color, we want to keep the color
-    if (bg.includes('pattern') && selectedBackground.includes('bg-[')) {
-      const currentColor = selectedBackground.match(/bg-\[(.*?)\]/)?.[1];
-      if (currentColor) {
-        // Extract just the pattern part
-        const patternClass = bg.split(' ').find(cls => cls.includes('pattern'));
-        if (patternClass) {
-          onBackgroundChange(`bg-[${currentColor}] ${patternClass}`);
-          return;
-        }
-      }
+    // If selecting a gradient or solid color, remove the pattern
+    if (!bg.includes('pattern')) {
+      onBackgroundChange(bg);
+      setCurrentPattern(null);
+      return;
     }
     
-    // Default behavior - just select the background
-    onBackgroundChange(bg);
+    // If selecting a pattern
+    const patternClass = bg.split(' ').find(cls => cls.includes('pattern'));
+    if (patternClass) {
+      setCurrentPattern(patternClass);
+      
+      // Keep the current color if one exists
+      const colorMatch = selectedBackground.match(/bg-\[(.*?)\]/);
+      if (colorMatch && colorMatch[1]) {
+        onBackgroundChange(`bg-[${colorMatch[1]}] ${patternClass}`);
+      } else {
+        onBackgroundChange(bg);
+      }
+    }
   };
 
   return (

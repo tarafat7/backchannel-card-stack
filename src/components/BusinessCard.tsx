@@ -43,12 +43,25 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
     }
   }
 
+  // Generate class names - extract pattern if it exists
+  let classNames = `business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`;
+  
+  // Add pattern class if it exists
+  const patternClass = backgroundStyle.split(' ').find(cls => cls.includes('pattern'));
+  if (patternClass) {
+    classNames += ` ${patternClass}`;
+  } 
+  // If no pattern, add the full background style if it's not a custom color
+  else if (!backgroundStyle.includes('bg-[')) {
+    classNames += ` ${backgroundStyle}`;
+  }
+
   // Determine if this is a 2nd-degree connection
   const isSecondDegree = card.connectionDegree === 2;
 
   return (
     <div
-      className={`business-card ${backgroundStyle} ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`}
+      className={classNames}
       style={{ color: card.design.textColor, ...cardStyle }}
       onClick={handleClick}
     >
