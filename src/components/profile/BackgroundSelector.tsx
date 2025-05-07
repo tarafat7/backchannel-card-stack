@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Palette } from 'lucide-react';
+import { HexColorPicker } from 'react-colorful';
 import { backgroundOptions, patternBackgrounds, solidColorBackgrounds } from '../onboarding/constants';
 
 interface BackgroundSelectorProps {
@@ -13,6 +14,7 @@ interface BackgroundSelectorProps {
 
 const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: BackgroundSelectorProps) => {
   const [customHexColor, setCustomHexColor] = useState<string>('#333333');
+  const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
   
   // Group background options
   const gradients = backgroundOptions.filter(bg => bg.includes('gradient'));
@@ -25,9 +27,15 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
     setCustomHexColor(value);
   };
 
+  // Handle color picker change
+  const handleColorPickerChange = (color: string) => {
+    setCustomHexColor(color);
+  };
+
   // Handle applying the custom color
   const applyCustomColor = () => {
     onBackgroundChange(`bg-[${customHexColor}]`);
+    setShowColorPicker(false);
   };
 
   // Handle selecting a preset background
@@ -55,7 +63,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
         </div>
         
         <div className="pt-2 border-t border-border mt-3">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mb-2">
             <Palette className="w-5 h-5 text-muted-foreground" />
             <Input 
               type="text"
@@ -65,8 +73,9 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
               className="bg-secondary/50 backdrop-blur-sm border border-white/10"
             />
             <div 
-              className="w-8 h-8 rounded-md" 
+              className="w-8 h-8 rounded-md cursor-pointer"
               style={{ backgroundColor: customHexColor }}
+              onClick={() => setShowColorPicker(!showColorPicker)}
             />
             <Button 
               onClick={applyCustomColor}
@@ -76,6 +85,19 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
               Apply
             </Button>
           </div>
+          {showColorPicker && (
+            <div className="mt-2 p-2 bg-background border border-border rounded-md">
+              <HexColorPicker color={customHexColor} onChange={handleColorPickerChange} />
+              <div className="flex justify-end mt-2">
+                <Button 
+                  onClick={applyCustomColor} 
+                  size="sm"
+                >
+                  Select
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </TabsContent>
       
@@ -91,7 +113,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
         </div>
         
         <div className="pt-2 border-t border-border mt-3">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mb-2">
             <Palette className="w-5 h-5 text-muted-foreground" />
             <Input 
               type="text"
@@ -101,8 +123,9 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
               className="bg-secondary/50 backdrop-blur-sm border border-white/10"
             />
             <div 
-              className="w-8 h-8 rounded-md" 
+              className="w-8 h-8 rounded-md cursor-pointer"
               style={{ backgroundColor: customHexColor }}
+              onClick={() => setShowColorPicker(!showColorPicker)}
             />
             <Button 
               onClick={applyCustomColor}
@@ -112,6 +135,19 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
               Apply
             </Button>
           </div>
+          {showColorPicker && (
+            <div className="mt-2 p-2 bg-background border border-border rounded-md">
+              <HexColorPicker color={customHexColor} onChange={handleColorPickerChange} />
+              <div className="flex justify-end mt-2">
+                <Button 
+                  onClick={applyCustomColor} 
+                  size="sm"
+                >
+                  Select
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </TabsContent>
       
@@ -127,7 +163,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
         </div>
         
         <div className="pt-2 border-t border-border mt-3">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mb-2">
             <Palette className="w-5 h-5 text-muted-foreground" />
             <Input 
               type="text"
@@ -137,8 +173,9 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
               className="bg-secondary/50 backdrop-blur-sm border border-white/10"
             />
             <div 
-              className="w-8 h-8 rounded-md" 
+              className="w-8 h-8 rounded-md cursor-pointer"
               style={{ backgroundColor: customHexColor }}
+              onClick={() => setShowColorPicker(!showColorPicker)}
             />
             <Button 
               onClick={applyCustomColor}
@@ -148,6 +185,19 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
               Apply
             </Button>
           </div>
+          {showColorPicker && (
+            <div className="mt-2 p-2 bg-background border border-border rounded-md">
+              <HexColorPicker color={customHexColor} onChange={handleColorPickerChange} />
+              <div className="flex justify-end mt-2">
+                <Button 
+                  onClick={applyCustomColor} 
+                  size="sm"
+                >
+                  Select
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </TabsContent>
     </Tabs>
