@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +13,7 @@ import Connect from "./pages/Connect";
 import ViewCard from "./pages/ViewCard";
 import ConnectionRequests from "./pages/ConnectionRequests";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AccountSettings from "./pages/AccountSettings";
 import NotFound from "./pages/NotFound";
 import { AppProvider, useAppContext } from "./context/AppContext";
 
@@ -68,6 +70,14 @@ const AppRoutes = () => {
         } 
       />
       <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route 
+        path="/account/settings" 
+        element={
+          <ProtectedRoute>
+            <AccountSettings />
+          </ProtectedRoute>
+        } 
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
