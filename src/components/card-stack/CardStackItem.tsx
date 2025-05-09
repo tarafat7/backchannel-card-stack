@@ -1,9 +1,8 @@
 
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { BusinessCard as BusinessCardType } from '../../context/AppContext';
 import BusinessCard from '../BusinessCard';
 import { ChevronDown, Twitter, Github, Link as LinkIcon } from 'lucide-react';
-import { Button } from '../ui/button';
 import ActionButtons from './ActionButtons';
 
 type CardStackItemProps = {
@@ -19,7 +18,7 @@ type CardStackItemProps = {
   onCollapseStack: () => void;
 };
 
-const CardStackItem: React.FC<CardStackItemProps> = ({
+const CardStackItem = forwardRef<HTMLDivElement, CardStackItemProps>(({
   card,
   index,
   isExpanded,
@@ -30,7 +29,7 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
   opacity,
   onCardClick,
   onCollapseStack
-}) => {
+}, ref) => {
   // Determine if this is a second-degree connection
   const isSecondDegree = card.connectionDegree === 2;
   
@@ -54,6 +53,7 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
         opacity: opacity,
         width: "100%"
       }}
+      ref={ref}
     >
       <div className="relative">
         <div 
@@ -123,6 +123,8 @@ const CardStackItem: React.FC<CardStackItemProps> = ({
       </div>
     </div>
   );
-};
+});
+
+CardStackItem.displayName = 'CardStackItem';
 
 export default CardStackItem;
