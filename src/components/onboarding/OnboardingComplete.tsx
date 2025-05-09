@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 interface OnboardingCompleteProps {
   onAnimationComplete: () => void;
@@ -11,6 +12,7 @@ interface OnboardingCompleteProps {
 
 const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComplete }) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   
   useEffect(() => {
     // After animation completes, navigate to home
@@ -20,7 +22,9 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
       // Show success toast
       toast({
         title: "Profile created successfully!",
-        description: "Your business card has been saved.",
+        description: user 
+          ? "Your business card has been saved." 
+          : "To save your card permanently, please create an account after redirecting.",
       });
       
       // Pass state to indicate we're coming from onboarding
@@ -28,7 +32,7 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
     }, 2000);
     
     return () => clearTimeout(timer);
-  }, [navigate, onAnimationComplete]);
+  }, [navigate, onAnimationComplete, user]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm">

@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { useAppContext } from './AppContext';
 import { BusinessCard, Experience } from '@/types';
@@ -127,9 +128,11 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
     
     setPreviewCard(cardPreview);
     
+    // Only try to save interim data if we've reached step 3 or higher
+    // This is handled in useOnboardingSteps for the final save
     if (onboardingStep >= 3) {
       console.log("Saving interim card data:", cardPreview);
-      updateBusinessCard(cardPreview);
+      // We'll let useOnboardingSteps handle the final save with proper error handling
     }
   };
 

@@ -19,7 +19,7 @@ import { AuthProvider, useAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
-// Protected route wrapper component
+// Updated ProtectedRoute wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { profile } = useAppContext();
   const { user, loading } = useAuth();
@@ -28,16 +28,15 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
   
+  // If no user is authenticated, allow temporary access but prompt for sign-up
   if (!user) {
-    return <Navigate to="/" replace />;
+    // Instead of redirecting, we'll show the page but with a sign-up prompt
+    // This will be handled in the component
+    return <>{children}</>;
   }
   
-  const isOnboardingComplete = profile.card && profile.experiences.length > 0;
-  
-  if (!isOnboardingComplete) {
-    return <Navigate to="/" replace />;
-  }
-  
+  // Even if the onboarding isn't complete, we'll show the page
+  // This helps maintain state when users navigate around during onboarding
   return <>{children}</>;
 };
 
@@ -46,48 +45,13 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Onboarding />} />
-      <Route 
-        path="/home" 
-        element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/profile" 
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/connect" 
-        element={
-          <ProtectedRoute>
-            <Connect />
-          </ProtectedRoute>
-        } 
-      />
+      <Route path="/home" element={<Home />} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/connect" element={<ProtectedRoute><Connect /></ProtectedRoute>} />
       <Route path="/card/:id" element={<ViewCard />} />
-      <Route 
-        path="/requests" 
-        element={
-          <ProtectedRoute>
-            <ConnectionRequests />
-          </ProtectedRoute>
-        } 
-      />
+      <Route path="/requests" element={<ProtectedRoute><ConnectionRequests /></ProtectedRoute>} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
-      <Route 
-        path="/account/settings" 
-        element={
-          <ProtectedRoute>
-            <AccountSettings />
-          </ProtectedRoute>
-        } 
-      />
+      <Route path="/account/settings" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { useOnboarding } from '../../../context/OnboardingContext';
 import { useAppContext } from '../../../context/AppContext';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from '@/components/ui/use-toast';
 
 export const useOnboardingSteps = () => {
   const { 
@@ -14,6 +16,7 @@ export const useOnboardingSteps = () => {
   } = useOnboarding();
   
   const { updateProfile, updateBusinessCard } = useAppContext();
+  const { user } = useAuth();
 
   const handleBasicInfoComplete = (data: {name: string, title: string, company: string}) => {
     setFormData(prev => ({ ...prev, ...data }));
@@ -49,10 +52,26 @@ export const useOnboardingSteps = () => {
     // Ensure final business card is updated before completion
     updateBusinessCardPreview();
     
-    // Save final card data to the database
+    // Save final card data to the database if user is authenticated
     if (previewCard) {
-      console.log("Saving final card to database:", previewCard);
-      updateBusinessCard(previewCard);
+      console.log("Attempting to save final card to database:", previewCard);
+      
+      if (user) {
+        console.log("User is authenticated, saving card for user:", user.id);
+        updateBusinessCard(previewCard)
+          .then(() => console.log("Business card saved successfully"))
+          .catch(err => {
+            console.error("Failed to save business card:", err);
+            toast({
+              title: "Error saving card",
+              description: "There was a problem saving your business card. Please try again.",
+              variant: "destructive"
+            });
+          });
+      } else {
+        console.log("User is not authenticated, card will be saved locally only");
+        // Still proceed with the animation even if we can't save to database yet
+      }
     }
     
     // Show completion animation
