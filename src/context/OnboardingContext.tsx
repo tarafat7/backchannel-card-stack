@@ -1,7 +1,6 @@
-
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { useAppContext } from './AppContext';
-import { BusinessCard } from '@/types';
+import { BusinessCard, Experience } from '@/types';
 
 interface Experience {
   title: string;
@@ -124,7 +123,7 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
       connectionDegree: 1,
       mutualConnections: [],
       phoneNumber: formData.phoneNumber || '',
-      // Make sure experiences are available in the card for rendering work history
+      // Include experiences in the card for rendering work history
       experiences: formData.experiences.filter(exp => exp.title && exp.company && exp.years)
     };
     

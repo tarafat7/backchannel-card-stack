@@ -22,6 +22,7 @@ export type BusinessCard = {
   connectionDegree: 1 | 2;
   mutualConnections: string[]; // Names of mutual connections
   phoneNumber?: string; // Phone number for sending messages
+  experiences?: Experience[]; // Add experiences to BusinessCard type
 }
 
 export type Experience = {
