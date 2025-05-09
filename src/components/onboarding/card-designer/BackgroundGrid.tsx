@@ -20,11 +20,20 @@ const BackgroundGrid: React.FC<BackgroundGridProps> = ({
       // For patterns, check if the pattern URL is in the selectedBackground
       return option.includes('bg-[url') && selectedBackground.includes(option);
     } else {
-      // For colors/gradients, check if this specific option is in the selectedBackground
-      // but only when it's not part of a URL (to differentiate from patterns)
-      const parts = selectedBackground.split(' ');
-      return parts.includes(option) || 
-             (option.startsWith('bg-[#') && selectedBackground.includes(option));
+      // For colors/gradients, check if this specific option is in the background setting
+      // This needs to be more precise to handle gradients correctly
+      const optionParts = option.split(' ');
+      const backgroundParts = selectedBackground.split(' ');
+      
+      // For gradients or solid colors, we need to match the exact class
+      if (optionParts.some(part => part.includes('gradient'))) {
+        // For gradients, check if all gradient parts are in the background
+        return optionParts.every(part => backgroundParts.includes(part));
+      } else {
+        // For solid colors, standard check
+        return backgroundParts.includes(option) || 
+              (option.startsWith('bg-[#') && selectedBackground.includes(option));
+      }
     }
   };
 

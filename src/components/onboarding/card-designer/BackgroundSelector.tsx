@@ -88,6 +88,7 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
     
     // Check if selecting a pattern
     const isPattern = bg.includes('bg-[url');
+    const isGradient = bg.includes('gradient');
     
     if (isPattern) {
       // Save the pattern
@@ -101,7 +102,7 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
       }
     } else {
       // It's a gradient or solid color
-      // Save it
+      // Save it and REPLACE any existing gradient/color
       setCurrentColorOrGradient(bg);
       
       // Combine with existing pattern if present
