@@ -2,13 +2,6 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 import { useAppContext } from './AppContext';
 import { BusinessCard, Experience } from '@/types';
 
-interface Experience {
-  title: string;
-  company: string;
-  years: string;
-  description: string;
-}
-
 interface OnboardingFormData {
   name: string;
   title: string;
