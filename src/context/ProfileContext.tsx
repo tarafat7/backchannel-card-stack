@@ -49,14 +49,21 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
             getBusinessCard()
           ]);
 
+          // Ensure card data has the correct type for connectionDegree if it exists
+          const typedCard = card ? {
+            ...card,
+            connectionDegree: (card.connectionDegree === 2 ? 2 : 1) as 1 | 2,
+            mutualConnections: card.mutualConnections || []
+          } : null;
+
           setProfile({
             experiences: experiences || [],
             expertiseAreas: expertiseAreas || [],
-            card
+            card: typedCard
           });
 
           // Determine onboarding step based on data
-          if (card && experiences.length > 0) {
+          if (typedCard && experiences.length > 0) {
             // User has completed onboarding
             setOnboardingStep(0);
           } else {
@@ -112,12 +119,17 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       
       // Update card if provided
       if (updates.card) {
-        updatedProfile.card = { ...prev.card, ...updates.card };
+        // Ensure the card has the correct type for connectionDegree
+        const typedCard: BusinessCard = {
+          ...updates.card,
+          connectionDegree: (updates.card.connectionDegree === 2 ? 2 : 1) as 1 | 2,
+          mutualConnections: updates.card.mutualConnections || []
+        };
+        updatedProfile.card = typedCard;
+        
         // Save to Supabase in background via updateBusinessCard
-        if (updatedProfile.card) {
-          updateBusinessCardService(updatedProfile.card)
-            .catch(err => console.error("Failed to save card:", err));
-        }
+        updateBusinessCardService(typedCard)
+          .catch(err => console.error("Failed to save card:", err));
       }
       
       return updatedProfile;
