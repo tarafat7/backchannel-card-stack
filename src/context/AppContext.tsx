@@ -207,7 +207,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Fix: Explicitly cast connectionDegree to be either 1 or 2
     const connectionWithDefaults: BusinessCard = {
       ...connection,
-      connectionDegree: connection.connectionDegree || 1 as 1,
+      connectionDegree: (connection.connectionDegree || 1) as 1 | 2,
       mutualConnections: connection.mutualConnections || [],
       // Use a real format phone number that works with iMessage - no dashes or parentheses
       phoneNumber: connection.phoneNumber || '4155551234' 
