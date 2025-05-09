@@ -5,6 +5,7 @@ import { useAppContext } from '../../context/AppContext';
 import LoadingFallback from './common/LoadingFallback';
 import { useOnboardingSteps } from './hooks/useOnboardingSteps';
 import { expertise, backgroundOptions } from './constants';
+import BackButton from './common/BackButton';
 
 // Lazy load onboarding step components
 const SplashScreen = lazy(() => import('./SplashScreen'));
@@ -44,85 +45,96 @@ const StepRenderer: React.FC = () => {
     handleComplete
   } = useOnboardingSteps();
 
-  switch (onboardingStep) {
-    case 0:
-      return (
-        <Suspense fallback={<LoadingFallback />}>
-          <SplashScreen onContinue={() => setOnboardingStep(1)} />
-        </Suspense>
-      );
-      
-    case 1:
-      return (
-        <Suspense fallback={<LoadingFallback />}>
-          <UserBasicInfo onContinue={handleBasicInfoComplete} />
-        </Suspense>
-      );
-      
-    case 2:
-      return (
-        <Suspense fallback={<LoadingFallback />}>
-          <ExperienceInput 
-            onContinue={handleExperienceComplete}
-            currentTitle={formData.title} 
-            currentCompany={formData.company}
-          />
-        </Suspense>
-      );
-      
-    case 3:
-      return (
-        <Suspense fallback={<LoadingFallback />}>
-          <ContactInfo onContinue={handleContactInfoComplete} />
-        </Suspense>
-      );
-      
-    case 4:
-      return (
-        <Suspense fallback={<LoadingFallback />}>
-          <ExperienceSelection 
-            experiences={profile.experiences}
-            selectedExpertise={selectedExpertise}
-            onExpertiseToggle={handleExpertiseToggle}
-            onContinue={() => setOnboardingStep(5)}
-            expertise={expertise}
-          />
-        </Suspense>
-      );
-      
-    case 5:
-      return (
-        <Suspense fallback={<LoadingFallback />}>
-          <ProfilePhoto 
-            avatarUrl={formData.avatar}
-            onContinue={handleProfilePhotoComplete}
-          />
-        </Suspense>
-      );
-      
-    case 6:
-      return (
-        <Suspense fallback={<LoadingFallback />}>
-          <CardDesigner 
-            card={previewCard || profile.card}
-            selectedBackground={selectedBackground}
-            setSelectedBackground={setSelectedBackground}
-            textColor={textColor}
-            setTextColor={setTextColor}
-            status={status}
-            setStatus={setStatus}
-            links={links}
-            setLinks={setLinks}
-            handleLinkChange={handleLinkChange}
-            onComplete={handleComplete}
-            backgroundOptions={backgroundOptions}
-          />
-        </Suspense>
-      );
-      
-    default:
-      return null;
-  }
+  // Don't show back button on the first step
+  const showBackButton = onboardingStep > 1;
+
+  return (
+    <div className="relative">
+      {showBackButton && <BackButton />}
+
+      {(() => {
+        switch (onboardingStep) {
+          case 0:
+            return (
+              <Suspense fallback={<LoadingFallback />}>
+                <SplashScreen onContinue={() => setOnboardingStep(1)} />
+              </Suspense>
+            );
+            
+          case 1:
+            return (
+              <Suspense fallback={<LoadingFallback />}>
+                <UserBasicInfo onContinue={handleBasicInfoComplete} />
+              </Suspense>
+            );
+            
+          case 2:
+            return (
+              <Suspense fallback={<LoadingFallback />}>
+                <ExperienceInput 
+                  onContinue={handleExperienceComplete}
+                  currentTitle={formData.title} 
+                  currentCompany={formData.company}
+                />
+              </Suspense>
+            );
+            
+          case 3:
+            return (
+              <Suspense fallback={<LoadingFallback />}>
+                <ContactInfo onContinue={handleContactInfoComplete} />
+              </Suspense>
+            );
+            
+          case 4:
+            return (
+              <Suspense fallback={<LoadingFallback />}>
+                <ExperienceSelection 
+                  experiences={profile.experiences}
+                  selectedExpertise={selectedExpertise}
+                  onExpertiseToggle={handleExpertiseToggle}
+                  onContinue={() => setOnboardingStep(5)}
+                  expertise={expertise}
+                />
+              </Suspense>
+            );
+            
+          case 5:
+            return (
+              <Suspense fallback={<LoadingFallback />}>
+                <ProfilePhoto 
+                  avatarUrl={formData.avatar}
+                  onContinue={handleProfilePhotoComplete}
+                />
+              </Suspense>
+            );
+            
+          case 6:
+            return (
+              <Suspense fallback={<LoadingFallback />}>
+                <CardDesigner 
+                  card={previewCard || profile.card}
+                  selectedBackground={selectedBackground}
+                  setSelectedBackground={setSelectedBackground}
+                  textColor={textColor}
+                  setTextColor={setTextColor}
+                  status={status}
+                  setStatus={setStatus}
+                  links={links}
+                  setLinks={setLinks}
+                  handleLinkChange={handleLinkChange}
+                  onComplete={handleComplete}
+                  backgroundOptions={backgroundOptions}
+                />
+              </Suspense>
+            );
+            
+          default:
+            return null;
+        }
+      })()}
+    </div>
+  );
 };
 
 export default StepRenderer;

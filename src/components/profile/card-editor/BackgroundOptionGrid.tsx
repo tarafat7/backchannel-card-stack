@@ -16,21 +16,49 @@ const BackgroundOptionGrid: React.FC<BackgroundOptionGridProps> = ({
   const isSelected = (option: string) => {
     // For patterns, check if the pattern URL is in the selectedBackground
     if (option.includes('bg-[url')) {
-      return selectedBackground.includes(option);
-    } else {
-      // For colors/gradients, we need more precise checking
-      const optionParts = option.split(' ');
-      const backgroundParts = selectedBackground.split(' ');
+      const patternMatch = option.match(/bg-\[url\('([^']+)'\)\]/);
+      const selectedPatternMatch = selectedBackground.match(/bg-\[url\('([^']+)'\)\]/);
       
-      // For gradients, check if all parts are present in the background
-      if (optionParts.some(part => part.includes('gradient'))) {
-        return optionParts.every(part => backgroundParts.includes(part));
-      } else {
-        // For solid colors, check if the specific class is present
-        return backgroundParts.includes(option) || 
-               (option.startsWith('bg-[#') && selectedBackground.includes(option));
+      // Return true if both have patterns and they match
+      if (patternMatch && selectedPatternMatch && patternMatch[1] === selectedPatternMatch[1]) {
+        return true;
+      }
+      return false;
+    }
+    
+    // For gradients, we need to check if all gradient parts exist in selectedBackground
+    if (option.includes('gradient')) {
+      const optionParts = option.split(' ');
+      const bgParts = selectedBackground.split(' ');
+      
+      // Check if all gradient-related parts match
+      const gradientParts = optionParts.filter(part => 
+        part.includes('gradient') || part.includes('from-') || part.includes('to-') || part.includes('via-')
+      );
+      
+      // For gradients, check if all parts are present
+      return gradientParts.every(part => bgParts.includes(part));
+    }
+    
+    // For solid Tailwind colors (not custom)
+    if (option.startsWith('bg-') && !option.startsWith('bg-[')) {
+      // Extract just the color class
+      const bgColorClass = option.match(/bg-[a-z]+-\d+/)?.[0];
+      if (bgColorClass) {
+        return selectedBackground.includes(bgColorClass);
       }
     }
+    
+    // For custom colors
+    if (option.startsWith('bg-[#')) {
+      const customColor = option.match(/bg-\[(#[0-9a-fA-F]+)\]/)?.[0];
+      if (customColor) {
+        return selectedBackground.includes(customColor);
+      }
+    }
+    
+    // Default case - check if the option is present in selected background
+    return selectedBackground.includes(option);
   };
 
   return (

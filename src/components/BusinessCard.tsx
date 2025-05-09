@@ -114,7 +114,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
         
         {showHistory && (
           <div className="mt-3 mb-2">
-            <ProfessionalHistory id={card.id} />
+            <ProfessionalHistory id={card.id} cardExperiences={card.experiences} />
           </div>
         )}
         

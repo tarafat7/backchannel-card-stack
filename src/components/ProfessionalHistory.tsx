@@ -5,12 +5,14 @@ import professionalHistoryData from '@/data/professionalHistoryData';
 import EmptyHistory from './history/EmptyHistory';
 import HistoryTimeline from './history/HistoryTimeline';
 import { HistoryItem } from '@/data/professionalHistoryData';
+import { Experience } from '@/context/AppContext';
 
 type ProfessionalHistoryProps = {
   id: string;
+  cardExperiences?: Experience[];
 };
 
-const ProfessionalHistory: React.FC<ProfessionalHistoryProps> = ({ id }) => {
+const ProfessionalHistory: React.FC<ProfessionalHistoryProps> = ({ id, cardExperiences }) => {
   const { profile } = useAppContext();
   
   // Check if this is the current user's profile (via card id)
@@ -18,7 +20,15 @@ const ProfessionalHistory: React.FC<ProfessionalHistoryProps> = ({ id }) => {
   
   let history: HistoryItem[] = [];
   
-  if (isCurrentUser && profile.experiences && profile.experiences.length > 0) {
+  if (cardExperiences && cardExperiences.length > 0) {
+    // Use experiences passed directly through the card
+    history = cardExperiences.map(exp => ({
+      position: exp.title,
+      company: exp.company,
+      duration: exp.years,
+      description: exp.description
+    }));
+  } else if (isCurrentUser && profile.experiences && profile.experiences.length > 0) {
     // Map profile experiences to history items format
     history = profile.experiences.map(exp => ({
       position: exp.title,

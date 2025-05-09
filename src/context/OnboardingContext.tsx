@@ -45,6 +45,8 @@ interface OnboardingContextType {
   handleLinkChange: (index: number, field: 'type' | 'url', value: string) => void;
   updateBusinessCardPreview: () => void;
   previewCard: BusinessCard | null;
+  // Add navigation functions
+  handleBackStep: () => void;
 }
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
@@ -77,6 +79,13 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
     { type: 'GitHub', url: 'https://github.com' },
     { type: 'Portfolio', url: 'https://example.com' }
   ]);
+
+  // Add navigation handler for back button
+  const handleBackStep = () => {
+    if (onboardingStep > 1) {
+      setOnboardingStep(onboardingStep - 1);
+    }
+  };
 
   // Handle toggling expertise areas
   const handleExpertiseToggle = (area: string) => {
@@ -114,7 +123,9 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
       },
       connectionDegree: 1,
       mutualConnections: [],
-      phoneNumber: formData.phoneNumber || ''
+      phoneNumber: formData.phoneNumber || '',
+      // Make sure experiences are available in the card for rendering work history
+      experiences: formData.experiences.filter(exp => exp.title && exp.company && exp.years)
     };
     
     setPreviewCard(cardPreview);
@@ -149,7 +160,8 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
     handleExpertiseToggle,
     handleLinkChange,
     updateBusinessCardPreview,
-    previewCard
+    previewCard,
+    handleBackStep
   };
 
   return (
