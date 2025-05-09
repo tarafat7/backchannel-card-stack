@@ -34,7 +34,7 @@ export type BusinessCard = {
   design: CardDesign;
   connectionDate?: string;
   connectionEvent?: string;
-  connectionDegree?: 1 | 2;
+  connectionDegree: 1 | 2;
   mutualConnections: string[]; // Names of mutual connections
   phoneNumber?: string; // Phone number for sending messages
 }
@@ -203,11 +203,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const addConnection = (connection: BusinessCard) => {
     console.log("Adding connection with data:", connection);
     
-    // Ensure the connection has the connectionDegree and mutualConnections properties
-    // Fix: Explicitly cast connectionDegree to be either 1 or 2
+    // Create a proper typed connection object with all required fields
     const connectionWithDefaults: BusinessCard = {
       ...connection,
-      connectionDegree: (connection.connectionDegree || 1) as 1 | 2,
+      // Explicitly specify that we're using either the provided connectionDegree (if it's 1 or 2) or defaulting to 1
+      connectionDegree: (connection.connectionDegree === 2 ? 2 : 1) as 1 | 2,
       mutualConnections: connection.mutualConnections || [],
       // Use a real format phone number that works with iMessage - no dashes or parentheses
       phoneNumber: connection.phoneNumber || '4155551234' 
