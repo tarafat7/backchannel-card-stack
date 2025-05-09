@@ -58,16 +58,20 @@ export const useOnboardingSteps = () => {
       
       if (user) {
         console.log("User is authenticated, saving card for user:", user.id);
-        updateBusinessCard(previewCard)
-          .then(() => console.log("Business card saved successfully"))
-          .catch(err => {
-            console.error("Failed to save business card:", err);
-            toast({
-              title: "Error saving card",
-              description: "There was a problem saving your business card. Please try again.",
-              variant: "destructive"
-            });
+        
+        // Fix: Don't use .then() directly since updateBusinessCard might return void
+        // Instead, wrap in a try/catch block
+        try {
+          updateBusinessCard(previewCard);
+          console.log("Business card saved successfully");
+        } catch (err) {
+          console.error("Failed to save business card:", err);
+          toast({
+            title: "Error saving card",
+            description: "There was a problem saving your business card. Please try again.",
+            variant: "destructive"
           });
+        }
       } else {
         console.log("User is not authenticated, card will be saved locally only");
         // Still proceed with the animation even if we can't save to database yet
