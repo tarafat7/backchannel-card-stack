@@ -15,13 +15,13 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
   // Extract the current color and pattern on mount and when selectedBackground changes
   useEffect(() => {
     // Extract color if exists
-    const colorMatch = selectedBackground.match(/bg-\[(.*?)\]/);
+    const colorMatch = selectedBackground.match(/bg-\[(#[0-9a-fA-F]+)\]/);
     if (colorMatch && colorMatch[1]) {
       setCustomHexColor(colorMatch[1]);
     }
     
     // Extract pattern if exists
-    const patternMatch = selectedBackground.match(/pattern-[a-zA-Z-]+/);
+    const patternMatch = selectedBackground.match(/bg-\[url\('([^']+)'\)\]/);
     if (patternMatch) {
       setCurrentPattern(patternMatch[0]);
     } else {
@@ -48,16 +48,18 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
 
   // Handle selecting a preset background
   const selectPresetBackground = (bg: string) => {
+    console.log("Setting background to:", bg);
+    
     // Check if selecting a pattern
-    const patternMatch = bg.match(/pattern-[a-zA-Z-]+/);
+    const patternMatch = bg.match(/bg-\[url\('([^']+)'\)\]/);
     
     if (patternMatch) {
-      setCurrentPattern(patternMatch[0]);
+      setCurrentPattern(bg);
       
       // Keep the current color if one exists
-      const colorMatch = selectedBackground.match(/bg-\[(.*?)\]/);
+      const colorMatch = selectedBackground.match(/bg-\[(#[0-9a-fA-F]+)\]/);
       if (colorMatch && colorMatch[1]) {
-        onBackgroundChange(`bg-[${colorMatch[1]}] ${patternMatch[0]}`);
+        onBackgroundChange(`bg-[${colorMatch[1]}] ${bg}`);
       } else {
         onBackgroundChange(bg);
       }
