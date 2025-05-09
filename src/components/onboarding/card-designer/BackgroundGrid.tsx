@@ -44,6 +44,8 @@ const BackgroundGrid: React.FC<BackgroundGridProps> = ({
           key={index}
           className={`w-full aspect-square rounded-md ${bg} ${isSelected(bg) ? 'ring-2 ring-primary' : ''}`}
           onClick={() => selectPresetBackground(bg)}
+          aria-label={isPatternGrid ? `Pattern ${index + 1}` : `Color or gradient ${index + 1}`}
+          aria-pressed={isSelected(bg)}
         />
       ))}
     </div>

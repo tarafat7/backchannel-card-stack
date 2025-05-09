@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { backgroundOptions, patternBackgrounds, solidColorBackgrounds } from '../../onboarding/constants';
@@ -11,6 +12,7 @@ interface BackgroundSelectorProps {
 const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: BackgroundSelectorProps) => {
   const [customHexColor, setCustomHexColor] = useState<string>('#333333');
   const [currentPattern, setCurrentPattern] = useState<string | null>(null);
+  const [currentColorOrGradient, setCurrentColorOrGradient] = useState<string | null>(null);
   
   // Extract the current color and pattern on mount and when selectedBackground changes
   useEffect(() => {
@@ -18,6 +20,19 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
     const colorMatch = selectedBackground.match(/bg-\[(#[0-9a-fA-F]+)\]/);
     if (colorMatch && colorMatch[1]) {
       setCustomHexColor(colorMatch[1]);
+      setCurrentColorOrGradient(`bg-[${colorMatch[1]}]`);
+    } else {
+      // Check if there's a gradient or solid color class
+      const nonPatternParts = selectedBackground
+        .split(' ')
+        .filter(part => !part.includes('bg-[url') && part.startsWith('bg-'))
+        .join(' ');
+        
+      if (nonPatternParts) {
+        setCurrentColorOrGradient(nonPatternParts);
+      } else {
+        setCurrentColorOrGradient(null);
+      }
     }
     
     // Extract pattern if exists
@@ -38,48 +53,63 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
   const applyCustomColor = () => {
     // Create background value with both color and pattern if applicable
     const bgValue = customHexColor.startsWith('#') ? customHexColor : `#${customHexColor}`;
+    const colorClass = `bg-[${bgValue}]`;
     
     if (currentPattern) {
-      onBackgroundChange(`bg-[${bgValue}] ${currentPattern}`);
+      onBackgroundChange(`${colorClass} ${currentPattern}`);
     } else {
-      onBackgroundChange(`bg-[${bgValue}]`);
+      onBackgroundChange(colorClass);
     }
+    
+    setCurrentColorOrGradient(colorClass);
   };
 
   // Handle selecting a preset background (gradient, solid color or pattern)
   const selectPresetBackground = (bg: string) => {
-    console.log("Setting background to:", bg);
-    
     // Check if selecting a pattern
     const isPattern = bg.includes('bg-[url');
     
     if (isPattern) {
-      // Setting a pattern - preserve existing color if present
-      setCurrentPattern(bg);
-      
-      // Check if there's already a color in the selection
-      const colorMatch = selectedBackground.match(/bg-\[(#[0-9a-fA-F]+)\]/);
-      if (colorMatch && colorMatch[1]) {
-        onBackgroundChange(`bg-[${colorMatch[1]}] ${bg}`);
+      // If the same pattern is already selected, remove it
+      if (currentPattern === bg) {
+        setCurrentPattern(null);
+        if (currentColorOrGradient) {
+          onBackgroundChange(currentColorOrGradient);
+        } else {
+          // Default background if no color/gradient is set
+          onBackgroundChange('bg-gradient-to-br from-primary to-primary/60');
+        }
       } else {
-        // If there's a gradient or solid color that's not a custom hex
-        const isGradientOrSolid = !selectedBackground.includes('bg-[url') && 
-                                 !selectedBackground.includes('bg-[#');
+        // Set a new pattern
+        setCurrentPattern(bg);
         
-        if (isGradientOrSolid) {
-          // Keep the existing background style for gradient/solid and add pattern
-          onBackgroundChange(`${selectedBackground} ${bg}`);
+        // Combine with existing color/gradient if present
+        if (currentColorOrGradient) {
+          onBackgroundChange(`${currentColorOrGradient} ${bg}`);
         } else {
           onBackgroundChange(bg);
         }
       }
     } else if (bg.includes('gradient') || solidColors.includes(bg)) {
-      // Setting a gradient or solid color - replace existing gradient/color but keep pattern
+      // It's a gradient or solid color
       
-      // If there's already a pattern, combine with it
-      if (currentPattern) {
+      // If the same color/gradient is already selected, don't change
+      if (currentColorOrGradient === bg) {
+        return;
+      }
+      
+      // Save the new color/gradient and REPLACE any existing color/gradient
+      setCurrentColorOrGradient(bg);
+      
+      // For gradients, always remove patterns
+      if (bg.includes('gradient')) {
+        onBackgroundChange(bg);
+        setCurrentPattern(null);
+      } else if (currentPattern) {
+        // For solid colors with existing pattern
         onBackgroundChange(`${bg} ${currentPattern}`);
       } else {
+        // Solid color without pattern
         onBackgroundChange(bg);
       }
     }

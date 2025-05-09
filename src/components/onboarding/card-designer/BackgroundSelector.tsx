@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { backgroundOptions, patternBackgrounds, solidColorBackgrounds } from '../constants';
@@ -88,28 +87,47 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
     
     // Check if selecting a pattern
     const isPattern = bg.includes('bg-[url');
-    const isGradient = bg.includes('gradient');
     
     if (isPattern) {
-      // Save the pattern
-      setCurrentPattern(bg);
-      
-      // Combine with existing color/gradient if present
-      if (currentColorOrGradient) {
-        setSelectedBackground(`${currentColorOrGradient} ${bg}`);
+      // If the same pattern is already selected, remove it
+      if (currentPattern === bg) {
+        setCurrentPattern(null);
+        if (currentColorOrGradient) {
+          setSelectedBackground(currentColorOrGradient);
+        } else {
+          // Default background if no color/gradient is set
+          setSelectedBackground('bg-gradient-to-br from-primary to-primary/60');
+        }
       } else {
-        setSelectedBackground(bg);
+        // Set a new pattern
+        setCurrentPattern(bg);
+        
+        // Combine with existing color/gradient if present
+        if (currentColorOrGradient) {
+          setSelectedBackground(`${currentColorOrGradient} ${bg}`);
+        } else {
+          setSelectedBackground(bg);
+        }
       }
     } else {
       // It's a gradient or solid color
-      // Save it and REPLACE any existing gradient/color
+      
+      // If the same color/gradient is already selected, don't change
+      if (currentColorOrGradient === bg) {
+        return;
+      }
+      
+      // Save the new color/gradient and REPLACE any existing color/gradient
       setCurrentColorOrGradient(bg);
       
       // Combine with existing pattern if present
-      if (currentPattern) {
+      if (currentPattern && !bg.includes('gradient')) {
+        // For solid colors, keep the pattern unless explicitly requested by user
         setSelectedBackground(`${bg} ${currentPattern}`);
       } else {
+        // For gradients or explicit pattern removal, use only the new background
         setSelectedBackground(bg);
+        setCurrentPattern(null);
       }
     }
   };
