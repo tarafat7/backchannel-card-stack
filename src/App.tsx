@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import Connect from "./pages/Connect";
 import ViewCard from "./pages/ViewCard";
 import ConnectionRequests from "./pages/ConnectionRequests";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import { AppProvider, useAppContext } from "./context/AppContext";
 
@@ -66,6 +67,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } 
       />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

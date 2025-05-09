@@ -58,6 +58,7 @@ type AppContextType = {
   sendConnectionRequest: (toUserId: string, fromUser: BusinessCard) => void;
   acceptConnectionRequest: (requestId: string) => void;
   declineConnectionRequest: (requestId: string) => void;
+  resetProfile: () => void; // New function to reset the profile
 };
 
 const initialProfile: UserProfile = {
@@ -133,6 +134,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setConnectionRequests(prev => prev.filter(req => req.id !== requestId));
   };
 
+  // Reset the profile to initial state (for account deletion)
+  const resetProfile = () => {
+    setProfile(initialProfile);
+    setConnections([]);
+    setConnectionRequests([]);
+    setOnboardingStep(0);
+  };
+
   return (
     <AppContext.Provider value={{
       profile,
@@ -145,7 +154,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       addConnection,
       sendConnectionRequest,
       acceptConnectionRequest,
-      declineConnectionRequest
+      declineConnectionRequest,
+      resetProfile
     }}>
       {children}
     </AppContext.Provider>
