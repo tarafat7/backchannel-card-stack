@@ -42,7 +42,7 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
   onComplete,
   backgroundOptions
 }) => {
-  const { formData, selectedExpertise } = useOnboarding();
+  const { formData, selectedExpertise, updateBusinessCardPreview } = useOnboarding();
   const [showWorkHistory, setShowWorkHistory] = useState<boolean>(false);
   const [hasLinkError, setHasLinkError] = useState<boolean>(false);
   const [previewCard, setPreviewCard] = useState<BusinessCard | null>(null);
@@ -102,6 +102,10 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
       return;
     }
     
+    // Update the business card preview before completing
+    updateBusinessCardPreview();
+    
+    // Call the onComplete callback
     onComplete();
   };
 

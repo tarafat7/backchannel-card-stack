@@ -31,7 +31,8 @@ const StepRenderer: React.FC = () => {
     links,
     setLinks,
     handleLinkChange,
-    previewCard
+    previewCard,
+    updateBusinessCardPreview
   } = useOnboarding();
   
   const { profile } = useAppContext();

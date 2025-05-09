@@ -9,9 +9,10 @@ export const useOnboardingSteps = () => {
     formData, 
     setFormData,
     setShowCompletionAnimation,
+    updateBusinessCardPreview,
   } = useOnboarding();
   
-  const { updateProfile } = useAppContext();
+  const { updateProfile, updateBusinessCard } = useAppContext();
 
   const handleBasicInfoComplete = (data: {name: string, title: string, company: string}) => {
     setFormData(prev => ({ ...prev, ...data }));
@@ -44,11 +45,16 @@ export const useOnboardingSteps = () => {
   };
 
   const handleComplete = () => {
+    // Ensure final business card is updated before completion
+    updateBusinessCardPreview();
+    // Show completion animation
     setShowCompletionAnimation(true);
   };
   
   const handleAnimationComplete = () => {
     setShowCompletionAnimation(false);
+    // Reset onboarding step to 0 to prevent going back to onboarding
+    setOnboardingStep(0);
   };
 
   return {
