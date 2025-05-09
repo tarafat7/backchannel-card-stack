@@ -5,7 +5,6 @@ import { useAppContext } from '../../context/AppContext';
 import LoadingFallback from './common/LoadingFallback';
 import { useOnboardingSteps } from './hooks/useOnboardingSteps';
 import { expertise, backgroundOptions } from './constants';
-import BackButton from './common/BackButton';
 
 // Lazy load onboarding step components
 const SplashScreen = lazy(() => import('./SplashScreen'));
@@ -45,13 +44,8 @@ const StepRenderer: React.FC = () => {
     handleComplete
   } = useOnboardingSteps();
 
-  // Don't show back button on the first step
-  const showBackButton = onboardingStep > 1;
-
   return (
     <div className="relative">
-      {showBackButton && <BackButton />}
-
       {(() => {
         switch (onboardingStep) {
           case 0:
