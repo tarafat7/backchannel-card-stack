@@ -1,5 +1,18 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import {
+  getProfile,
+  getExperiences,
+  getExpertiseAreas,
+  getBusinessCard,
+  updateProfile as updateProfileService,
+  updateExperiences as updateExperiencesService,
+  updateExpertiseAreas as updateExpertiseAreasService,
+  updateBusinessCard as updateBusinessCardService
+} from '@/services/profileService';
+import { toast } from '@/components/ui/use-toast';
 
 export type CardDesign = {
   backgroundStyle: string;
@@ -70,17 +83,121 @@ const initialProfile: UserProfile = {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
   const [profile, setProfile] = useState<UserProfile>(initialProfile);
   const [connections, setConnections] = useState<BusinessCard[]>([]);
   const [connectionRequests, setConnectionRequests] = useState<ConnectionRequest[]>([]);
   const [onboardingStep, setOnboardingStep] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const updateProfile = (updates: Partial<UserProfile>) => {
-    setProfile(prev => ({ ...prev, ...updates }));
+  // Load user data from Supabase when auth state changes
+  useEffect(() => {
+    async function loadUserData() {
+      if (user) {
+        setLoading(true);
+        try {
+          // Fetch all user data in parallel
+          const [experiences, expertiseAreas, card] = await Promise.all([
+            getExperiences(),
+            getExpertiseAreas(),
+            getBusinessCard()
+          ]);
+
+          setProfile({
+            experiences: experiences || [],
+            expertiseAreas: expertiseAreas || [],
+            card
+          });
+
+          // Determine onboarding step based on data
+          if (card && experiences.length > 0) {
+            // User has completed onboarding
+            setOnboardingStep(0);
+          } else {
+            // User needs to complete onboarding
+            setOnboardingStep(1);
+          }
+        } catch (error) {
+          console.error("Error loading user data:", error);
+          toast({
+            title: "Error loading profile",
+            description: "Could not load your profile data. Please try refreshing.",
+            variant: "destructive"
+          });
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        // Reset state when user logs out
+        setProfile(initialProfile);
+        setConnections([]);
+        setConnectionRequests([]);
+        setOnboardingStep(0);
+        setLoading(false);
+      }
+    }
+
+    loadUserData();
+  }, [user]);
+
+  const updateProfile = async (updates: Partial<UserProfile>) => {
+    if (!user) {
+      console.warn("Cannot update profile: No authenticated user");
+      return;
+    }
+
+    setProfile(prev => {
+      // Create new profile object with updates
+      const updatedProfile = { ...prev };
+      
+      // Update experiences if provided
+      if (updates.experiences) {
+        updatedProfile.experiences = updates.experiences;
+        // Save to Supabase in background
+        updateExperiencesService(updates.experiences)
+          .catch(err => console.error("Failed to save experiences:", err));
+      }
+      
+      // Update expertise areas if provided
+      if (updates.expertiseAreas) {
+        updatedProfile.expertiseAreas = updates.expertiseAreas;
+        // Save to Supabase in background
+        updateExpertiseAreasService(updates.expertiseAreas)
+          .catch(err => console.error("Failed to save expertise areas:", err));
+      }
+      
+      // Update card if provided
+      if (updates.card) {
+        updatedProfile.card = { ...prev.card, ...updates.card };
+        // Save to Supabase in background via updateBusinessCard
+        if (updatedProfile.card) {
+          updateBusinessCardService(updatedProfile.card)
+            .catch(err => console.error("Failed to save card:", err));
+        }
+      }
+      
+      return updatedProfile;
+    });
   };
 
-  const updateBusinessCard = (card: BusinessCard) => {
-    setProfile(prev => ({ ...prev, card }));
+  const updateBusinessCard = async (card: BusinessCard) => {
+    if (!user) {
+      console.warn("Cannot update business card: No authenticated user");
+      return;
+    }
+
+    // Update local state
+    setProfile(prev => ({
+      ...prev,
+      card
+    }));
+    
+    // Save to Supabase
+    try {
+      await updateBusinessCardService(card);
+    } catch (error) {
+      console.error("Failed to save business card:", error);
+    }
   };
 
   const addConnection = (connection: BusinessCard) => {
@@ -98,6 +215,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     
     console.log("Connection with defaults:", connectionWithDefaults);
     setConnections(prev => [...prev, connectionWithDefaults]);
+    
+    // TODO: Save connection to Supabase
   };
 
   // Send a connection request to another user
@@ -114,6 +233,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     
     // Add to the connectionRequests array
     setConnectionRequests(prev => [...prev, newRequest]);
+    
+    // TODO: Save connection request to Supabase
   };
 
   // Accept a connection request
@@ -125,6 +246,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       
       // Remove the request
       setConnectionRequests(prev => prev.filter(req => req.id !== requestId));
+      
+      // TODO: Update connection status in Supabase
     }
   };
 
@@ -132,6 +255,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const declineConnectionRequest = (requestId: string) => {
     // Simply remove the request
     setConnectionRequests(prev => prev.filter(req => req.id !== requestId));
+    
+    // TODO: Update connection status in Supabase
   };
 
   // Reset the profile to initial state (for account deletion)
@@ -140,6 +265,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setConnections([]);
     setConnectionRequests([]);
     setOnboardingStep(0);
+    
+    // TODO: Handle account deletion in Supabase
   };
 
   return (
