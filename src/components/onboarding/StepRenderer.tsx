@@ -30,7 +30,8 @@ const StepRenderer: React.FC = () => {
     setStatus,
     links,
     setLinks,
-    handleLinkChange
+    handleLinkChange,
+    previewCard
   } = useOnboarding();
   
   const { profile } = useAppContext();
@@ -103,7 +104,7 @@ const StepRenderer: React.FC = () => {
       return (
         <Suspense fallback={<LoadingFallback />}>
           <CardDesigner 
-            card={profile.card}
+            card={previewCard || profile.card}
             selectedBackground={selectedBackground}
             setSelectedBackground={setSelectedBackground}
             textColor={textColor}

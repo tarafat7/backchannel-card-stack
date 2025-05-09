@@ -1,6 +1,7 @@
 
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { useAppContext } from './AppContext';
+import { BusinessCard } from '@/types';
 
 interface Experience {
   title: string;
@@ -43,6 +44,7 @@ interface OnboardingContextType {
   handleExpertiseToggle: (area: string) => void;
   handleLinkChange: (index: number, field: 'type' | 'url', value: string) => void;
   updateBusinessCardPreview: () => void;
+  previewCard: BusinessCard | null;
 }
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
@@ -51,6 +53,7 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
   const { updateProfile, updateBusinessCard, profile } = useAppContext();
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
+  const [previewCard, setPreviewCard] = useState<BusinessCard | null>(null);
   
   const [formData, setFormData] = useState<OnboardingFormData>({
     name: '',
@@ -95,29 +98,34 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
 
   // Update business card preview
   const updateBusinessCardPreview = () => {
+    // Create a preview card with current data
+    const cardPreview: BusinessCard = {
+      id: profile.card?.id || '1',
+      name: formData.name || 'Your Name',
+      title: formData.title || 'Your Title',
+      company: formData.company || 'Your Company',
+      avatar: formData.avatar,
+      expertiseAreas: selectedExpertise,
+      links: links,
+      status: status,
+      design: {
+        backgroundStyle: selectedBackground,
+        textColor: textColor
+      },
+      connectionDegree: 1,
+      mutualConnections: [],
+      phoneNumber: formData.phoneNumber || ''
+    };
+    
+    setPreviewCard(cardPreview);
+    
     if (onboardingStep >= 3) {
-      updateBusinessCard({
-        id: '1',
-        name: formData.name,
-        title: formData.title,
-        company: formData.company,
-        avatar: formData.avatar,
-        expertiseAreas: selectedExpertise,
-        links,
-        status,
-        design: {
-          backgroundStyle: selectedBackground,
-          textColor: textColor
-        },
-        connectionDegree: 1,
-        mutualConnections: [],
-        phoneNumber: formData.phoneNumber
-      });
+      updateBusinessCard(cardPreview);
     }
   };
 
   // Update the card preview whenever relevant state changes
-  React.useEffect(() => {
+  useEffect(() => {
     updateBusinessCardPreview();
   }, [formData, selectedExpertise, selectedBackground, textColor, status, links, onboardingStep]);
 
@@ -140,7 +148,8 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
     setShowCompletionAnimation,
     handleExpertiseToggle,
     handleLinkChange,
-    updateBusinessCardPreview
+    updateBusinessCardPreview,
+    previewCard
   };
 
   return (
@@ -157,4 +166,3 @@ export const useOnboarding = (): OnboardingContextType => {
   }
   return context;
 };
-

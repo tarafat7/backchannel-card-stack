@@ -2,9 +2,10 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import BusinessCard from '../../BusinessCard';
+import { BusinessCard as BusinessCardType } from '@/types';
 
 interface CardPreviewProps {
-  card: any;
+  card: BusinessCardType | null;
   showWorkHistory: boolean;
   setShowWorkHistory: (show: boolean) => void;
 }
@@ -12,7 +13,7 @@ interface CardPreviewProps {
 const CardPreview: React.FC<CardPreviewProps> = ({ card, showWorkHistory, setShowWorkHistory }) => {
   return (
     <div className="mb-8">
-      {card && (
+      {card ? (
         <>
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-sm font-medium text-muted-foreground">Card Preview</h3>
@@ -27,6 +28,10 @@ const CardPreview: React.FC<CardPreviewProps> = ({ card, showWorkHistory, setSho
           </div>
           <BusinessCard card={card} isPreview={true} showHistory={showWorkHistory} />
         </>
+      ) : (
+        <div className="rounded-lg bg-secondary/50 p-4 text-center text-muted-foreground mb-4">
+          <p>Card preview not available</p>
+        </div>
       )}
     </div>
   );

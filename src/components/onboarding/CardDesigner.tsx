@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import CardPreview from './card-designer/CardPreview';
@@ -8,9 +8,11 @@ import TextColorPicker from './card-designer/TextColorPicker';
 import StatusInput from './card-designer/StatusInput';
 import SocialLinksEditor from './card-designer/SocialLinksEditor';
 import { toast } from "@/components/ui/use-toast";
+import { BusinessCard } from '@/types';
+import { useOnboarding } from '../../context/OnboardingContext';
 
 interface CardDesignerProps {
-  card: any;
+  card: BusinessCard | null;
   selectedBackground: string;
   setSelectedBackground: (bg: string) => void;
   textColor: string;
@@ -40,8 +42,34 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
   onComplete,
   backgroundOptions
 }) => {
+  const { formData, selectedExpertise } = useOnboarding();
   const [showWorkHistory, setShowWorkHistory] = useState<boolean>(false);
   const [hasLinkError, setHasLinkError] = useState<boolean>(false);
+  const [previewCard, setPreviewCard] = useState<BusinessCard | null>(null);
+
+  // Create a preview card with current settings
+  useEffect(() => {
+    // Create a preview card even if the passed card is null
+    const updatedCard: BusinessCard = {
+      id: card?.id || '1',
+      name: formData.name || 'Your Name',
+      title: formData.title || 'Your Title',
+      company: formData.company || 'Your Company',
+      avatar: formData.avatar || '',
+      expertiseAreas: selectedExpertise || [],
+      links: links,
+      status: status,
+      design: {
+        backgroundStyle: selectedBackground,
+        textColor: textColor
+      },
+      connectionDegree: 1,
+      mutualConnections: [],
+      phoneNumber: formData.phoneNumber || ''
+    };
+    
+    setPreviewCard(updatedCard);
+  }, [card, formData, selectedExpertise, selectedBackground, textColor, status, links]);
 
   const addLink = () => {
     setLinks([...links, { type: 'Other', url: '' }]);
@@ -81,7 +109,7 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
       <h2 className="text-2xl font-semibold mb-6">Design your card</h2>
       
       <CardPreview 
-        card={card} 
+        card={previewCard} 
         showWorkHistory={showWorkHistory} 
         setShowWorkHistory={setShowWorkHistory} 
       />
