@@ -47,12 +47,12 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
   let classNames = `business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`;
   
   // Add pattern class if it exists
-  const patternClass = backgroundStyle.split(' ').find(cls => cls.includes('pattern'));
-  if (patternClass) {
-    classNames += ` ${patternClass}`;
+  const patternMatch = backgroundStyle.match(/pattern-[a-zA-Z-]+/);
+  if (patternMatch) {
+    classNames += ` ${patternMatch[0]}`;
   } 
-  // If no pattern, add the full background style if it's not a custom color
-  else if (!backgroundStyle.includes('bg-[')) {
+  // If no custom color and no pattern, add the full background style
+  else if (!backgroundStyle.includes('bg-[') && !patternMatch) {
     classNames += ` ${backgroundStyle}`;
   }
 

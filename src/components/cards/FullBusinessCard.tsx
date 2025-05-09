@@ -28,12 +28,13 @@ const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
   let classNames = 'm-4 p-6 rounded-xl shadow-lg';
   
   // Add pattern class if it exists
-  const patternClass = backgroundStyle.split(' ').find(cls => cls.includes('pattern'));
-  if (patternClass) {
-    classNames += ` ${patternClass}`;
-  } 
-  // If no pattern, add the full background style
-  else if (!backgroundStyle.includes('bg-[')) {
+  const patternMatch = backgroundStyle.match(/pattern-[a-zA-Z-]+/);
+  if (patternMatch) {
+    classNames += ` ${patternMatch[0]}`;
+  }
+  
+  // If no custom color and no pattern, add the full background style
+  if (!backgroundStyle.includes('bg-[') && !patternMatch) {
     classNames += ` ${backgroundStyle}`;
   }
   

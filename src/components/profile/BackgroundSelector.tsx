@@ -21,9 +21,9 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
     }
     
     // Extract pattern if exists
-    const patternClass = selectedBackground.split(' ').find(cls => cls.includes('pattern'));
-    if (patternClass) {
-      setCurrentPattern(patternClass);
+    const patternMatch = selectedBackground.match(/pattern-[a-zA-Z-]+/);
+    if (patternMatch) {
+      setCurrentPattern(patternMatch[0]);
     } else {
       setCurrentPattern(null);
     }
@@ -48,25 +48,27 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
 
   // Handle selecting a preset background
   const selectPresetBackground = (bg: string) => {
-    // If selecting a gradient or solid color, remove the pattern
-    if (!bg.includes('pattern')) {
-      onBackgroundChange(bg);
-      setCurrentPattern(null);
-      return;
-    }
+    // Check if selecting a pattern
+    const patternMatch = bg.match(/pattern-[a-zA-Z-]+/);
     
-    // If selecting a pattern
-    const patternClass = bg.split(' ').find(cls => cls.includes('pattern'));
-    if (patternClass) {
-      setCurrentPattern(patternClass);
+    if (patternMatch) {
+      setCurrentPattern(patternMatch[0]);
       
       // Keep the current color if one exists
       const colorMatch = selectedBackground.match(/bg-\[(.*?)\]/);
       if (colorMatch && colorMatch[1]) {
-        onBackgroundChange(`bg-[${colorMatch[1]}] ${patternClass}`);
+        onBackgroundChange(`bg-[${colorMatch[1]}] ${patternMatch[0]}`);
       } else {
         onBackgroundChange(bg);
       }
+    } else {
+      // If selecting a gradient or solid color, keep the pattern if exists
+      if (currentPattern) {
+        onBackgroundChange(`${bg} ${currentPattern}`);
+      } else {
+        onBackgroundChange(bg);
+      }
+      setCurrentPattern(null);
     }
   };
 
