@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,7 @@ const Connect = () => {
   // Generate a shareable QR code that contains the user's profile ID
   const qrValue = `https://backchannel.app/connect/${profile.card?.id || 'user1'}`;
   
-  // Sample scanned user data
+  // Sample scanned user data - Fix the connectionDegree to be explicitly 2 (second degree)
   const scannedUser = {
     id: 'scanned-user-1',
     name: 'Riley Johnson',
@@ -39,8 +38,9 @@ const Connect = () => {
       backgroundStyle: 'bg-gradient-to-br from-indigo-500 to-purple-500',
       textColor: 'text-white',
     },
-    connectionDegree: 2,
-    mutualConnections: ['Jordan Lee', 'Taylor Smith']
+    connectionDegree: 2 as 1 | 2, // Explicitly type as 1 | 2 to match the BusinessCard interface
+    mutualConnections: ['Jordan Lee', 'Taylor Smith'],
+    phoneNumber: '4155551234' // Adding phoneNumber to match the BusinessCard interface
   };
   
   const handleScan = () => {
