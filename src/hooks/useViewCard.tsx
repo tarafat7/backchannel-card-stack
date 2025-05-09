@@ -20,6 +20,9 @@ export const useViewCard = () => {
   
   const isDirectConnection = card?.connectionDegree === 1;
   
+  // Check if this card is already in our connections
+  const isConnected = connections.some(c => c.id === id);
+  
   // Provide haptic feedback when the card is viewed
   useEffect(() => {
     if (card) {
@@ -38,6 +41,7 @@ export const useViewCard = () => {
   return {
     card,
     isDirectConnection,
+    isConnected,
     introDialogOpen,
     setIntroDialogOpen,
     selectedMutualConnection,

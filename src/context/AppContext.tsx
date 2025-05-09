@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type CardDesign = {
@@ -39,14 +40,24 @@ export type UserProfile = {
   card: BusinessCard | null;
 }
 
+export type ConnectionRequest = {
+  id: string;
+  fromUser: BusinessCard;
+  timestamp: string;
+}
+
 type AppContextType = {
   profile: UserProfile;
   connections: BusinessCard[];
+  connectionRequests: ConnectionRequest[];
   onboardingStep: number;
   setOnboardingStep: (step: number) => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
   updateBusinessCard: (card: BusinessCard) => void;
   addConnection: (connection: BusinessCard) => void;
+  sendConnectionRequest: (toUserId: string, fromUser: BusinessCard) => void;
+  acceptConnectionRequest: (requestId: string) => void;
+  declineConnectionRequest: (requestId: string) => void;
 };
 
 const initialProfile: UserProfile = {
@@ -60,6 +71,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<UserProfile>(initialProfile);
   const [connections, setConnections] = useState<BusinessCard[]>([]);
+  const [connectionRequests, setConnectionRequests] = useState<ConnectionRequest[]>([]);
   const [onboardingStep, setOnboardingStep] = useState<number>(0);
 
   const updateProfile = (updates: Partial<UserProfile>) => {
@@ -87,15 +99,53 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setConnections(prev => [...prev, connectionWithDefaults]);
   };
 
+  // Send a connection request to another user
+  const sendConnectionRequest = (toUserId: string, fromUser: BusinessCard) => {
+    console.log(`Sending connection request to user ${toUserId}`);
+    // In a real app, this would make an API call
+    // For now, we'll simulate it by adding to the receiver's requests
+    // In this demo, we'll just add it to our own connectionRequests for UI testing
+    const newRequest: ConnectionRequest = {
+      id: `req-${Date.now()}`,
+      fromUser,
+      timestamp: new Date().toISOString()
+    };
+    
+    // Add to the connectionRequests array
+    setConnectionRequests(prev => [...prev, newRequest]);
+  };
+
+  // Accept a connection request
+  const acceptConnectionRequest = (requestId: string) => {
+    const request = connectionRequests.find(req => req.id === requestId);
+    if (request) {
+      // Add the user who sent the request to connections
+      addConnection(request.fromUser);
+      
+      // Remove the request
+      setConnectionRequests(prev => prev.filter(req => req.id !== requestId));
+    }
+  };
+
+  // Decline a connection request
+  const declineConnectionRequest = (requestId: string) => {
+    // Simply remove the request
+    setConnectionRequests(prev => prev.filter(req => req.id !== requestId));
+  };
+
   return (
     <AppContext.Provider value={{
       profile,
       connections,
+      connectionRequests,
       onboardingStep,
       setOnboardingStep,
       updateProfile,
       updateBusinessCard,
-      addConnection
+      addConnection,
+      sendConnectionRequest,
+      acceptConnectionRequest,
+      declineConnectionRequest
     }}>
       {children}
     </AppContext.Provider>

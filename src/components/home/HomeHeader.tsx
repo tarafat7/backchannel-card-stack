@@ -3,6 +3,8 @@ import { useState } from 'react';
 import SearchBar from './SearchBar';
 import FilterBar from './FilterBar';
 import { Badge } from "@/components/ui/badge";
+import RequestsButton from './RequestsButton';
+import { useAppContext } from '@/context/AppContext';
 
 type HomeHeaderProps = {
   searchQuery: string;
@@ -23,6 +25,8 @@ const HomeHeader = ({
   updatesCount,
   resetUpdatesCount
 }: HomeHeaderProps) => {
+  const { connectionRequests } = useAppContext();
+  
   const handleFilterChange = (filter: string) => {
     setActiveFilter(filter);
     if (filter === 'Updates') {
@@ -32,11 +36,14 @@ const HomeHeader = ({
 
   return (
     <header className="sticky top-0 z-10 bg-background pt-4 px-4 pb-2">
-      <div className="w-full">
-        <SearchBar 
-          value={searchQuery}
-          onChange={setSearchQuery}
-        />
+      <div className="w-full flex items-center gap-2">
+        <div className="flex-1">
+          <SearchBar 
+            value={searchQuery}
+            onChange={setSearchQuery}
+          />
+        </div>
+        <RequestsButton pendingRequestsCount={connectionRequests.length} />
       </div>
       
       <div className="mt-4">

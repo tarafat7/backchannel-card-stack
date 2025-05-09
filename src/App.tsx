@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +10,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Connect from "./pages/Connect";
 import ViewCard from "./pages/ViewCard";
+import ConnectionRequests from "./pages/ConnectionRequests";
 import NotFound from "./pages/NotFound";
 import { AppProvider, useAppContext } from "./context/AppContext";
 
@@ -56,6 +58,14 @@ const AppRoutes = () => {
         } 
       />
       <Route path="/card/:id" element={<ViewCard />} />
+      <Route 
+        path="/requests" 
+        element={
+          <ProtectedRoute>
+            <ConnectionRequests />
+          </ProtectedRoute>
+        } 
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
