@@ -49,6 +49,11 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
 
   // Create a preview card with current settings
   useEffect(() => {
+    // Filter out experiences that have both title and company filled
+    const validExperiences = formData.experiences.filter(exp => 
+      exp.title && exp.company && exp.years
+    );
+
     // Create a preview card even if the passed card is null
     const updatedCard: BusinessCard = {
       id: card?.id || '1',
@@ -65,7 +70,9 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
       },
       connectionDegree: 1,
       mutualConnections: [],
-      phoneNumber: formData.phoneNumber || ''
+      phoneNumber: formData.phoneNumber || '',
+      // Include valid experiences in the preview card
+      experiences: validExperiences
     };
     
     setPreviewCard(updatedCard);

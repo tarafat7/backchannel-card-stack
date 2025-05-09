@@ -5,7 +5,7 @@ import professionalHistoryData from '@/data/professionalHistoryData';
 import EmptyHistory from './history/EmptyHistory';
 import HistoryTimeline from './history/HistoryTimeline';
 import { HistoryItem } from '@/data/professionalHistoryData';
-import { Experience } from '@/context/AppContext';
+import { Experience } from '@/types';
 
 type ProfessionalHistoryProps = {
   id: string;
@@ -26,7 +26,7 @@ const ProfessionalHistory: React.FC<ProfessionalHistoryProps> = ({ id, cardExper
       position: exp.title,
       company: exp.company,
       duration: exp.years,
-      description: exp.description
+      description: exp.description || ''
     }));
   } else if (isCurrentUser && profile.experiences && profile.experiences.length > 0) {
     // Map profile experiences to history items format
@@ -34,7 +34,7 @@ const ProfessionalHistory: React.FC<ProfessionalHistoryProps> = ({ id, cardExper
       position: exp.title,
       company: exp.company,
       duration: exp.years,
-      description: exp.description
+      description: exp.description || ''
     }));
   } else {
     // Use the sample professional history data for other users

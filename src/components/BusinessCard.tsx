@@ -112,7 +112,7 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
           </div>
         )}
         
-        {showHistory && (
+        {showHistory && card.experiences && card.experiences.length > 0 && (
           <div className="mt-3 mb-2">
             <ProfessionalHistory id={card.id} cardExperiences={card.experiences} />
           </div>

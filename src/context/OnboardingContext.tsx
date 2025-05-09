@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { useAppContext } from './AppContext';
 import { BusinessCard, Experience } from '@/types';
@@ -99,6 +100,11 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
 
   // Update business card preview
   const updateBusinessCardPreview = () => {
+    // Filter out experiences that don't have required fields
+    const validExperiences = formData.experiences.filter(exp => 
+      exp.title && exp.company && exp.years
+    );
+
     // Create a preview card with current data
     const cardPreview: BusinessCard = {
       id: profile.card?.id || '1',
@@ -116,8 +122,8 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
       connectionDegree: 1,
       mutualConnections: [],
       phoneNumber: formData.phoneNumber || '',
-      // Include experiences in the card for rendering work history
-      experiences: formData.experiences.filter(exp => exp.title && exp.company && exp.years)
+      // Include valid experiences in the card for rendering work history
+      experiences: validExperiences
     };
     
     setPreviewCard(cardPreview);
