@@ -28,13 +28,19 @@ const FullBusinessCard = ({ card }: FullBusinessCardProps) => {
   // Generate class names
   let classNames = 'm-4 p-6 rounded-xl shadow-lg';
   
-  // Add pattern class if it exists
+  // Add background classes based on what we have
+  // If pattern exists, add it
   if (patternMatch) {
     classNames += ` bg-[url('${patternMatch[1]}')]`;
-  } 
-  // If no pattern but has gradient or solid background, add it
-  else if (!patternMatch && !colorMatch) {
-    classNames += ` ${backgroundStyle}`;
+  }
+  
+  // If not a custom color but has gradient or solid background, add it
+  if (!colorMatch && !backgroundStyle.includes('bg-[url')) {
+    // This handles gradients and Tailwind color classes
+    const nonPatternParts = backgroundStyle.split(' ').filter(part => !part.includes('bg-[url')).join(' ');
+    if (nonPatternParts) {
+      classNames += ` ${nonPatternParts}`;
+    }
   }
   
   return (

@@ -47,13 +47,29 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
   // Generate class names
   let classNames = `business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`;
   
-  // Add pattern class if it exists
+  // Add background classes based on what we have
+  // If pattern exists, add it
   if (patternMatch) {
     classNames += ` bg-[url('${patternMatch[1]}')]`;
-  } 
-  // If no pattern but has gradient or solid background, add it
-  else if (!patternMatch && !colorMatch) {
-    classNames += ` ${backgroundStyle}`;
+  }
+  
+  // If not a custom color but has gradient or solid background, add it
+  if (!colorMatch && !backgroundStyle.includes('bg-[url')) {
+    // This handles gradients and Tailwind color classes
+    const nonPatternParts = backgroundStyle.split(' ').filter(part => !part.includes('bg-[url')).join(' ');
+    if (nonPatternParts) {
+      classNames += ` ${nonPatternParts}`;
+    }
+  } else if (!colorMatch) {
+    // Check if there are any non-pattern backgrounds to add
+    const nonPatternBgs = backgroundStyle
+      .split(' ')
+      .filter(part => !part.includes('bg-[url') && part.startsWith('bg-'))
+      .join(' ');
+    
+    if (nonPatternBgs) {
+      classNames += ` ${nonPatternBgs}`;
+    }
   }
 
   // Determine if this is a 2nd-degree connection

@@ -46,7 +46,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
     }
   };
 
-  // Handle selecting a preset background (gradient or solid color)
+  // Handle selecting a preset background (gradient, solid color or pattern)
   const selectPresetBackground = (bg: string) => {
     console.log("Setting background to:", bg);
     
@@ -54,19 +54,29 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
     const isPattern = bg.includes('bg-[url');
     
     if (isPattern) {
-      // Keep the pattern selection
+      // Setting a pattern - preserve existing color if present
       setCurrentPattern(bg);
       
-      // Keep the current color if one exists
+      // Check if there's already a color in the selection
       const colorMatch = selectedBackground.match(/bg-\[(#[0-9a-fA-F]+)\]/);
       if (colorMatch && colorMatch[1]) {
         onBackgroundChange(`bg-[${colorMatch[1]}] ${bg}`);
       } else {
-        onBackgroundChange(bg);
+        // If there's a gradient or solid color that's not a custom hex
+        const isGradientOrSolid = !selectedBackground.includes('bg-[url') && 
+                                 !selectedBackground.includes('bg-[#');
+        
+        if (isGradientOrSolid) {
+          // Keep the existing background style for gradient/solid and add pattern
+          onBackgroundChange(`${selectedBackground} ${bg}`);
+        } else {
+          onBackgroundChange(bg);
+        }
       }
-    } else {
-      // If selecting a gradient or solid color, remove any existing pattern
-      // But keep the current pattern if it exists
+    } else if (bg.includes('gradient') || solidColors.includes(bg)) {
+      // Setting a gradient or solid color - replace existing gradient/color but keep pattern
+      
+      // If there's already a pattern, combine with it
       if (currentPattern) {
         onBackgroundChange(`${bg} ${currentPattern}`);
       } else {
