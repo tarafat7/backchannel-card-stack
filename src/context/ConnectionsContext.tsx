@@ -21,7 +21,7 @@ export const ConnectionsProvider = ({ children }: { children: ReactNode }) => {
     const connectionWithDefaults: BusinessCard = {
       ...connection,
       // Explicitly cast the connectionDegree to the union type after checking
-      connectionDegree: connection.connectionDegree === 2 ? 2 : 1 as 1 | 2,
+      connectionDegree: (connection.connectionDegree === 2 ? 2 : 1) as 1 | 2,
       mutualConnections: connection.mutualConnections || [],
       phoneNumber: connection.phoneNumber || '4155551234'
     };

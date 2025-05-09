@@ -130,15 +130,22 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
+    // Make sure connectionDegree is properly typed
+    const typedCard: BusinessCard = {
+      ...card,
+      connectionDegree: (card.connectionDegree === 2 ? 2 : 1) as 1 | 2,
+      mutualConnections: card.mutualConnections || []
+    };
+
     // Update local state
     setProfile(prev => ({
       ...prev,
-      card
+      card: typedCard
     }));
     
     // Save to Supabase
     try {
-      await updateBusinessCardService(card);
+      await updateBusinessCardService(typedCard);
     } catch (error) {
       console.error("Failed to save business card:", error);
     }
