@@ -201,26 +201,18 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const addConnection = (connection: BusinessCard) => {
     console.log("Adding connection with data:", connection);
+
+    // Create a properly typed connection with the correct connection degree type
+    // First extract just the connectionDegree value
+    const degree: number = connection.connectionDegree;
     
-    // Create a properly typed connection object with all required fields
-    // The key fix: We need to ensure connectionDegree is explicitly of type 1 | 2
-    // First extract the connection object to use type assertion
-    let connectionDegreeValue: 1 | 2;
-    
-    // Check if connection.connectionDegree is exactly 1 or 2, otherwise default to 1
-    if (connection.connectionDegree === 1 || connection.connectionDegree === 2) {
-      connectionDegreeValue = connection.connectionDegree;
-    } else {
-      connectionDegreeValue = 1;
-    }
-    
+    // Now create a new connection object with the proper type explicitly assigned
     const connectionWithDefaults: BusinessCard = {
       ...connection,
-      // Use our properly typed connectionDegreeValue
-      connectionDegree: connectionDegreeValue,
+      // Ensure the connectionDegree is strictly typed as 1 | 2
+      connectionDegree: degree === 2 ? 2 : 1,
       mutualConnections: connection.mutualConnections || [],
-      // Use a real format phone number that works with iMessage - no dashes or parentheses
-      phoneNumber: connection.phoneNumber || '4155551234' 
+      phoneNumber: connection.phoneNumber || '4155551234'
     };
     
     console.log("Connection with defaults:", connectionWithDefaults);
