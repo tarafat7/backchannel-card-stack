@@ -35,25 +35,24 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
   // Prepare inline style based on background style
   const cardStyle: React.CSSProperties = {};
   
-  // Extract pattern if it exists
-  const patternMatch = backgroundStyle.match(/bg-\[url\('([^']+)'\)\]/);
-  const pattern = patternMatch ? patternMatch[0] : null;
-  
   // Extract custom color if it exists
   const colorMatch = backgroundStyle.match(/bg-\[(#[0-9a-fA-F]+)\]/);
   if (colorMatch && colorMatch[1]) {
     cardStyle.backgroundColor = colorMatch[1];
   }
-
+  
+  // Extract pattern if it exists
+  const patternMatch = backgroundStyle.match(/bg-\[url\('([^']+)'\)\]/);
+  
   // Generate class names
   let classNames = `business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`;
   
   // Add pattern class if it exists
-  if (pattern) {
-    classNames += ` ${pattern}`;
+  if (patternMatch) {
+    classNames += ` bg-[url('${patternMatch[1]}')]`;
   } 
-  // If no custom color and no pattern, add the full background style
-  else if (!colorMatch) {
+  // If no pattern but has gradient or solid background, add it
+  else if (!patternMatch && !colorMatch) {
     classNames += ` ${backgroundStyle}`;
   }
 

@@ -23,7 +23,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
     // Extract pattern if exists
     const patternMatch = selectedBackground.match(/bg-\[url\('([^']+)'\)\]/);
     if (patternMatch) {
-      setCurrentPattern(patternMatch[0]);
+      setCurrentPattern(`bg-[url('${patternMatch[1]}')]`);
     } else {
       setCurrentPattern(null);
     }
@@ -36,7 +36,7 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
 
   // Handle applying the custom color
   const applyCustomColor = () => {
-    // Create the proper background value with both color and pattern if applicable
+    // Create background value with both color and pattern if applicable
     const bgValue = customHexColor.startsWith('#') ? customHexColor : `#${customHexColor}`;
     
     if (currentPattern) {
@@ -46,14 +46,15 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
     }
   };
 
-  // Handle selecting a preset background
+  // Handle selecting a preset background (gradient or solid color)
   const selectPresetBackground = (bg: string) => {
     console.log("Setting background to:", bg);
     
     // Check if selecting a pattern
-    const patternMatch = bg.match(/bg-\[url\('([^']+)'\)\]/);
+    const isPattern = bg.includes('bg-[url');
     
-    if (patternMatch) {
+    if (isPattern) {
+      // Keep the pattern selection
       setCurrentPattern(bg);
       
       // Keep the current color if one exists
@@ -64,13 +65,13 @@ const BackgroundSelector = ({ selectedBackground, onBackgroundChange }: Backgrou
         onBackgroundChange(bg);
       }
     } else {
-      // If selecting a gradient or solid color, keep the pattern if exists
+      // If selecting a gradient or solid color, remove any existing pattern
+      // But keep the current pattern if it exists
       if (currentPattern) {
         onBackgroundChange(`${bg} ${currentPattern}`);
       } else {
         onBackgroundChange(bg);
       }
-      setCurrentPattern(null);
     }
   };
 
