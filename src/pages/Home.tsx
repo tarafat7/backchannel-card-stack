@@ -1,3 +1,4 @@
+
 import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import HomeHeader from '../components/home/HomeHeader';
@@ -15,12 +16,17 @@ const Home = () => {
   const { profile } = useAppContext();
   const [isAnimating, setIsAnimating] = useState(false);
   
-  // Check if coming from onboarding
+  // Check if coming from onboarding or if filter needs to be reset
   useEffect(() => {
     const fromOnboarding = location.state?.fromOnboarding;
+    const shouldResetFilter = location.state?.resetFilter;
+    
     if (fromOnboarding) {
       setIsAnimating(true);
-      // Reset the location state after using it
+    }
+    
+    // Reset the location state after using it
+    if (fromOnboarding || shouldResetFilter) {
       window.history.replaceState({}, document.title);
     }
   }, [location]);
@@ -35,6 +41,13 @@ const Home = () => {
     handleCardClick,
     handleClearSearch
   } = useConnections(navigate);
+  
+  // Reset filter to 'All' when coming from another page via home button
+  useEffect(() => {
+    if (location.state?.resetFilter) {
+      setActiveFilter('All');
+    }
+  }, [location.state, setActiveFilter]);
   
   const filters = ['All', 'Updates', 'Hiring', 'Investing', 'Building'];
 
