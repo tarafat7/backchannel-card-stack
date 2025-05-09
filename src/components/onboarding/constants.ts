@@ -1,65 +1,92 @@
-
-// This file contains constants used in the onboarding process
-
+// Expertise areas available for selection
 export const expertise = [
-  "Startup Advising",
-  "Fundraising",
-  "Product Strategy",
-  "Marketing",
-  "Engineering",
+  "AI",
+  "Advising",
+  "Brand",
+  "Community",
+  "Creative",
   "Design",
-  "Sales",
-  "Business Development",
-  "Operations",
-  "Hiring",
-  "Leadership",
-  "Scaling",
+  "Engineering",
   "Finance",
+  "Founding",
+  "Fundraising",
+  "Growth",
+  "Hiring",
+  "Investing",
   "Legal",
-  "Introductions",
-  "Investing"
+  "Marketing",
+  "Operations",
+  "Partnerships",
+  "Product",
+  "Sales",
+  "Strategy"
 ];
 
-export const backgrounds = [
-  "bg-gradient-to-br from-violet-500 to-purple-500",
-  "bg-gradient-to-r from-blue-400 to-emerald-400",
-  "bg-gradient-to-br from-rose-400 to-orange-300",
-  "bg-gradient-to-br from-slate-300 to-slate-500",
-  "bg-black",
-  "bg-white",
-  "bg-slate-800",
-  "bg-emerald-700"
-];
-
+// Background options for card design
 export const backgroundOptions = [
-  "bg-gradient-card-1",
-  "bg-gradient-card-2", 
-  "bg-gradient-card-3",
-  "bg-gradient-card-4",
-  "bg-gradient-card-5",
-  "bg-gradient-card-6",
-  "bg-gradient-card-7",
-  "bg-gradient-card-8"
+  // Gradients
+  "bg-gradient-to-br from-primary to-primary/60",
+  "bg-gradient-to-r from-blue-600 to-violet-600",
+  "bg-gradient-to-r from-rose-600 to-orange-600",
+  "bg-gradient-to-r from-emerald-500 to-teal-400",
+  "bg-gradient-to-r from-fuchsia-600 to-pink-600",
+  "bg-gradient-to-b from-gray-900 to-gray-700",
+  "bg-gradient-to-r from-amber-500 to-orange-500",
+  "bg-gradient-to-r from-cyan-500 to-blue-500",
+  
+  // Solid Colors
+  "bg-[#000000]",
+  "bg-[#0F172A]",
+  "bg-[#1E293B]",
+  "bg-[#1e1e1e]",
+  "bg-[#18181b]",
+  "bg-[#27272a]",
+  "bg-[#4338ca]",
+  "bg-[#0ea5e9]",
+  "bg-[#10b981]",
+  "bg-[#f59e0b]",
+  "bg-[#ef4444]",
+  "bg-[#6366f1]",
+  
+  // Patterns with colored backgrounds for visibility
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIi8+PC9zdmc+')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMCBMNTAgNTAgTTUwIDAgTDAgNTAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiLz48L3N2Zz4=')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE1IiBoZWlnaHQ9IjE1IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48cmVjdCB4PSIxNSIgeT0iMTUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIi8+PC9zdmc+')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMTAgQzUgNCAxNSA0IDIwIDEwIEMyNSAxNiAxNSAxNiAxMCAxMCBDNSA0IC01IDE2IDAgMTAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSIyMCwwIDQwLDIwIDIwLDQwIDAsMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMCBDMjAgMjAgNDAgLTIwIDYwIDYwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIi8+PC9zdmc+')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwIiBoZWlnaHQ9IjMwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMCBMMTAgMTAgTDAgMjAgTTEwIDEwIEwyMCAwIEwyMCAyMCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')]",
 ];
 
-export const solidColorBackgrounds = [
-  "bg-black",
-  "bg-white",
-  "bg-gray-800",
-  "bg-gray-500",
-  "bg-blue-600",
-  "bg-green-600",
-  "bg-red-600",
-  "bg-yellow-500",
-];
-
+// Explicitly separate pattern backgrounds for components that need them directly
 export const patternBackgrounds = [
-  "bg-[url('/patterns/pattern1.svg')] bg-cover",
-  "bg-[url('/patterns/pattern2.svg')] bg-cover",
-  "bg-[url('/patterns/pattern3.svg')] bg-cover",
-  "bg-[url('/patterns/pattern4.svg')] bg-cover",
-  "bg-[url('/patterns/pattern5.svg')] bg-cover",
-  "bg-[url('/patterns/pattern6.svg')] bg-cover",
-  "bg-[url('/patterns/pattern7.svg')] bg-cover",
-  "bg-[url('/patterns/pattern8.svg')] bg-cover",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIi8+PC9zdmc+')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMCBMNTAgNTAgTTUwIDAgTDAgNTAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiLz48L3N2Zz4=')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE1IiBoZWlnaHQ9IjE1IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48cmVjdCB4PSIxNSIgeT0iMTUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIi8+PC9zdmc+')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMTAgQzUgNCAxNSA0IDIwIDEwIEMyNSAxNiAxNSAxNiAxMCAxMCBDNSA0IC01IDE2IDAgMTAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSIyMCwwIDQwLDIwIDIwLDQwIDAsMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMCBDMjAgMjAgNDAgLTIwIDYwIDYwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIi8+PC9zdmc+')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwIiBoZWlnaHQ9IjMwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')]",
+  "bg-[#333] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMCBMMTAgMTAgTDAgMjAgTTEwIDEwIEwyMCAwIEwyMCAyMCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')]",
+];
+
+// Solid color options for direct access
+export const solidColorBackgrounds = [
+  "bg-[#000000]",
+  "bg-[#0F172A]",
+  "bg-[#1E293B]",
+  "bg-[#1e1e1e]",
+  "bg-[#18181b]",
+  "bg-[#27272a]",
+  "bg-[#4338ca]",
+  "bg-[#0ea5e9]",
+  "bg-[#10b981]",
+  "bg-[#f59e0b]",
+  "bg-[#ef4444]",
+  "bg-[#6366f1]",
 ];

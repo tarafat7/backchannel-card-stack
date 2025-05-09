@@ -5,59 +5,167 @@
 
 @layer base {
   :root {
-    /* Light mode */
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    /* Dark mode */
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
+    
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
+    
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
+    
+    --primary: 252 87% 67.5%;
+    --primary-foreground: 0 0% 98%;
+    
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
+    
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
+    
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
+    
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
+    
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    
+    --radius: 0.75rem;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border selection:bg-white/10 selection:text-white;
   }
   
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
+  
+  #root {
+    @apply min-h-screen w-full;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-secondary/50 backdrop-blur-xl border border-white/5 shadow-lg;
+  }
+  
+  .business-card {
+    @apply relative overflow-hidden rounded-xl transition-all duration-300 shadow-lg;
+  }
+
+  .social-icon-button {
+    @apply flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors;
+  }
+  
+  .chip {
+    @apply px-3 py-1 text-xs rounded-full bg-white/10 text-white/80 whitespace-nowrap;
+  }
+  
+  .chip-selected {
+    @apply bg-primary/30 text-primary-foreground border border-primary/50;
+  }
+  
+  .nav-button {
+    @apply flex items-center justify-center w-10 h-10 rounded-full bg-secondary hover:bg-secondary/80 transition-colors;
+  }
+  
+  .card-stack-wrapper {
+    @apply relative w-full h-full;
+    perspective: 1000px;
+  }
+  
+  .card-stack-item {
+    @apply absolute w-full transition-all duration-300;
+    transform-origin: top center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Enhanced card shadow for better depth effect */
+  .card-shadow {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6), 0 3px 15px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Wallet-style card shadow effect */
+  .wallet-card-shadow {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* No scrollbar for webkit browsers */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  /* Animation for the connection line */
+  @keyframes pulse-grow {
+    0% { transform: scaleX(0); opacity: 0.6; }
+    100% { transform: scaleX(1); opacity: 1; }
+  }
+  
+  .animate-pulse-grow {
+    animation: pulse-grow 1.5s ease-in-out infinite alternate;
+  }
+}
+
+/* Card Animations */
+.card-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.card-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.card-exit {
+  opacity: 1;
+}
+
+.card-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Apple Wallet style accordion animations */
+@keyframes card-expand {
+  from {
+    transform: translateY(var(--offset)) scale(0.95);
+  }
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes card-collapse {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(var(--offset)) scale(0.95);
+  }
+}
+
+.card-expanding {
+  animation: card-expand 0.3s forwards ease-out;
+}
+
+.card-collapsing {
+  animation: card-collapse 0.3s forwards ease-in;
 }

@@ -1,37 +1,51 @@
 
-import { useCallback } from 'react';
+/**
+ * A custom hook that provides haptic feedback functions
+ * using the browser's Vibration API when available
+ */
 
-interface HapticsResult {
-  lightHapticFeedback: () => void;
-  mediumHapticFeedback: () => void;
-  heavyHapticFeedback: () => void;
-}
+export const useHaptics = () => {
+  /**
+   * Check if the device supports haptic feedback via Vibration API
+   */
+  const hasVibrationSupport = (): boolean => {
+    return 'vibrate' in navigator;
+  };
 
-export const useHaptics = (): HapticsResult => {
-  // Check if the navigator has the vibrate API
-  const hasVibration = 'navigator' in window && 'vibrate' in navigator;
-  
-  const lightHapticFeedback = useCallback(() => {
-    if (hasVibration) {
-      navigator.vibrate(10);
+  /**
+   * Trigger a light haptic feedback (short vibration)
+   * Used for subtle interactions like scrolling past items
+   */
+  const lightHapticFeedback = (): void => {
+    if (hasVibrationSupport()) {
+      navigator.vibrate(10); // Short 10ms vibration
     }
-  }, [hasVibration]);
-  
-  const mediumHapticFeedback = useCallback(() => {
-    if (hasVibration) {
-      navigator.vibrate(20);
+  };
+
+  /**
+   * Trigger a medium haptic feedback
+   * Used for selections and confirmations
+   */
+  const mediumHapticFeedback = (): void => {
+    if (hasVibrationSupport()) {
+      navigator.vibrate(30); // Medium 30ms vibration
     }
-  }, [hasVibration]);
-  
-  const heavyHapticFeedback = useCallback(() => {
-    if (hasVibration) {
-      navigator.vibrate([30, 10, 30]);
+  };
+
+  /**
+   * Trigger a strong haptic feedback
+   * Used for important actions
+   */
+  const strongHapticFeedback = (): void => {
+    if (hasVibrationSupport()) {
+      navigator.vibrate([50, 30, 50]); // Pattern of vibrations
     }
-  }, [hasVibration]);
-  
+  };
+
   return {
+    hasVibrationSupport,
     lightHapticFeedback,
     mediumHapticFeedback,
-    heavyHapticFeedback
+    strongHapticFeedback
   };
 };
