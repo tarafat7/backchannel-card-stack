@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -203,11 +202,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const addConnection = (connection: BusinessCard) => {
     console.log("Adding connection with data:", connection);
     
-    // Create a proper typed connection object with all required fields
+    // Create a properly typed connection object with all required fields
+    // The key fix: We need to ensure connectionDegree is explicitly of type 1 | 2
+    // First extract the connection object to use type assertion
+    let connectionDegreeValue: 1 | 2;
+    
+    // Check if connection.connectionDegree is exactly 1 or 2, otherwise default to 1
+    if (connection.connectionDegree === 1 || connection.connectionDegree === 2) {
+      connectionDegreeValue = connection.connectionDegree;
+    } else {
+      connectionDegreeValue = 1;
+    }
+    
     const connectionWithDefaults: BusinessCard = {
       ...connection,
-      // Explicitly specify that we're using either the provided connectionDegree (if it's 1 or 2) or defaulting to 1
-      connectionDegree: (connection.connectionDegree === 2 ? 2 : 1) as 1 | 2,
+      // Use our properly typed connectionDegreeValue
+      connectionDegree: connectionDegreeValue,
       mutualConnections: connection.mutualConnections || [],
       // Use a real format phone number that works with iMessage - no dashes or parentheses
       phoneNumber: connection.phoneNumber || '4155551234' 
