@@ -13,6 +13,7 @@ interface BackgroundTabPanelProps {
   applyCustomColor: () => void;
   showColorPicker: boolean;
   setShowColorPicker: (show: boolean) => void;
+  isPatternTab?: boolean; // Add this prop to identify pattern tabs
 }
 
 const BackgroundTabPanel: React.FC<BackgroundTabPanelProps> = ({
@@ -24,7 +25,8 @@ const BackgroundTabPanel: React.FC<BackgroundTabPanelProps> = ({
   handleColorPickerChange,
   applyCustomColor,
   showColorPicker,
-  setShowColorPicker
+  setShowColorPicker,
+  isPatternTab = false
 }) => {
   return (
     <div className="space-y-4">
@@ -32,6 +34,7 @@ const BackgroundTabPanel: React.FC<BackgroundTabPanelProps> = ({
         options={options}
         selectedBackground={selectedBackground}
         selectPresetBackground={selectPresetBackground}
+        isPatternGrid={isPatternTab} // Pass the flag to identify pattern grids
       />
       
       <ColorPicker 
