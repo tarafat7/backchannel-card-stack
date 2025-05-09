@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +12,7 @@ import ViewCard from "./pages/ViewCard";
 import ConnectionRequests from "./pages/ConnectionRequests";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
+import AccountSettings from "./pages/AccountSettings";
 import { AppProvider, useAppContext } from "./context/AppContext";
 
 const queryClient = new QueryClient();
@@ -68,24 +68,40 @@ const AppRoutes = () => {
         } 
       />
       <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route 
+        path="/account/settings" 
+        element={
+          <ProtectedRoute>
+            <AccountSettings />
+          </ProtectedRoute>
+        } 
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AppProvider>
-      <TooltipProvider>
-        {/* Keep toast providers for other parts of the app but don't use them in our refactored components */}
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </TooltipProvider>
-    </AppProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Initialize theme from localStorage or default to dark
+  React.useEffect(() => {
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppProvider>
+        <TooltipProvider>
+          {/* Keep toast providers for other parts of the app but don't use them in our refactored components */}
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </TooltipProvider>
+      </AppProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
