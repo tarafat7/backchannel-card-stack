@@ -8,7 +8,7 @@ import { useHaptics } from './useHaptics';
 export const useViewCard = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { connections } = useAppContext();
+  const { connections, sendConnectionRequest } = useAppContext();
   const [introDialogOpen, setIntroDialogOpen] = useState(false);
   const [selectedMutualConnection, setSelectedMutualConnection] = useState<string | null>(null);
   const { mediumHapticFeedback } = useHaptics();
@@ -35,6 +35,11 @@ export const useViewCard = () => {
     setSelectedMutualConnection(mutualConnectionName);
     setIntroDialogOpen(true);
   };
+  
+  const handleAddConnection = (cardToAdd: BusinessCard, fromCard: BusinessCard) => {
+    mediumHapticFeedback();
+    sendConnectionRequest(cardToAdd.id, fromCard);
+  };
 
   const goBack = () => navigate(-1);
   
@@ -46,6 +51,7 @@ export const useViewCard = () => {
     setIntroDialogOpen,
     selectedMutualConnection,
     handleRequestIntro,
+    handleAddConnection,
     goBack
   };
 };

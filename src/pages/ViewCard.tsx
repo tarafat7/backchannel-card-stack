@@ -10,17 +10,22 @@ import { useViewCard } from '@/hooks/useViewCard';
 import MutualConnectionsList from '@/components/connections/MutualConnectionsList';
 import SecondDegreeConnectionBadge from '@/components/connections/SecondDegreeConnectionBadge';
 import { toast } from "@/hooks/use-toast";
+import { useAppContext } from '@/context/AppContext';
 
 const ViewCard = () => {
   const {
     card,
     isDirectConnection,
+    isConnected,
     introDialogOpen,
     setIntroDialogOpen,
     selectedMutualConnection,
     handleRequestIntro,
+    handleAddConnection,
     goBack
   } = useViewCard();
+  
+  const { profile } = useAppContext();
   
   if (!card) {
     return (
@@ -89,6 +94,24 @@ const ViewCard = () => {
     }
   };
   
+  // Handle adding this person to connections
+  const handleAddToConnections = () => {
+    if (!profile.card) {
+      toast({
+        title: "Complete your profile",
+        description: "You need to create your card before connecting",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    handleAddConnection(card, profile.card);
+    toast({
+      title: "Connection request sent",
+      description: `Request sent to ${card.name}`
+    });
+  };
+  
   return (
     <>
       <div className="min-h-screen bg-background flex flex-col pb-20">
@@ -108,6 +131,18 @@ const ViewCard = () => {
         {!isDirectConnection && <SecondDegreeConnectionBadge />}
 
         <FullBusinessCard card={card} />
+
+        {/* Add to connections button - only show if not already connected */}
+        {!isConnected && !isDirectConnection && (
+          <div className="px-4 my-2">
+            <Button 
+              className="w-full"
+              onClick={handleAddToConnections}
+            >
+              Add {card.name.split(' ')[0]} to connections
+            </Button>
+          </div>
+        )}
 
         {/* Professional Experience section - always visible for all connections */}
         <div className="px-6 py-4">

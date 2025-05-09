@@ -10,7 +10,7 @@ type ConnectionsGridProps = {
   showAddButton?: boolean;
 };
 
-const ConnectionsGrid = ({ connections, viewMode, onCardClick, showAddButton }: ConnectionsGridProps) => {
+const ConnectionsGrid = ({ connections, viewMode, onCardClick, showAddButton = false }: ConnectionsGridProps) => {
   const { mediumHapticFeedback } = useHaptics();
   const { profile, sendConnectionRequest } = useAppContext();
   

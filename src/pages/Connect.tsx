@@ -8,31 +8,67 @@ import BottomNav from '../components/BottomNav';
 import { useAppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
+import BusinessCardComponent from '@/components/BusinessCard';
+import { useHaptics } from '@/hooks/useHaptics';
 
 const Connect = () => {
-  const { profile } = useAppContext();
+  const { profile, sendConnectionRequest } = useAppContext();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'share' | 'scan'>('share');
   const [scanSuccess, setScanSuccess] = useState(false);
   const [meetingNote, setMeetingNote] = useState('');
+  const { mediumHapticFeedback } = useHaptics();
   
   // Generate a shareable QR code that contains the user's profile ID
   const qrValue = `https://backchannel.app/connect/${profile.card?.id || 'user1'}`;
   
+  // Sample scanned user data
+  const scannedUser = {
+    id: 'scanned-user-1',
+    name: 'Riley Johnson',
+    title: 'Product Manager',
+    company: 'Stripe',
+    avatar: '/lovable-uploads/616f61db-76fc-4df2-b8ac-403e36a20ee4.png',
+    expertiseAreas: ['Product Strategy', 'SaaS', 'Payments'],
+    links: [
+      { type: 'linkedin', url: 'https://linkedin.com/in/riley-johnson' },
+      { type: 'twitter', url: 'https://twitter.com/riley_j' }
+    ],
+    status: 'Hiring for product roles!',
+    design: {
+      backgroundStyle: 'bg-gradient-to-br from-indigo-500 to-purple-500',
+      textColor: 'text-white',
+    },
+    connectionDegree: 2,
+    mutualConnections: ['Jordan Lee', 'Taylor Smith']
+  };
+  
   const handleScan = () => {
-    // Simulate successful scan
+    // Simulate successful scan with haptic feedback
+    mediumHapticFeedback();
     setScanSuccess(true);
-    
-    // In a real app, you would process the scanned QR code here
   };
   
   const handleConnect = () => {
-    // Simulate connection success
-    toast({
-      title: "Connection successful!",
-      description: "You've connected with Riley Johnson",
-    });
+    // Send connection request if we have a profile card
+    if (profile.card) {
+      mediumHapticFeedback();
+      sendConnectionRequest(scannedUser.id, profile.card);
+      
+      // Show toast notification
+      toast({
+        title: "Connection request sent!",
+        description: `You've sent a request to connect with ${scannedUser.name}`,
+      });
+    } else {
+      toast({
+        title: "Unable to send request",
+        description: "Please complete your profile first",
+        variant: "destructive"
+      });
+    }
     
+    // Navigate back to home
     navigate('/home');
   };
 
@@ -133,17 +169,10 @@ const Connect = () => {
                 </Button>
               </>
             ) : (
-              <div className="w-full mt-4">
-                <div className="flex items-center justify-center mb-8">
-                  <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center">
-                    <Check className="w-10 h-10 text-primary" />
-                  </div>
+              <div className="w-full mt-2">
+                <div className="mb-3">
+                  <BusinessCardComponent card={scannedUser} onClick={() => {}} />
                 </div>
-                
-                <h2 className="text-lg font-semibold mb-2 text-center">Scanned Successfully!</h2>
-                <p className="text-center text-muted-foreground mb-6">
-                  You're about to connect with Riley from Stripe
-                </p>
                 
                 <div className="mb-6">
                   <label className="text-sm font-medium mb-2 block">Add a note about how you met</label>
@@ -159,7 +188,7 @@ const Connect = () => {
                   className="w-full"
                   onClick={handleConnect}
                 >
-                  Connect
+                  Add {scannedUser.name.split(' ')[0]} to connections
                 </Button>
               </div>
             )}
