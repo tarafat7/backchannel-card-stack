@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface StatusInputProps {
   status: string;
@@ -9,7 +9,7 @@ interface StatusInputProps {
 }
 
 const StatusInput: React.FC<StatusInputProps> = ({ status, onStatusChange, maxLength }) => {
-  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     if (value.length <= maxLength) {
       onStatusChange(value);
@@ -19,11 +19,11 @@ const StatusInput: React.FC<StatusInputProps> = ({ status, onStatusChange, maxLe
   return (
     <div>
       <label className="text-sm font-medium mb-2 block">What do you need right now?</label>
-      <Input 
-        value={status}
-        onChange={handleStatusChange}
+      <Textarea 
+        value={status} 
+        onChange={handleChange} 
         placeholder="E.g., Looking for a product designer..."
-        className="bg-secondary/50 backdrop-blur-sm border border-white/10"
+        className="bg-secondary/50 backdrop-blur-sm border border-white/10 resize-none"
         maxLength={maxLength}
       />
       <div className="text-xs text-muted-foreground mt-1">
