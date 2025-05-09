@@ -202,15 +202,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const addConnection = (connection: BusinessCard) => {
     console.log("Adding connection with data:", connection);
 
-    // Create a properly typed connection with the correct connection degree type
-    // First extract just the connectionDegree value
-    const degree: number = connection.connectionDegree;
-    
-    // Now create a new connection object with the proper type explicitly assigned
+    // The critical fix: we need to make sure connectionDegree is strictly typed as 1 | 2
+    // Create a properly typed connection with explicit type assertion
     const connectionWithDefaults: BusinessCard = {
       ...connection,
-      // Ensure the connectionDegree is strictly typed as 1 | 2
-      connectionDegree: degree === 2 ? 2 : 1,
+      // Explicitly cast the connectionDegree to the union type after checking
+      connectionDegree: connection.connectionDegree === 2 ? 2 : 1 as 1 | 2,
       mutualConnections: connection.mutualConnections || [],
       phoneNumber: connection.phoneNumber || '4155551234'
     };
