@@ -10,6 +10,7 @@ export const useOnboardingSteps = () => {
     setFormData,
     setShowCompletionAnimation,
     updateBusinessCardPreview,
+    previewCard,
   } = useOnboarding();
   
   const { updateProfile, updateBusinessCard } = useAppContext();
@@ -47,6 +48,13 @@ export const useOnboardingSteps = () => {
   const handleComplete = () => {
     // Ensure final business card is updated before completion
     updateBusinessCardPreview();
+    
+    // Save final card data to the database
+    if (previewCard) {
+      console.log("Saving final card to database:", previewCard);
+      updateBusinessCard(previewCard);
+    }
+    
     // Show completion animation
     setShowCompletionAnimation(true);
   };

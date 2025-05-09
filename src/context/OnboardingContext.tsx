@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { useAppContext } from './AppContext';
 import { BusinessCard, Experience } from '@/types';
@@ -129,6 +128,7 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
     setPreviewCard(cardPreview);
     
     if (onboardingStep >= 3) {
+      console.log("Saving interim card data:", cardPreview);
       updateBusinessCard(cardPreview);
     }
   };

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from '@/components/ui/use-toast';
 
 interface OnboardingCompleteProps {
   onAnimationComplete: () => void;
@@ -15,6 +16,13 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
     // After animation completes, navigate to home
     const timer = setTimeout(() => {
       onAnimationComplete();
+      
+      // Show success toast
+      toast({
+        title: "Profile created successfully!",
+        description: "Your business card has been saved.",
+      });
+      
       // Pass state to indicate we're coming from onboarding
       navigate('/home', { state: { fromOnboarding: true } });
     }, 2000);
