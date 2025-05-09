@@ -1,7 +1,7 @@
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { BusinessCard, useAppContext } from '../context/AppContext';
+import { BusinessCard, useAppContext } from '@/context/AppContext';
 import { sampleConnections, sampleSecondDegreeConnections } from '@/data/connectionData';
 import { useHaptics } from './useHaptics';
 

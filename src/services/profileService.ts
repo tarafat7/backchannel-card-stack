@@ -1,7 +1,6 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import type { Experience, UserProfile, BusinessCard } from '@/context/AppContext';
+import type { Experience, UserProfile, BusinessCard } from '@/types';
 
 // Profile functions
 export async function getProfile() {
