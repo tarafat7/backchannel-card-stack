@@ -105,6 +105,8 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
       exp.title && exp.company && exp.years
     );
 
+    console.log("Valid experiences for card:", validExperiences.length, validExperiences);
+
     // Create a preview card with current data
     const cardPreview: BusinessCard = {
       id: profile.card?.id || '1',
@@ -113,7 +115,7 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
       company: formData.company || 'Your Company',
       avatar: formData.avatar,
       expertiseAreas: selectedExpertise,
-      links: links,
+      links: links.filter(link => link.type && link.url), // Only include links with both type and URL
       status: status,
       design: {
         backgroundStyle: selectedBackground,

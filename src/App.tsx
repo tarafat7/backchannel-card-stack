@@ -44,6 +44,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 // Main Routes component that has access to context
 const AppRoutes = () => {
   const { user } = useAuth();
+  const { profile } = useAppContext();
+  
+  console.log("Current auth state:", { isAuthenticated: !!user, hasProfile: !!profile?.card });
   
   return (
     <Routes>
