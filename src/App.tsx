@@ -45,7 +45,8 @@ const AppRoutes = () => {
   
   return (
     <Routes>
-      <Route path="/" element={<Onboarding />} />
+      {/* If user is already authenticated, redirect to home */}
+      <Route path="/" element={user ? <Navigate to="/home" replace /> : <Onboarding />} />
       <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/connect" element={<ProtectedRoute><Connect /></ProtectedRoute>} />

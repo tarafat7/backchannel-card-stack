@@ -12,7 +12,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onContinue }) => {
   const [animationComplete, setAnimationComplete] = useState(false);
 
   useEffect(() => {
-    // Auto-continue animation without auto-continuing to next step
+    // Auto-complete animation without auto-continuing to next step
     const timer = setTimeout(() => {
       setAnimationComplete(true);
     }, 2000);
