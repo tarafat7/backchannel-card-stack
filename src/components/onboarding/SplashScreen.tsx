@@ -43,7 +43,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onContinue }) => {
             onClick={onContinue}
             className="px-8 py-6 text-lg w-64 bg-primary text-white"
           >
-            Create an Account
+            Get Started
           </Button>
         </motion.div>
       </motion.div>

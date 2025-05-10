@@ -61,24 +61,30 @@ export const useOnboardingSteps = () => {
     setShowCompletionAnimation(false);
     
     try {
-      // If we have email (phone) and password, sign up the user
+      // Generate a more secure random password if not provided during onboarding
+      if (!password) {
+        const randomPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).toUpperCase().slice(-2);
+        setPassword(randomPassword);
+      }
+      
+      // If we have phone number and password, sign up the user
       if (formData.phoneNumber && password) {
-        console.log("Attempting to sign up user with phone:", formData.phoneNumber);
+        console.log("Automatically signing up user with phone:", formData.phoneNumber);
         
         const result = await signUp(formData.phoneNumber, password, formData.name);
-        console.log("Sign up result:", result);
+        console.log("Auto sign up result:", result);
         
         // Save the business card data
         if (previewCard) {
-          console.log("Saving business card data:", previewCard);
+          console.log("Saving business card data after auto-signup:", previewCard);
           await updateBusinessCard(previewCard);
           console.log("Business card data saved successfully");
         }
       } else {
-        console.error("Missing phone number or password for signup");
+        console.error("Missing phone number for automatic signup");
       }
     } catch (err) {
-      console.error("Failed to sign up user:", err);
+      console.error("Failed to automatically sign up user:", err);
     }
   };
 
