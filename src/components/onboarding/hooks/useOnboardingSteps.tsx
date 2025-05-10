@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useOnboarding } from '../../../context/OnboardingContext';
 import { useAppContext } from '../../../context/AppContext';
 import { useAuth } from '@/hooks/useAuth';
-import { toast } from '@/components/ui/use-toast';
 
 export const useOnboardingSteps = () => {
   const { 
@@ -73,21 +72,13 @@ export const useOnboardingSteps = () => {
         if (previewCard) {
           console.log("Saving business card data:", previewCard);
           await updateBusinessCard(previewCard);
-          toast({
-            title: "Profile saved",
-            description: "Your profile and business card have been saved successfully",
-          });
+          console.log("Business card data saved successfully");
         }
       } else {
         console.error("Missing phone number or password for signup");
       }
     } catch (err) {
       console.error("Failed to sign up user:", err);
-      toast({
-        title: "Error",
-        description: "Failed to create your account. Please try again.",
-        variant: "destructive"
-      });
     }
   };
 

@@ -2,7 +2,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
 
 interface AuthContextType {
   session: Session | null;
@@ -19,7 +18,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -60,19 +58,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       console.log("Sign up successful:", data);
       
-      toast({
-        title: "Account created",
-        description: "Your account has been created successfully",
-      });
-      
       return data;
     } catch (error: any) {
       console.error("Sign up error:", error.message);
-      toast({
-        title: "Error creating account",
-        description: error.message,
-        variant: "destructive"
-      });
       throw error;
     } finally {
       setLoading(false);
@@ -94,11 +82,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
     } catch (error: any) {
       console.error("Sign in error:", error.message);
-      toast({
-        title: "Error signing in",
-        description: error.message,
-        variant: "destructive"
-      });
       throw error;
     } finally {
       setLoading(false);
@@ -111,11 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
     } catch (error: any) {
-      toast({
-        title: "Error signing out",
-        description: error.message,
-        variant: "destructive"
-      });
+      console.error("Sign out error:", error.message);
     } finally {
       setLoading(false);
     }

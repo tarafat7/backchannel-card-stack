@@ -21,12 +21,12 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
       // First call the animation complete handler which will handle signup and data saving
       onAnimationComplete();
       
-      // Add a small delay to make sure auth state is updated before navigation
+      // Add a larger delay to make sure auth state is updated before navigation
       setTimeout(() => {
         // Navigate to home and don't go through login
         console.log("Final timer complete, navigating to home");
         navigate('/home', { replace: true });
-      }, 1000);
+      }, 2000);
       
     }, 2000);
     
