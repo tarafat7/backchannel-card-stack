@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useOnboarding } from '../../../context/OnboardingContext';
 import { useAppContext } from '../../../context/AppContext';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from '@/components/ui/use-toast';
 
 export const useOnboardingSteps = () => {
   const { 
@@ -65,14 +66,28 @@ export const useOnboardingSteps = () => {
       if (formData.phoneNumber && password) {
         console.log("Attempting to sign up user with phone:", formData.phoneNumber);
         
-        await signUp(formData.phoneNumber, password, formData.name);
+        const result = await signUp(formData.phoneNumber, password, formData.name);
+        console.log("Sign up result:", result);
         
-        // Once signed up, the auth state will change and the card will be saved
-        // in the App.tsx component when it detects a new user
-        console.log("User signed up successfully, card will be saved automatically");
+        // Save the business card data
+        if (previewCard) {
+          console.log("Saving business card data:", previewCard);
+          await updateBusinessCard(previewCard);
+          toast({
+            title: "Profile saved",
+            description: "Your profile and business card have been saved successfully",
+          });
+        }
+      } else {
+        console.error("Missing phone number or password for signup");
       }
     } catch (err) {
       console.error("Failed to sign up user:", err);
+      toast({
+        title: "Error",
+        description: "Failed to create your account. Please try again.",
+        variant: "destructive"
+      });
     }
   };
 

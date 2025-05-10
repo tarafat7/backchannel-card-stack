@@ -16,14 +16,17 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
   useEffect(() => {
     console.log("OnboardingComplete rendering, checking auth status:", !!user);
     
-    // After animation completes, go directly to home
+    // After animation completes, wait for auth to complete
     const timer = setTimeout(() => {
       // First call the animation complete handler
       onAnimationComplete();
       
-      // Force navigate to home and don't go through login
-      console.log("Timer complete, navigating to home");
-      navigate('/home', { replace: true });
+      // Add a small delay to make sure auth state is updated
+      setTimeout(() => {
+        // Navigate to home and don't go through login
+        console.log("Timer complete, navigating to home");
+        navigate('/home', { replace: true });
+      }, 500);
       
     }, 2000);
     

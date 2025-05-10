@@ -7,7 +7,7 @@ import { useToast } from '@/components/ui/use-toast';
 interface AuthContextType {
   session: Session | null;
   user: User | null;
-  signUp: (email: string, password: string, name: string) => Promise<void>;
+  signUp: (email: string, password: string, name: string) => Promise<any>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   loading: boolean;
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
-        console.log("Auth state changed:", event, !!newSession);
+        console.log("Auth state changed:", event, newSession?.user?.id);
         setSession(newSession);
         setUser(newSession?.user ?? null);
       }
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      console.log("Initial session check:", !!currentSession);
+      console.log("Initial session check:", currentSession?.user?.id);
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       setLoading(false);
@@ -64,6 +64,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         title: "Account created",
         description: "Your account has been created successfully",
       });
+      
+      return data;
     } catch (error: any) {
       console.error("Sign up error:", error.message);
       toast({
