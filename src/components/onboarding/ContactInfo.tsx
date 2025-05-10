@@ -15,7 +15,6 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ onContinue }) => {
   const { profile, updateBusinessCard } = useAppContext();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
   const formatPhoneNumber = (value: string) => {
@@ -47,11 +46,6 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ onContinue }) => {
     
     if (password.length < 6) {
       setError('Password must be at least 6 characters');
-      return;
-    }
-    
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
       return;
     }
     
@@ -107,16 +101,6 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ onContinue }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="h-12 text-lg"
-            required
-          />
-          
-          <Input 
-            id="confirmPassword"
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="h-12 text-lg mt-2"
             required
           />
           

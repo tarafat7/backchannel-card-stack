@@ -16,19 +16,15 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
   useEffect(() => {
     console.log("OnboardingComplete rendering, checking auth status:", !!user);
     
-    // After animation completes, handle navigation properly
+    // After animation completes, go directly to home
     const timer = setTimeout(() => {
       // First call the animation complete handler
       onAnimationComplete();
       
-      // Make sure we're not redirecting before auth state has time to update
-      setTimeout(() => {
-        console.log("Timer complete, navigating to home");
-        
-        // Force navigate to home regardless of auth state at this point
-        // The ProtectedRoute component will handle redirection if needed
-        navigate('/home', { replace: true });
-      }, 500);
+      // Force navigate to home and don't go through login
+      console.log("Timer complete, navigating to home");
+      navigate('/home', { replace: true });
+      
     }, 2000);
     
     return () => clearTimeout(timer);

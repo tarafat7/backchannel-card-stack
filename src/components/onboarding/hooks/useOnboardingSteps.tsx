@@ -63,6 +63,8 @@ export const useOnboardingSteps = () => {
     try {
       // If we have email (phone) and password, sign up the user
       if (formData.phoneNumber && password) {
+        console.log("Attempting to sign up user with phone:", formData.phoneNumber);
+        
         await signUp(formData.phoneNumber, password, formData.name);
         
         // Once signed up, the auth state will change and the card will be saved

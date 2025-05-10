@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
+        console.log("Auth state changed:", event, !!newSession);
         setSession(newSession);
         setUser(newSession?.user ?? null);
       }
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      console.log("Initial session check:", !!currentSession);
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       setLoading(false);
@@ -43,7 +45,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signUp = async (email: string, password: string, name: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signUp({
+      console.log("Signing up with:", email);
+      const { error, data } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -54,11 +57,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) throw error;
+      
+      console.log("Sign up successful:", data);
+      
       toast({
         title: "Account created",
-        description: "Please verify your email address to continue",
+        description: "Your account has been created successfully",
       });
     } catch (error: any) {
+      console.error("Sign up error:", error.message);
       toast({
         title: "Error creating account",
         description: error.message,
@@ -73,13 +80,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({
+      console.log("Signing in with:", email);
+      const { error, data } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) throw error;
+      
+      console.log("Sign in successful:", data);
+      
     } catch (error: any) {
+      console.error("Sign in error:", error.message);
       toast({
         title: "Error signing in",
         description: error.message,
