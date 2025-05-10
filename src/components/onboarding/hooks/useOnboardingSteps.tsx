@@ -42,7 +42,7 @@ export const useOnboardingSteps = () => {
     setOnboardingStep(6);
   };
 
-  const handleComplete = async () => {
+  const handleComplete = () => {
     // Ensure final business card is updated before completion
     updateBusinessCardPreview();
     
@@ -51,8 +51,6 @@ export const useOnboardingSteps = () => {
   };
   
   const handleAnimationComplete = async () => {
-    setShowCompletionAnimation(false);
-    
     try {
       // Sign up the user with their provided credentials
       if (formData.phoneNumber && password) {
@@ -65,8 +63,13 @@ export const useOnboardingSteps = () => {
         console.log("Saving business card data:", previewCard);
         await updateBusinessCard(previewCard);
       }
+      
+      // Hide the animation when complete
+      setShowCompletionAnimation(false);
     } catch (err) {
       console.error("Failed to save user data:", err);
+      // Still hide animation even if there's an error
+      setShowCompletionAnimation(false);
     }
   };
 

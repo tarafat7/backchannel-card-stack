@@ -20,7 +20,7 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
     const timer = setTimeout(() => {
       // Navigate to home and replace the history entry
       navigate('/home', { replace: true });
-    }, 2000);
+    }, 3000); // Increased to 3 seconds to ensure data saving completes
     
     return () => clearTimeout(timer);
   }, [navigate, onAnimationComplete]);
