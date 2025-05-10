@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useOnboarding } from '../../../context/OnboardingContext';
 import { useAppContext } from '../../../context/AppContext';
@@ -48,7 +47,7 @@ export const useOnboardingSteps = () => {
     setOnboardingStep(6);
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     // Ensure final business card is updated before completion
     updateBusinessCardPreview();
     
@@ -59,11 +58,15 @@ export const useOnboardingSteps = () => {
       if (user) {
         console.log("User is authenticated, saving card for user:", user.id);
         
-        // Fix: Don't use .then() directly since updateBusinessCard might return void
-        // Instead, wrap in a try/catch block
+        // Use async/await for better error handling
         try {
-          updateBusinessCard(previewCard);
+          // Make sure this is awaited to catch any errors
+          await updateBusinessCard(previewCard);
           console.log("Business card saved successfully");
+          toast({
+            title: "Card saved",
+            description: "Your business card has been saved successfully.",
+          });
         } catch (err) {
           console.error("Failed to save business card:", err);
           toast({
@@ -74,6 +77,10 @@ export const useOnboardingSteps = () => {
         }
       } else {
         console.log("User is not authenticated, card will be saved locally only");
+        toast({
+          title: "Card created",
+          description: "Sign in to save your business card permanently.",
+        });
         // Still proceed with the animation even if we can't save to database yet
       }
     }
@@ -84,8 +91,9 @@ export const useOnboardingSteps = () => {
   
   const handleAnimationComplete = () => {
     setShowCompletionAnimation(false);
-    // Reset onboarding step to 0 to prevent going back to onboarding
-    setOnboardingStep(0);
+    // Don't reset onboarding step to 0, instead keep whatever step we're at
+    // This prevents redirecting back to the start
+    console.log("Animation complete, onboarding step remains unchanged");
   };
 
   return {

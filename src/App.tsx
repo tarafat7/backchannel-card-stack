@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -42,6 +43,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 // Main Routes component that has access to context
 const AppRoutes = () => {
+  const { user } = useAuth();
+  
   return (
     <Routes>
       <Route path="/" element={<Onboarding />} />

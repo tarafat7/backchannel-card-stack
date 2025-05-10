@@ -15,24 +15,19 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
   const { user } = useAuth();
   
   useEffect(() => {
+    console.log("OnboardingComplete rendering, will redirect to /home soon");
+    
     // After animation completes, navigate to home
     const timer = setTimeout(() => {
       onAnimationComplete();
-      
-      // Show success toast
-      toast({
-        title: "Profile created successfully!",
-        description: user 
-          ? "Your business card has been saved." 
-          : "To save your card permanently, please create an account after redirecting.",
-      });
+      console.log("Timer complete, navigating to /home");
       
       // Pass state to indicate we're coming from onboarding
-      navigate('/home', { state: { fromOnboarding: true } });
+      navigate('/home', { state: { fromOnboarding: true }, replace: true });
     }, 2000);
     
     return () => clearTimeout(timer);
-  }, [navigate, onAnimationComplete, user]);
+  }, [navigate, onAnimationComplete]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm">
