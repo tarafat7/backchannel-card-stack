@@ -55,7 +55,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onContinue }) => {
           <Button 
             onClick={handleLogin}
             variant="outline"
-            className="px-8 py-6 text-lg w-64 bg-white"
+            className="px-8 py-6 text-lg w-64 bg-accent hover:bg-accent"
           >
             Login to Existing Account
           </Button>
