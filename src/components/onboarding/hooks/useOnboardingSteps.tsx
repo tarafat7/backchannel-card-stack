@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useOnboarding } from '../../../context/OnboardingContext';
 import { useAppContext } from '../../../context/AppContext';
@@ -14,7 +15,8 @@ export const useOnboardingSteps = () => {
   } = useOnboarding();
   
   const { updateProfile, updateBusinessCard } = useAppContext();
-  const { user } = useAuth();
+  const { user, signUp } = useAuth();
+  const [password, setPassword] = useState("");
 
   const handleBasicInfoComplete = (data: {name: string, title: string, company: string}) => {
     setFormData(prev => ({ ...prev, ...data }));
@@ -34,8 +36,9 @@ export const useOnboardingSteps = () => {
     setOnboardingStep(3);
   };
   
-  const handleContactInfoComplete = (phoneNumber: string) => {
+  const handleContactInfoComplete = (phoneNumber: string, userPassword: string) => {
     setFormData(prev => ({ ...prev, phoneNumber }));
+    setPassword(userPassword); // Store password for signup later
     setOnboardingStep(4);
   };
 
@@ -50,31 +53,25 @@ export const useOnboardingSteps = () => {
     // Ensure final business card is updated before completion
     updateBusinessCardPreview();
     
-    // If user is authenticated, try to save the card to the database
-    // If not authenticated, we'll save it after they create an account
-    if (user && previewCard) {
-      console.log("User is authenticated, saving card for user:", user.id);
-      
-      try {
-        await updateBusinessCard(previewCard);
-        console.log("Business card saved successfully");
-      } catch (err) {
-        console.error("Failed to save business card:", err);
-      }
-    } else {
-      console.log("User is not authenticated, card will be saved after signup/login");
-      // The card data is already in context, we'll save it after authentication
-    }
-    
-    // Show completion animation regardless of authentication state
+    // Show completion animation 
     setShowCompletionAnimation(true);
   };
   
-  const handleAnimationComplete = () => {
+  const handleAnimationComplete = async () => {
     setShowCompletionAnimation(false);
-    // Don't reset onboarding step to 0, instead keep whatever step we're at
-    // This prevents redirecting back to the start
-    console.log("Animation complete, onboarding step remains unchanged");
+    
+    try {
+      // If we have email (phone) and password, sign up the user
+      if (formData.phoneNumber && password) {
+        await signUp(formData.phoneNumber, password, formData.name);
+        
+        // Once signed up, the auth state will change and the card will be saved
+        // in the App.tsx component when it detects a new user
+        console.log("User signed up successfully, card will be saved automatically");
+      }
+    } catch (err) {
+      console.error("Failed to sign up user:", err);
+    }
   };
 
   return {

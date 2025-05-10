@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
@@ -20,18 +21,9 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
       // First call the animation complete handler
       onAnimationComplete();
       
-      console.log("Timer complete, navigating to appropriate page");
+      console.log("Timer complete, navigating to home");
+      navigate('/home', { replace: true });
       
-      // If user is already authenticated, go to home
-      // Otherwise go to a sign-up page (which we need to create)
-      if (user) {
-        console.log("User is authenticated, going to home");
-        navigate('/home', { replace: true });
-      } else {
-        console.log("User is not authenticated, going to sign-up page");
-        // We'll create this page to allow users to sign up and save their profile
-        navigate('/signup', { state: { fromOnboarding: true }, replace: true });
-      }
     }, 2000);
     
     return () => clearTimeout(timer);

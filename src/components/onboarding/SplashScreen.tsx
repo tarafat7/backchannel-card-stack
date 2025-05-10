@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 import OnboardingLogo from './OnboardingLogo';
+import { useNavigate } from 'react-router-dom';
 
 interface SplashScreenProps {
   onContinue: () => void;
@@ -10,15 +11,20 @@ interface SplashScreenProps {
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onContinue }) => {
   const [animationComplete, setAnimationComplete] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Auto-continue after animation delay
+    // Auto-continue animation without auto-continuing to next step
     const timer = setTimeout(() => {
       setAnimationComplete(true);
     }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -37,13 +43,21 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onContinue }) => {
             y: animationComplete ? 0 : 20
           }}
           transition={{ delay: 1.2, duration: 0.6 }}
-          className="mt-8"
+          className="mt-8 space-y-4 w-full flex flex-col items-center"
         >
           <Button 
             onClick={onContinue}
-            className="px-8 py-6 text-lg"
+            className="px-8 py-6 text-lg w-64 bg-primary text-white"
           >
-            Get Started
+            Create an Account
+          </Button>
+          
+          <Button 
+            onClick={handleLogin}
+            variant="outline"
+            className="px-8 py-6 text-lg w-64 bg-white"
+          >
+            Login to Existing Account
           </Button>
         </motion.div>
       </motion.div>

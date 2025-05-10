@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -29,15 +30,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
   
-  // If no user is authenticated, allow temporary access but prompt for sign-up
+  // If no user is authenticated, redirect to login
   if (!user) {
-    // Instead of redirecting, we'll show the page but with a sign-up prompt
-    // This will be handled in the component
-    return <>{children}</>;
+    return <Navigate to="/login" replace />;
   }
   
-  // Even if the onboarding isn't complete, we'll show the page
-  // This helps maintain state when users navigate around during onboarding
   return <>{children}</>;
 };
 
@@ -53,7 +50,7 @@ const AppRoutes = () => {
       <Route path="/" element={<Onboarding />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/connect" element={<ProtectedRoute><Connect /></ProtectedRoute>} />
       <Route path="/card/:id" element={<ViewCard />} />
@@ -70,7 +67,6 @@ const App = () => (
     <AuthProvider>
       <AppProvider>
         <TooltipProvider>
-          {/* Keep toast providers for other parts of the app but don't use them in our refactored components */}
           <Toaster />
           <Sonner />
           <BrowserRouter>
