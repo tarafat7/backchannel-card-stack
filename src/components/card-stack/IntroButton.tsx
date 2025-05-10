@@ -1,7 +1,6 @@
 
 import React, { forwardRef } from 'react';
 import { Link } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
 
 type IntroButtonProps = {
   name: string;

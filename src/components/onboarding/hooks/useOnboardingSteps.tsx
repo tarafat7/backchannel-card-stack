@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useOnboarding } from '../../../context/OnboardingContext';
 import { useAppContext } from '../../../context/AppContext';
 import { useAuth } from '@/hooks/useAuth';
-import { toast } from '@/components/ui/use-toast';
 
 export const useOnboardingSteps = () => {
   const { 
@@ -63,24 +62,11 @@ export const useOnboardingSteps = () => {
           // Make sure this is awaited to catch any errors
           await updateBusinessCard(previewCard);
           console.log("Business card saved successfully");
-          toast({
-            title: "Card saved",
-            description: "Your business card has been saved successfully.",
-          });
         } catch (err) {
           console.error("Failed to save business card:", err);
-          toast({
-            title: "Error saving card",
-            description: "There was a problem saving your business card. Please try again.",
-            variant: "destructive"
-          });
         }
       } else {
         console.log("User is not authenticated, card will be saved locally only");
-        toast({
-          title: "Card created",
-          description: "Sign in to save your business card permanently.",
-        });
         // Still proceed with the animation even if we can't save to database yet
       }
     }

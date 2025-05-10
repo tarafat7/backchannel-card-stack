@@ -3,7 +3,6 @@ import React from 'react';
 import { MessageCircle, Link } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
-import { toast } from '@/hooks/use-toast';
 
 type CardActionsProps = {
   isDirectConnection: boolean;
@@ -55,18 +54,8 @@ const CardActions = ({
       if (!newWindow) {
         window.location.href = messageUrl;
       }
-
-      toast({
-        title: "Opening messaging app",
-        description: `Messaging ${personName}`
-      });
     } catch (error) {
       console.error("Failed to open messaging app:", error);
-      toast({
-        title: "Couldn't open messaging app",
-        description: "Please check your device settings",
-        variant: "destructive"
-      });
     }
   };
 
@@ -119,18 +108,8 @@ const CardActions = ({
         if (!newWindow) {
           window.location.href = messageUrl;
         }
-        
-        toast({
-          title: "Opening messaging app",
-          description: `Asking ${mutualFirstName} to introduce you to ${personName}`
-        });
       } catch (error) {
         console.error("Failed to open messaging app:", error);
-        toast({
-          title: "Couldn't open messaging app",
-          description: "Please check your device settings",
-          variant: "destructive"
-        });
       }
     }
     

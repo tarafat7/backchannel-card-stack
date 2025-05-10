@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 
 interface OnboardingCompleteProps {
@@ -23,14 +22,6 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
       onAnimationComplete();
       
       console.log("Timer complete, navigating to /home");
-      
-      // Show success toast before navigation
-      toast({
-        title: "Profile created successfully!",
-        description: user 
-          ? "Your business card has been saved." 
-          : "To save your card permanently, please create an account.",
-      });
       
       // Force replace the current history entry so back button won't return to onboarding
       navigate('/home', { 
