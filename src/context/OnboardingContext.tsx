@@ -45,7 +45,7 @@ interface OnboardingContextType {
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
 
 export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { updateProfile, updateBusinessCard, profile } = useAppContext();
+  const { profile } = useAppContext();
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [showCompletionAnimation, setShowCompletionAnimation] = useState(false);
   const [previewCard, setPreviewCard] = useState<BusinessCard | null>(null);
@@ -100,12 +100,14 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
 
   // Update business card preview
   const updateBusinessCardPreview = () => {
+    console.log("Updating business card preview");
+    
     // Filter out experiences that don't have required fields
     const validExperiences = formData.experiences.filter(exp => 
       exp.title && exp.company && exp.years
     );
 
-    console.log("Valid experiences for card:", validExperiences.length, validExperiences);
+    console.log("Valid experiences for card:", validExperiences.length);
 
     // Create a preview card with current data
     const cardPreview: BusinessCard = {
@@ -128,14 +130,8 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
       experiences: validExperiences
     };
     
+    console.log("Setting preview card:", cardPreview);
     setPreviewCard(cardPreview);
-    
-    // Only try to save interim data if we've reached step 3 or higher
-    // This is handled in useOnboardingSteps for the final save
-    if (onboardingStep >= 3) {
-      console.log("Saving interim card data:", cardPreview);
-      // We'll let useOnboardingSteps handle the final save with proper error handling
-    }
   };
 
   // Update the card preview whenever relevant state changes
