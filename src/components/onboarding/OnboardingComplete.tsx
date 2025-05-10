@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 interface OnboardingCompleteProps {
   onAnimationComplete: () => void;
@@ -12,14 +13,11 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
   const navigate = useNavigate();
   
   useEffect(() => {
-    console.log("OnboardingComplete mounted, saving data...");
-    
-    // First save data
+    // First call the animation complete handler to save data
     onAnimationComplete();
     
     // Then show completion animation for 2 seconds before navigating
     const timer = setTimeout(() => {
-      console.log("Animation timeout complete, navigating to home");
       // Navigate to home and replace the history entry
       navigate('/home', { replace: true });
     }, 2000);

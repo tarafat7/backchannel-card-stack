@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import CardPreview from './card-designer/CardPreview';
 import BackgroundSelector from './card-designer/BackgroundSelector';
 import TextColorPicker from './card-designer/TextColorPicker';
@@ -10,7 +10,6 @@ import SocialLinksEditor from './card-designer/SocialLinksEditor';
 import { toast } from "@/components/ui/use-toast";
 import { BusinessCard } from '@/types';
 import { useOnboarding } from '../../context/OnboardingContext';
-import { useOnboardingSteps } from './hooks/useOnboardingSteps';
 
 interface CardDesignerProps {
   card: BusinessCard | null;
@@ -44,7 +43,6 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
   backgroundOptions
 }) => {
   const { formData, selectedExpertise, updateBusinessCardPreview } = useOnboarding();
-  const { isSubmitting } = useOnboardingSteps();
   const [showWorkHistory, setShowWorkHistory] = useState<boolean>(false);
   const [hasLinkError, setHasLinkError] = useState<boolean>(false);
   const [previewCard, setPreviewCard] = useState<BusinessCard | null>(null);
@@ -111,6 +109,12 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
     onComplete();
   };
 
+  // Function to handle background change
+  const handleBackgroundChange = (bg: string) => {
+    console.log("Setting background to:", bg);
+    setSelectedBackground(bg);
+  };
+
   return (
     <div className="animate-fade-in">
       <h2 className="text-2xl font-semibold mb-6">Design your card</h2>
@@ -124,7 +128,7 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
       <div className="space-y-6">
         <BackgroundSelector 
           selectedBackground={selectedBackground}
-          setSelectedBackground={setSelectedBackground}
+          setSelectedBackground={handleBackgroundChange}
           backgroundOptions={backgroundOptions}
         />
         
@@ -151,19 +155,9 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
       <Button 
         onClick={handleSubmit} 
         className="w-full mt-8 bg-gradient-to-r from-primary to-primary/80 hover:opacity-90"
-        disabled={isSubmitting}
       >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" /> 
-            Saving...
-          </>
-        ) : (
-          <>
-            Finish
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </>
-        )}
+        Finish
+        <ArrowRight className="w-4 h-4 ml-2" />
       </Button>
     </div>
   );

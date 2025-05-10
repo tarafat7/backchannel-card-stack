@@ -45,8 +45,6 @@ const StepRenderer: React.FC = () => {
     handleComplete
   } = useOnboardingSteps();
 
-  console.log("Current onboarding step:", onboardingStep);
-
   return (
     <div className="relative">
       {(() => {
