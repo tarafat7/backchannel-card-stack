@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -14,6 +13,8 @@ import ViewCard from "./pages/ViewCard";
 import ConnectionRequests from "./pages/ConnectionRequests";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AccountSettings from "./pages/AccountSettings";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import { AppProvider, useAppContext } from "./context/AppContext";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
@@ -22,7 +23,6 @@ const queryClient = new QueryClient();
 
 // Updated ProtectedRoute wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { profile } = useAppContext();
   const { user, loading } = useAuth();
   
   if (loading) {
@@ -51,6 +51,8 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Onboarding />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/connect" element={<ProtectedRoute><Connect /></ProtectedRoute>} />

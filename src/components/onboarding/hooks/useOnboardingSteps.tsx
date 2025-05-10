@@ -50,28 +50,23 @@ export const useOnboardingSteps = () => {
     // Ensure final business card is updated before completion
     updateBusinessCardPreview();
     
-    // Save final card data to the database if user is authenticated
-    if (previewCard) {
-      console.log("Attempting to save final card to database:", previewCard);
+    // If user is authenticated, try to save the card to the database
+    // If not authenticated, we'll save it after they create an account
+    if (user && previewCard) {
+      console.log("User is authenticated, saving card for user:", user.id);
       
-      if (user) {
-        console.log("User is authenticated, saving card for user:", user.id);
-        
-        // Use async/await for better error handling
-        try {
-          // Make sure this is awaited to catch any errors
-          await updateBusinessCard(previewCard);
-          console.log("Business card saved successfully");
-        } catch (err) {
-          console.error("Failed to save business card:", err);
-        }
-      } else {
-        console.log("User is not authenticated, card will be saved locally only");
-        // Still proceed with the animation even if we can't save to database yet
+      try {
+        await updateBusinessCard(previewCard);
+        console.log("Business card saved successfully");
+      } catch (err) {
+        console.error("Failed to save business card:", err);
       }
+    } else {
+      console.log("User is not authenticated, card will be saved after signup/login");
+      // The card data is already in context, we'll save it after authentication
     }
     
-    // Show completion animation
+    // Show completion animation regardless of authentication state
     setShowCompletionAnimation(true);
   };
   
