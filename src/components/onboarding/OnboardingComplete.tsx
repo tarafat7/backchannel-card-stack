@@ -26,7 +26,7 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
         // Navigate to home and don't go through login
         console.log("Final timer complete, navigating to home");
         navigate('/home', { replace: true });
-      }, 2000);
+      }, 3500); // Increased delay to give more time for signup to complete
       
     }, 2000);
     

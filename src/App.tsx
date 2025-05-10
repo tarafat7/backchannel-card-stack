@@ -15,7 +15,6 @@ import ConnectionRequests from "./pages/ConnectionRequests";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AccountSettings from "./pages/AccountSettings";
 import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import { AppProvider, useAppContext } from "./context/AppContext";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
@@ -30,9 +29,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
   
-  // If no user is authenticated, redirect to login
+  // If no user is authenticated, redirect to signup
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/signup" replace />;
   }
   
   return <>{children}</>;
@@ -49,7 +48,6 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Onboarding />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/login" element={<Login />} />
       <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/connect" element={<ProtectedRoute><Connect /></ProtectedRoute>} />
