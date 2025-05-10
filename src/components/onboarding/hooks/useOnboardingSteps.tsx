@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useOnboarding } from '../../../context/OnboardingContext';
 import { useAppContext } from '../../../context/AppContext';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from '@/components/ui/use-toast';
 
 export const useOnboardingSteps = () => {
   const { 
@@ -43,6 +44,12 @@ export const useOnboardingSteps = () => {
   };
 
   const handleComplete = () => {
+    // Show the user we're processing their info
+    toast({
+      title: "Almost there!",
+      description: "Creating your account and card...",
+    });
+    
     // Ensure final business card is updated before completion
     updateBusinessCardPreview();
     
@@ -63,12 +70,15 @@ export const useOnboardingSteps = () => {
         console.log("Saving business card data:", previewCard);
         await updateBusinessCard(previewCard);
       }
-      
-      // Hide the animation when complete
-      setShowCompletionAnimation(false);
     } catch (err) {
       console.error("Failed to save user data:", err);
-      // Still hide animation even if there's an error
+      toast({
+        title: "Couldn't save all your data",
+        description: "You may need to complete some details after login",
+        variant: "destructive"
+      });
+    } finally {
+      // Always hide animation when complete
       setShowCompletionAnimation(false);
     }
   };

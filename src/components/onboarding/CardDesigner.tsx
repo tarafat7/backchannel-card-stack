@@ -46,6 +46,7 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
   const [showWorkHistory, setShowWorkHistory] = useState<boolean>(false);
   const [hasLinkError, setHasLinkError] = useState<boolean>(false);
   const [previewCard, setPreviewCard] = useState<BusinessCard | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Create a preview card with current settings
   useEffect(() => {
@@ -89,6 +90,11 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
   };
 
   const handleSubmit = () => {
+    // Prevent multiple clicks
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    
     // Validate that at least one link has both type and URL filled
     const hasFilledLink = links.some(link => link.type && link.url);
     
@@ -99,6 +105,7 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
         description: "Please add at least one social link with both type and URL",
         variant: "destructive"
       });
+      setIsSubmitting(false);
       return;
     }
     
@@ -107,6 +114,9 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
     
     // Call the onComplete callback
     onComplete();
+    
+    // Reset submission state (though user will likely navigate away)
+    setIsSubmitting(false);
   };
 
   // Function to handle background change
@@ -155,8 +165,9 @@ const CardDesigner: React.FC<CardDesignerProps> = ({
       <Button 
         onClick={handleSubmit} 
         className="w-full mt-8 bg-gradient-to-r from-primary to-primary/80 hover:opacity-90"
+        disabled={isSubmitting}
       >
-        Finish
+        {isSubmitting ? 'Finishing...' : 'Finish'}
         <ArrowRight className="w-4 h-4 ml-2" />
       </Button>
     </div>

@@ -16,11 +16,11 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComp
     // First call the animation complete handler to save data
     onAnimationComplete();
     
-    // Then show completion animation for 2 seconds before navigating
+    // Then show completion animation for 3 seconds before navigating
     const timer = setTimeout(() => {
       // Navigate to home and replace the history entry
       navigate('/home', { replace: true });
-    }, 3000); // Increased to 3 seconds to ensure data saving completes
+    }, 3000);
     
     return () => clearTimeout(timer);
   }, [navigate, onAnimationComplete]);
