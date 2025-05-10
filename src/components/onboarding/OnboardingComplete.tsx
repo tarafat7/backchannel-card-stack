@@ -11,27 +11,19 @@ interface OnboardingCompleteProps {
 
 const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({ onAnimationComplete }) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   
   useEffect(() => {
-    console.log("OnboardingComplete rendering, checking auth status:", !!user);
+    // First call the animation complete handler to save data
+    onAnimationComplete();
     
-    // After animation completes, wait for auth to complete
+    // Then show completion animation for 2 seconds before navigating
     const timer = setTimeout(() => {
-      // First call the animation complete handler which will handle signup and data saving
-      onAnimationComplete();
-      
-      // Add a larger delay to make sure auth state is updated before navigation
-      setTimeout(() => {
-        // Navigate to home and replace the history entry to prevent going back to onboarding
-        console.log("Final timer complete, navigating to home");
-        navigate('/home', { replace: true });
-      }, 5000); // Increased delay to give more time for signup to complete
-      
+      // Navigate to home and replace the history entry
+      navigate('/home', { replace: true });
     }, 2000);
     
     return () => clearTimeout(timer);
-  }, [navigate, onAnimationComplete, user]);
+  }, [navigate, onAnimationComplete]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm">

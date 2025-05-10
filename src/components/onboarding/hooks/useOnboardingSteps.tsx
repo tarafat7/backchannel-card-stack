@@ -15,7 +15,7 @@ export const useOnboardingSteps = () => {
   } = useOnboarding();
   
   const { updateProfile, updateBusinessCard } = useAppContext();
-  const { user, signUp } = useAuth();
+  const { signUp } = useAuth();
   const [password, setPassword] = useState("");
 
   const handleBasicInfoComplete = (data: {name: string, title: string, company: string}) => {
@@ -25,20 +25,13 @@ export const useOnboardingSteps = () => {
 
   const handleExperienceComplete = (experiences: Array<{title: string, company: string, years: string, description: string}>) => {
     setFormData(prev => ({ ...prev, experiences }));
-    updateProfile({
-      experiences: experiences.map(exp => ({
-        title: exp.title,
-        company: exp.company,
-        years: exp.years,
-        description: exp.description
-      }))
-    });
+    updateProfile({ experiences });
     setOnboardingStep(3);
   };
   
   const handleContactInfoComplete = (phoneNumber: string, userPassword: string) => {
     setFormData(prev => ({ ...prev, phoneNumber }));
-    setPassword(userPassword); // Store password for signup later
+    setPassword(userPassword);
     setOnboardingStep(4);
   };
 
@@ -61,30 +54,19 @@ export const useOnboardingSteps = () => {
     setShowCompletionAnimation(false);
     
     try {
-      // Generate a more secure random password if not provided during onboarding
-      if (!password) {
-        const randomPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).toUpperCase().slice(-2);
-        setPassword(randomPassword);
+      // Sign up the user with their provided credentials
+      if (formData.phoneNumber && password) {
+        console.log("Signing up user with phone:", formData.phoneNumber);
+        await signUp(formData.phoneNumber, password, formData.name);
       }
       
-      // If we have phone number and password, sign up the user
-      if (formData.phoneNumber && password) {
-        console.log("Automatically signing up user with phone:", formData.phoneNumber);
-        
-        const result = await signUp(formData.phoneNumber, password, formData.name);
-        console.log("Auto sign up result:", result);
-        
-        // Save the business card data
-        if (previewCard) {
-          console.log("Saving business card data after auto-signup:", previewCard);
-          await updateBusinessCard(previewCard);
-          console.log("Business card data saved successfully");
-        }
-      } else {
-        console.error("Missing phone number for automatic signup");
+      // Save the business card data
+      if (previewCard) {
+        console.log("Saving business card data:", previewCard);
+        await updateBusinessCard(previewCard);
       }
     } catch (err) {
-      console.error("Failed to automatically sign up user:", err);
+      console.error("Failed to save user data:", err);
     }
   };
 
