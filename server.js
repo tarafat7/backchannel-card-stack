@@ -1,13 +1,23 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Create express app
 const app = express();
 
-// Serve static files from the dist directory
-app.use(express.static(path.join(__dirname, 'dist')));
+// Define the static directory
+const DIST_DIR = join(__dirname, 'dist');
+const HTML_FILE = join(DIST_DIR, 'index.html');
 
-// Handle SPA routing by sending all requests to index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// Serve static files
+app.use(express.static(DIST_DIR));
+
+// For any other requests, send the index.html file
+app.use((req, res) => {
+  res.sendFile(HTML_FILE);
 });
 
 const port = process.env.PORT || 3000;
