@@ -44,8 +44,8 @@ const BusinessCard = ({ card, isPreview = false, onClick, showHistory = false }:
   // Extract pattern if it exists
   const patternMatch = backgroundStyle.match(/bg-\[url\('([^']+)'\)\]/);
   
-  // Generate class names
-  let classNames = `business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative`;
+  // Generate class names with hover effects
+  let classNames = `business-card ${isPreview ? 'w-full h-56' : 'w-full'} ${showHistory ? 'h-auto' : 'h-56'} relative transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/10`;
   
   // Add background classes based on what we have
   // If pattern exists, add it
